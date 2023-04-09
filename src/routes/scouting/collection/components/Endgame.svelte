@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Checklist from "./Checklist.svelte";
+    import Checklist from "./List.svelte";
 </script>
 
 <div class="h-[75vh] flex flex-col justify-evenly">

@@ -32,6 +32,9 @@
 
 {#if page === "tele"}
     <Scoring mode="tele"/>
+    <p class="text text-center font-semibold text-lg">Estimated Score:
+        {(4 * readScoutingData.autoHigh) + (2 * readScoutingData.autoLow) + (readScoutingData.autoTaxi ? 2 : 0) +
+         (2 * readScoutingData.teleHigh) + readScoutingData.teleLow}</p>
 {/if}
 
 {#if page === "end"}

@@ -1,1 +1,1 @@
-<p class="text h-[100%] border border-dashed">hello</p>
+<p class="text h-[100%] border-l border-dashed">hello</p>
