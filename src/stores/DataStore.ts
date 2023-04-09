@@ -63,6 +63,19 @@ export const makeRow = async () => {
         return console.error(error);
 }
 
+export const setClimb = (distance: string) => {
+    scoutingData.update((data) => {
+        if (data.endClimbPos === distance) {
+            data.endClimbPos = "no climb";
+        } else {
+            data.endClimbPos = distance;
+        }
+
+        return data;
+    }
+    );
+}
+
 export const resetData = () => {
     scoutingData.update(() => defaultScoutingData);
 }
