@@ -4,8 +4,11 @@ export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
     extend: {
-      backgroundImage: {
-        'upperScore': "url(./rapidReactUpperScore.png)"
+      colors: {
+        'active': '#1d4ed8',
+        'inactive': '#374151',
+        'w': '#ffffff'
+        // 'app-background': '#0f172a'
       }
     },
   },

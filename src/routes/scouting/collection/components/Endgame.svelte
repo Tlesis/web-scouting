@@ -1,11 +1,11 @@
 <script lang="ts">
-    import Checklist from "./List.svelte";
+    import ClimbDistance from "./ClimbList.svelte";
 </script>
 
 <div class="h-[75vh] flex flex-col justify-evenly">
-    <h1 class="text text-center text-2xl font-bold">Climb Height</h1>
-    <Checklist distance="Traversal"/>
-    <Checklist distance="High"/>
-    <Checklist distance="Middle"/>
-    <Checklist distance="Low"/>
+    <h1 class="text-w text-center text-2xl font-bold">Climb Height</h1>
+    <ClimbDistance distance="Traversal"/>
+    <ClimbDistance distance="High"/>
+    <ClimbDistance distance="Middle"/>
+    <ClimbDistance distance="Low"/>
 </div>

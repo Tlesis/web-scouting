@@ -66,16 +66,16 @@
 
 <div class="flex flex-col mt-4">
     <div class="flex flex-row justify-between h-[37vh]">
-        <button class ="w-1/6 h-1/6 ml-2 mt-2 text shadow-sm rounded bg-gray-700 text-4xl"
+        <button class ="w-1/6 h-1/6 ml-2 mt-2 text-w shadow-sm rounded bg-inactive text-4xl"
             on:click={decHigh}>-</button>
-        <button class ="w-3/5 h-100 text" on:click={incHigh}><img src={upperIcon} alt="high"/></button>
-        <label for="high" class="w-[15%] h-1/6 mr-2 mt-2 text shadow-sm rounded bg-gray-700 text-center text-4xl">{high}</label>
+        <button class ="w-3/5 h-100 text-w" on:click={incHigh}><img src={upperIcon} alt="high"/></button>
+        <label for="high" class="w-[15%] h-1/6 mr-2 mt-2 text-w shadow-sm rounded bg-inactive text-center text-4xl">{high}</label>
     </div>
 
     <div class="flex flex-row justify-between h-[37vh]">
-        <button class ="w-1/6 h-1/6 ml-2 mt-8 text shadow-sm rounded bg-gray-700 text-4xl"
+        <button class ="w-1/6 h-1/6 ml-2 mt-8 text-w shadow-sm rounded bg-inactive text-4xl"
             on:click={decLow}>-</button>
-        <button class ="w-3/5 h-100 text" on:click={incLow}><img src={lowerIcon} alt="low"/></button>
-        <label for="low" class="w-[15%] h-1/6 mr-2 mt-8 text shadow-sm rounded bg-gray-700 text-center text-4xl">{low}</label>
+        <button class ="w-3/5 h-100 text-w" on:click={incLow}><img src={lowerIcon} alt="low"/></button>
+        <label for="low" class="w-[15%] h-1/6 mr-2 mt-8 text-w shadow-sm rounded bg-inactive text-center text-4xl">{low}</label>
     </div>
 </div>
