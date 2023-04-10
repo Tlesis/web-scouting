@@ -3,7 +3,6 @@ import { supabase } from "../supabase";
 
 // data that will be collected
 export interface ScoutingData {
-    id: number;
     matchid: number;
     teamid: number;
     color: string;
@@ -25,7 +24,6 @@ export interface ScoutingData {
 
 // defaulted scouting data
 const defaultScoutingData: ScoutingData = {
-    id: 0,
     matchid: 0,
     teamid: 0,
     color: "",
@@ -43,24 +41,34 @@ const defaultScoutingData: ScoutingData = {
 
 export const scoutingData = writable<ScoutingData>(defaultScoutingData);
 
-export const exportData = async () => {
-    const { error } = await supabase.from('scouting-data').update(scoutingData);
+var currId: number = 19;
+var readOnlyData: ScoutingData;
+scoutingData.subscribe((data) => readOnlyData = data);
 
-    if (error)
-     return console.error(error);
+export const exportData = async () => {
+    console.log(readOnlyData);
+    const { error } = await supabase.from('scouting-data').update(readOnlyData).match({id: currId});
+
+    if (error) {
+        alert(error);
+        return console.error(error);
+    }
+
 }
 
-export const makeRow = async () => {
-
-    scoutingData.update( (data) => {
-        data.id = Date.now();
+export const makeRow = async (matchid: number, teamid: number) => {
+    scoutingData.update((data) => {
+        data.matchid = matchid;
+        data.teamid = teamid;
         return data;
     });
 
-    const { data, error } = await supabase.from('scouting-data').insert(scoutingData);
+    const { data, error } = await supabase.from('scouting-data').insert(readOnlyData).select();
 
     if (error)
         return console.error(error);
+
+    currId = data[0].id;
 }
 
 export const setClimb = (distance: string) => {
@@ -76,9 +84,5 @@ export const setClimb = (distance: string) => {
     );
 }
 
-export const resetData = () => {
-    scoutingData.update(() => defaultScoutingData);
-}
-
 /********** Page Store **********/
-export const pageLocation = writable<string>("auto");
+export const pageLocation = writable<string>("match");
