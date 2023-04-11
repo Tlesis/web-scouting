@@ -54,6 +54,8 @@ export const exportData = async () => {
         return console.error(error);
     }
 
+    location.href='/';
+
 }
 
 export const makeRow = async (matchid: number, teamid: number) => {

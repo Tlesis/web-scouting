@@ -1,6 +1,6 @@
 <script>
     import { supabase } from "../supabase";
-    import "../app.css"
+    import "../app.css";
 </script>
 
 <div class="container m-0 p-0">

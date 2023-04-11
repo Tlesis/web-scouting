@@ -5,14 +5,27 @@
     import QualitativeData from "./components/QualitativeData.svelte";
 
     import { exportData, pageLocation, scoutingData } from "../../stores/DataStore";
+    import type { PageData } from "./$types";
+
+    export let data: PageData;
 
     var notes: string;
-
+    const submitData = () => {
+        if (confirm("Are you sure you want to submit?")) {
+            scoutingData.update((data) => {
+                data.notes = notes;
+                return data;
+            });
+            exportData();
+        }
+    }
 </script>
+
+<h1>{data.url}</h1>
 
 {#if $pageLocation === "match"}
     <button type="button" class="w-1/4 ml-2 text-w shadow-sm rounded bg-rose-800 py-2 text-xl mt-2"
-    on:click={() => { location.href='/';}}>Back</button>
+    on:click={() => { location.href='/' }}>Back</button>
     <Forms/>
 {/if}
 
@@ -45,14 +58,7 @@
         <div class="w-1/2 flex flex-col">
             <Endgame/>
             <button type="submit" class="w-3/5 text-w text-center shadow-sm rounded bg-active py-3 text-2xl my-2 mx-auto"
-                on:click={() => { if (confirm("Are you sure you want to submit?")) {
-                    scoutingData.update((data) => {
-                        data.notes = notes;
-                        return data;
-                    });
-                    exportData();
-                    location.href='/';
-                }}}>Submit</button>
+                on:click={submitData}>Submit</button>
         </div>
         <div class="w-1/2 h-[85vh] flex flex-col justify-between border-l border-dashed">
             <QualitativeData/>
