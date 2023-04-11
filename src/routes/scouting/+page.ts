@@ -1,7 +1,7 @@
 import type { PageLoad } from "./$types";
 
 
-import axios from 'axios';
+//import axios from 'axios';
 
 const frcapiEvent = 'mose';
 const frcapiToken = import.meta.env.VITE_TBA_API_TOKEN;

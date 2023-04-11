@@ -4,7 +4,7 @@
     import Endgame from "./components/Endgame.svelte";
     import QualitativeData from "./components/QualitativeData.svelte";
 
-    import { exportData, pageLocation, scoutingData } from "../../stores/DataStore";
+    import { exportData, pageLocation, scoutingData } from "$stores/DataStore";
     import type { PageData } from "./$types";
 
     export let data: PageData;
@@ -16,12 +16,10 @@
                 data.notes = notes;
                 return data;
             });
-            exportData();
+            //exportData();
         }
     }
 </script>
-
-<h1>{data.url}</h1>
 
 {#if $pageLocation === "match"}
     <button type="button" class="w-1/4 ml-2 text-w shadow-sm rounded bg-rose-800 py-2 text-xl mt-2"

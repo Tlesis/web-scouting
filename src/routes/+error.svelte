@@ -1,4 +1,5 @@
-<div class="justify-center align-middle text-w text-center">
-    <h1 class="text-8xl font-bold">Error</h1>
-    <h2 class="text-2xl italic">How did you get here?</h2>
+<div class="flex flex-col h-screen w-screen text-w text-center justify-center">
+    <b class="text-8xl">Error</b>
+    <i class="text-2xl">How did you get here?</i>
+    <button on:click={() => history.back()} class="text-w rounded bg-active p-1 w-fit mx-auto mt-2">Go back...</button>
 </div>
