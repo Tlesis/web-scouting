@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import { supabase } from "../supabase";
+//import supabase from "$lib/supabase";
 
 // data that will be collected
 export interface ScoutingData {

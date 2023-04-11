@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { pageLocation } from "../../stores/DataStore";
+    import { pageLocation } from "$stores/DataStore";
 </script>
 
 <main>
@@ -13,6 +13,5 @@
                     on:click={() => pageLocation.update(() => "end")}>Endgame</button>
         </nav>
     {/if}
-
-    <slot></slot>
+    <slot/>
 </main>
