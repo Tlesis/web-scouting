@@ -11,7 +11,7 @@
 
 <a href="/" class="inline-block w-1/4 text-w text-center text-xl shadow-sm rounded bg-active py-2 m-2">Back</a>
 
-<form class="max-w-screen-md h-3/4 border border-dashed">
+<form class="max-w-screen-md">
     <div class="mt-10">
         <label for="matchid" class="block text-w text-3xl font-bold text-center mb-2">Match</label>
         <input type="tel" name="matchid" bind:value={matchId} placeholder="Qualification Match ID"
@@ -24,9 +24,8 @@
             class="block m-auto w-5/6 text-xl text-center border border-slate-400 rounded-lg shadow-sm">
     </div>
     <!-- just as an example -->
-    <div class="mt-2 flex flex-col h-fit">
+    <div class="mt-2 flex flex-col h-10">
         <strong class="text-center text-w">Teams Available to Scout:</strong>
-        <!-- TODO: prevent submit button from moving-->
         <p class="text-center font-bold text-red-600">{teams?.red?.join(' ') ?? ""}</p>
         <p class="text-center font-bold text-blue-400">{teams?.blue?.join(' ') ?? ""}</p>
     </div>
