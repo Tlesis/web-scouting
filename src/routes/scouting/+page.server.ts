@@ -2,7 +2,7 @@ import type { PageServerLoad } from "./$types";
 import fetch from "node-fetch";
 import { TBA_API_KEY } from "$env/static/private";
 import { fail } from "@sveltejs/kit";
-import { type TBAMatch, AllianceColors } from "$lib/types";
+import type { TBAMatch } from "$lib/types";
 
 const options = {
     headers: {
@@ -22,10 +22,8 @@ export const load = (async () => {
         results.filter((value) => value.comp_level === "qm")
                 .map((match) => ({
                     matchNumber: match.match_number,
-                    teams: [
-                        ...match.alliances.red.team_keys.map((team)  => ({ alliance: AllianceColors.red, number: team.slice(3)})),
-                        ...match.alliances.blue.team_keys.map((team) => ({ alliance: AllianceColors.blue, number: team.slice(3)})),
-                    ]
+                    red: match.alliances.red.team_keys.map((team) => team.slice(3)),
+                    blue: match.alliances.blue.team_keys.map((team) => team.slice(3))
                 }));
 
     return { matches };
