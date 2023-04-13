@@ -1,17 +1,17 @@
 export interface TBAMatch {
-    actual_time:      number;
+    actual_time:      number | null;
     alliances:        Alliances;
     comp_level:       string;
     event_key:        string;
-    key:              string;
+    key:              string | null;
     match_number:     number;
-    post_result_time: number;
-    predicted_time:   number;
-    score_breakdown:  ScoreBreakdown;
+    post_result_time: number | null;
+    predicted_time:   number | null;
+    score_breakdown:  ScoreBreakdown | null;
     set_number:       number;
-    time:             number;
-    videos:           Video[];
-    winning_alliance: string;
+    time:             number | null;
+    videos:           Video[] | null;
+    winning_alliance: string | null;
 }
 
 export interface Alliances {
@@ -86,9 +86,4 @@ export interface Link {
 export interface Video {
     key:  string;
     type: string;
-}
-
-export enum AllianceColors {
-    red = 1,
-    blue
 }
