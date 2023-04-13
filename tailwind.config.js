@@ -4,10 +4,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        'active': '#1d4ed8',
-        'inactive': '#374151',
+        // https://coolors.co/0d1117-2b303a-69788c-9f1239-f3f4f6
+        'primary': '#2b303a',
+        'secondary': '#0D1117',
+        'active': '#9f1239',
+        'inactive': '#2b303a', // subject to change
         'w': '#f3f4f6'
-        // 'app-background': '#0f172a'
       }
     },
   },

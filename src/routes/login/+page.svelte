@@ -19,7 +19,7 @@
         <label for="password" class="text-3xl">Password:</label>
         <input type="password" name="password" class="text-black w-full appearance-none shadow-sm border border-slate-400 rounded p-1">
     </div>
-    <button type="submit" class="text-w shadow-sm rounded bg-rose-800 p-2 text-xl">Log in</button>
+    <button type="submit" class="text-w shadow-sm rounded bg-active p-2 text-xl">Log in</button>
     <a href="/login/forgot-password">Forgot password?</a>
 </form>
 
