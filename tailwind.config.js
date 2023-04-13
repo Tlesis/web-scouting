@@ -6,7 +6,7 @@ export default {
       colors: {
         'active': '#1d4ed8',
         'inactive': '#374151',
-        'w': '#ffffff'
+        'w': '#f3f4f6'
         // 'app-background': '#0f172a'
       }
     },

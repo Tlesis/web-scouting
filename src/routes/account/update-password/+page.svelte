@@ -1,5 +1,7 @@
-<form method="POST">
-    <label for="password">New password:</label>
-    <input name="password" type="password">
-    <button type="submit">Set password</button>
+
+<h1 class="text-w text-center text-4xl font-semibold my-10">Set Password</h1>
+<form class="flex flex-col mx-10 h-full bg-slate-800 rounded-lg p-5" method="POST">
+    <label for="password" class="text-xl text-w mb-2" placeholder="Set new password">New password:</label>
+    <input type="password" name="password" class="w-full px-3 py-2 mb-8 rounded border border-gray-300">
+    <button type="submit" class="px-4 py-2 text-xl text-w bg-rose-800 rounded shadow">Set password</button>
 </form>

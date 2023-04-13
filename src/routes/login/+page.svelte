@@ -7,7 +7,7 @@
 <img src="branding/logo.png" alt="Team 1810 Catatronics" class="mx-auto my-5 w-40">
 
 {#if form?.error}
-    <span>{form.error}</span>
+    <span class="flex justify-center text-red-700 text-lg font-bold">{form.error}</span>
 {/if}
 
 <form class="flex flex-col gap-8 text-w mx-10 items-center" method="post" use:enhance>
