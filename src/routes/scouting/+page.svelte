@@ -10,7 +10,7 @@
 
 <a href="/" class="inline-block max-sm:w-1/4 sm:w-1/6 text-w text-center text-xl shadow-sm rounded bg-active py-2 m-2">Back</a>
 
-<form autocomplete="off" class="max-w-screen-md" on:submit|preventDefault={() => console.log("submit")}>
+<form autocomplete="off" class="m-auto max-w-screen-md" on:submit|preventDefault={() => console.log("submit")}>
     <div class="mt-2">
         <label for="matchid" class="block text-w text-3xl font-bold text-center mb-2">Match</label>
         <input type="tel" name="matchid" bind:value={matchId} placeholder="Qualification Match ID"
