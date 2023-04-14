@@ -26,6 +26,8 @@ export const load = (async () => {
                     blue: match.alliances.blue.team_keys.map((team) => team.slice(3))
                 }));
 
-    return { matches };
+    return {
+        matches
+    };
 
 }) satisfies PageServerLoad;

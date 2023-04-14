@@ -6,6 +6,6 @@ export const GET = (async ({ locals: { supabase, getSession }}) => {
         const { error } = await supabase.auth.signOut();
         if (error) throw error;
     }
-    throw redirect(303, "/");
+    throw redirect(303, "/login");
 
 }) satisfies RequestHandler;

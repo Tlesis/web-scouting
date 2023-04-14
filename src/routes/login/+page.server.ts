@@ -10,7 +10,6 @@ export const actions = {
         const form = await request.formData();
         const email = form.get("email") as string;
         const password = form.get("password") as string;
-        // console.log(email, password);
 
         if (!email) return fail(400, {
             error: "Email is required"
