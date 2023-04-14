@@ -87,3 +87,8 @@ export interface Video {
     key:  string;
     type: string;
 }
+
+export enum AllianceColor {
+    red = 1,
+    blue
+}
