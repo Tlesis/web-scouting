@@ -1,11 +1,12 @@
 import { writable } from "svelte/store";
 
 interface ScoutingData {
-    auto: {place: string, activated: boolean[]}[],
+    auto: Scoring[],
     autoCharge: ChargeStationLevel,
     autoMobility: boolean
-    teleop: {place: string, activated: boolean[]}[],
+    teleop: Scoring[],
     endgame: ChargeStationLevel,
+    playDirty: boolean,
     win: boolean,
     notes: string
 }
@@ -31,6 +32,7 @@ const defaultScoutingData = {auto: [{place: "auto-top", activated: [false, false
                                      {place: "tele-mid", activated: [false, false, false, false, false, false, false, false, false]},
                                      {place: "tele-bot", activated: [false, false, false, false, false, false, false, false, false]}],
                             endgame: ChargeStationLevel.NotAttempted,
+                            playDirty: false,
                             win: false,
                             notes: ""};
 

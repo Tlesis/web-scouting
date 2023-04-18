@@ -12,7 +12,7 @@
     const teamid = urlParams.get("teamid") ?? "";
     const teamcolor = urlParams.get("teamcolor") ?? "";
 
-    // TODO: push this data to supabase
+    // TODO: create new row with this data on supabase
     console.log({ matchid, teamid, teamcolor });
 
 </script>

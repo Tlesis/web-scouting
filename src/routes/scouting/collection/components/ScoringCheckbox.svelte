@@ -11,7 +11,6 @@
 
 {#if mode === ScoutingPages.auto}
 <input type="checkbox"
-
        bind:checked={$scoutingData.auto[order].activated[row]}
        name="{mode}-{order}-{row}"
        class={`appearance-none rounded shadow-sm p-4 ${bgcolor} bg-inactive my-1`}/>
