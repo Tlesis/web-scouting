@@ -7,7 +7,7 @@
 <img src="branding/logo.png" alt="Team 1810 Catatronics" class="mx-auto my-5 landscape:w-0 portrait:w-40">
 
 {#if form?.error}
-    <span class="flex justify-center text-red-700 text-lg font-bold">{form.error}</span>
+    <span class="flex justify-center text-red-700 text-lg font-bold">{form.error.toUpperCase()}</span>
 {/if}
 
 <form class="flex flex-col gap-8 text-w mx-10 items-center" method="post" use:enhance>

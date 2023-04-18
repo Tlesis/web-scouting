@@ -15,11 +15,11 @@ export interface TBAMatch {
 }
 
 export interface Alliances {
-    blue: AlliancesBlue;
-    red:  AlliancesBlue;
+    blue: Alliance;
+    red:  Alliance;
 }
 
-export interface AlliancesBlue {
+export interface Alliance {
     dq_team_keys:        any[];
     score:               number;
     surrogate_team_keys: string[];
@@ -27,11 +27,11 @@ export interface AlliancesBlue {
 }
 
 export interface ScoreBreakdown {
-    blue: ScoreBreakdownBlue;
-    red:  ScoreBreakdownBlue;
+    blue: ScoreBreakdown;
+    red:  ScoreBreakdown;
 }
 
-export interface ScoreBreakdownBlue {
+export interface ScoreBreakdown {
     activationBonusAchieved:     boolean;
     adjustPoints:                number;
     autoBridgeState:             string;
@@ -91,4 +91,10 @@ export interface Video {
 export enum AllianceColor {
     red = 1,
     blue
+}
+
+export enum ScoutingPages {
+    auto = 1,
+    teleop,
+    endgame
 }

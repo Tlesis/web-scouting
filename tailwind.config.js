@@ -9,7 +9,8 @@ export default {
         'secondary': '#0D1117',
         'active': '#9f1239',
         'inactive': '#2b303a', // subject to change
-        'w': '#f3f4f6'
+        'w': '#f3f4f6',
+        'ground': '#8b97a7'
       }
     },
   },
