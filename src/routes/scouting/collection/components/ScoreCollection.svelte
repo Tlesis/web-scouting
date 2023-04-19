@@ -3,21 +3,18 @@
     import Endgame from "./endgame/Endgame.svelte";
     import { ScoutingPages } from "$lib/types";
     import AutoButtons from "./auto/AutoButtons.svelte";
-    import { scoutingData } from "$lib/ScoutingDataStore";
-
-    export let pagelocation: number;
-    export let data: {matchid: string, teamid: string, teamcolor: string}
+    import { scoutingData, pageLocation } from "$lib/ScoutingDataStore";
 </script>
 
-{#if pagelocation !== ScoutingPages.endgame}
+{#if $pageLocation !== ScoutingPages.endgame}
 
-    <Page teamcolor={data.teamcolor ?? "1"} mode={pagelocation}/>
+    <Page/>
 
-    {#if pagelocation === ScoutingPages.teleop}
+    {#if $pageLocation === ScoutingPages.teleop}
         <div class="text-w text-lg w-full my-2">
-            <b class="flex justify-center">Match: {data.matchid}</b>
-            <b class="flex justify-center">Team: {data.teamid}</b>
-            <b class="flex justify-center">Alliance: {data.teamcolor === "1" ? "Red" : "Blue"}</b>
+            <b class="flex justify-center">Match: {$scoutingData.matchid}</b>
+            <b class="flex justify-center">Team: {$scoutingData.teamid}</b>
+            <b class="flex justify-center">Alliance: {($scoutingData.teamcolor === 1) ? "Red" : "Blue"}</b>
         </div>
     {:else}
         <AutoButtons/>

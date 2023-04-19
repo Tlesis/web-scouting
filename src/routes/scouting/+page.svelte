@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { enhance } from "$app/forms";
     import { AllianceColor } from "$lib/types";
     import type { PageData } from "./$types";
 
@@ -16,7 +17,7 @@
 
 <a href="/" class="inline-block portrait:w-1/4 landscape:w-1/6 text-w text-center text-xl shadow-sm rounded bg-active py-2 m-2">Back</a>
 
-<form autocomplete="off" class="m-auto max-w-screen-md" action="./scouting/collection" method="get">
+<form autocomplete="off" class="m-auto max-w-screen-md" action="./scouting/collection">
     <div class="mt-2">
         <label for="matchid" class="block text-w text-3xl font-bold text-center mb-2">Match</label>
         <input type="tel" name="matchid" bind:value={matchid} placeholder="Qualification Match ID"
@@ -32,7 +33,7 @@
         <strong class="text-center text-w">Teams Available to Scout:</strong>
         <div class="landscape:flex-row justify-center">
             <p class="text-center font-bold text-red-600">&nbsp;{teams?.red?.join(' ') ?? ""}</p>
-            <p class="text-center font-bold text-blue-400">{teams?.blue?.join(' ') ?? ""}</p>
+            <p class="text-center font-bold text-blue-400">&nbsp;{teams?.blue?.join(' ') ?? ""}</p>
         </div>
     </div>
 
