@@ -3,14 +3,21 @@
     import type { PageData } from "./$types";
 
     export let data: PageData;
+    const database = data.database.data;
+    console.log(data.database);
 
     let matchid: string,
         teamid: string,
         teamcolor: AllianceColor | undefined;
 
-    $: teams = data.matches.find((match) => match.matchNumber === +matchid);
-    $: teamcolor = teams?.red?.includes(teamid) ? AllianceColor.red :
-                   teams?.blue?.includes(teamid) ? AllianceColor.blue :
+    $: TBAteams = data.matches.find((match) => match.matchNumber === +matchid);
+    $: databaseTeams = database?.filter((data) => data.matchid === +matchid);
+
+    $: allowedRedTeams = TBAteams?.red.filter((team) => !databaseTeams?.find((d) => +team === d.teamid));
+    $: allowedBlueTeams = TBAteams?.blue.filter((team) => !databaseTeams?.find((d) => +team === d.teamid));
+
+    $: teamcolor = allowedRedTeams?.includes(teamid) ? AllianceColor.red :
+                   allowedBlueTeams?.includes(teamid) ? AllianceColor.blue :
                    undefined;
 </script>
 
@@ -31,8 +38,8 @@
     <div class="mt-2 flex portrait:flex-col landscape:justify-center portrait:h-10 landscape:h-8">
         <strong class="text-center text-w">Teams Available to Scout:</strong>
         <div class="landscape:flex-row justify-center">
-            <p class="text-center font-bold text-red-600">&nbsp;{teams?.red?.join(' ') ?? ""}</p>
-            <p class="text-center font-bold text-blue-400">&nbsp;{teams?.blue?.join(' ') ?? ""}</p>
+            <p class="text-center font-bold text-red-600">&nbsp;{allowedRedTeams?.join(' ') ?? ""}</p>
+            <p class="text-center font-bold text-blue-400">&nbsp;{allowedBlueTeams?.join(' ') ?? ""}</p>
         </div>
     </div>
 

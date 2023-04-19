@@ -10,7 +10,7 @@ const options = {
     }
 };
 
-export const load = (async () => {
+export const load = (async ({ locals: { supabase } }) => {
     const res = await fetch("https://www.thebluealliance.com/api/v3/event/2023mose/matches", options);
 
     if (!res.ok)
@@ -26,8 +26,11 @@ export const load = (async () => {
                     blue: match.alliances.blue.team_keys.map((team) => team.slice(3))
                 }));
 
+    const database = supabase.from("scouting-data").select("matchid, teamid");
+
     return {
-        matches
+        matches,
+        database
     };
 
 }) satisfies PageServerLoad;
