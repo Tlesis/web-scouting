@@ -7,7 +7,7 @@
 
     const getColor = (row: number, order: number) => {
         if (order === 2)
-            return "checked:bg-ground"
+            return "checked:bg-ground";
         return (row % 2 === 0) ? "checked:bg-purple-800" : "checked:bg-yellow-600";
     };
 </script>

@@ -1,8 +1,7 @@
 <script lang="ts">
     import { ChargeStationLevel, scoutingData } from "$lib/ScoutingDataStore";
 
-    const level = [ChargeStationLevel.NotAttempted, ChargeStationLevel.failed,
-                   ChargeStationLevel.docked, ChargeStationLevel.balanced];
+    const level = [ChargeStationLevel.NotAttempted, ChargeStationLevel.failed, ChargeStationLevel.docked, ChargeStationLevel.balanced];
     const color = ["bg-inactive", "bg-active", "bg-yellow-600", "bg-green-700"];
 
     let buttonColor: string;

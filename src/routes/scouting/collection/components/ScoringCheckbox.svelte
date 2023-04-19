@@ -4,8 +4,7 @@
 
     export let bgcolor: string;
 
-    export let order: number,
-               row: number;
+    export let order: number, row: number;
 </script>
 
 {#if $pageLocation === ScoutingPages.auto}

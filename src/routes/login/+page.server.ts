@@ -26,6 +26,6 @@ export const actions = {
             email
         });
 
-        throw redirect(303, url.searchParams.get("redirect_url") ?? "/")
+        throw redirect(303, url.searchParams.get("redirect_url") ?? "/");
     }
 } satisfies Actions;

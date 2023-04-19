@@ -7,7 +7,7 @@ import type { LayoutLoad } from "./$types";
 import type { Database } from "../DatabaseDefinitions";
 
 export const load: LayoutLoad = async ({ fetch, data, depends }) => {
-    depends('supabase:auth');
+    depends("supabase:auth");
 
     const supabase = createSupabaseLoadClient<Database>({
         supabaseUrl: PUBLIC_SUPABASE_URL,

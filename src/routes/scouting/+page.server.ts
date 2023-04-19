@@ -20,11 +20,11 @@ export const load = (async ({ locals: { supabase } }) => {
 
     const matches =
         results.filter((value) => value.comp_level === "qm")
-                .map((match) => ({
-                    matchNumber: match.match_number,
-                    red: match.alliances.red.team_keys.map((team) => team.slice(3)),
-                    blue: match.alliances.blue.team_keys.map((team) => team.slice(3))
-                }));
+            .map((match) => ({
+                matchNumber: match.match_number,
+                red: match.alliances.red.team_keys.map((team) => team.slice(3)),
+                blue: match.alliances.blue.team_keys.map((team) => team.slice(3))
+            }));
 
     const database = supabase.from("scouting-data").select("matchid, teamid");
 

@@ -16,9 +16,7 @@
     $: allowedRedTeams = TBAteams?.red.filter((team) => !databaseTeams?.find((d) => +team === d.teamid));
     $: allowedBlueTeams = TBAteams?.blue.filter((team) => !databaseTeams?.find((d) => +team === d.teamid));
 
-    $: teamcolor = allowedRedTeams?.includes(teamid) ? AllianceColor.red :
-                   allowedBlueTeams?.includes(teamid) ? AllianceColor.blue :
-                   undefined;
+    $: teamcolor = allowedRedTeams?.includes(teamid) ? AllianceColor.red : allowedBlueTeams?.includes(teamid) ? AllianceColor.blue : undefined;
 </script>
 
 <a href="/" class="inline-block portrait:w-1/4 landscape:w-1/6 text-w text-center text-xl shadow-sm rounded bg-active py-2 m-2">Back</a>
@@ -38,8 +36,8 @@
     <div class="mt-2 flex portrait:flex-col landscape:justify-center portrait:h-10 landscape:h-8">
         <strong class="text-center text-w">Teams Available to Scout:</strong>
         <div class="landscape:flex-row justify-center">
-            <p class="text-center font-bold text-red-600">&nbsp;{allowedRedTeams?.join(' ') ?? ""}</p>
-            <p class="text-center font-bold text-blue-400">&nbsp;{allowedBlueTeams?.join(' ') ?? ""}</p>
+            <p class="text-center font-bold text-red-600">&nbsp;{allowedRedTeams?.join(" ") ?? ""}</p>
+            <p class="text-center font-bold text-blue-400">&nbsp;{allowedBlueTeams?.join(" ") ?? ""}</p>
         </div>
     </div>
 
