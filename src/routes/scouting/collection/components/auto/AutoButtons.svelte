@@ -1,18 +1,24 @@
 <script lang="ts">
     import { ChargeStationLevel, scoutingData } from "$lib/ScoutingDataStore";
 
-    const level = [ChargeStationLevel.NotAttempted, ChargeStationLevel.failed, ChargeStationLevel.docked, ChargeStationLevel.balanced];
-    const color = ["bg-inactive", "bg-active", "bg-yellow-600", "bg-green-700"];
+    const levels = [
+        { color: "bg-inactive",   level: ChargeStationLevel.NotAttempted },
+        { color: "bg-active",     level: ChargeStationLevel.failed },
+        { color: "bg-yellow-600", level: ChargeStationLevel.docked },
+        { color: "bg-green-700",  level: ChargeStationLevel.balanced },
+    ]
 
     let buttonColor: string;
 
     const balanceCB = () => {
-        const index = level.indexOf($scoutingData.autoCharge);
-        $scoutingData.autoCharge = level[((index + 1) % level.length)];
-        buttonColor = color[((index + 1) % color.length)];
+        const index = levels.findIndex((level) => level.level === $scoutingData.autoCharge);
+        const newLevel = levels[((index + 1) % levels.length)];
+
+        $scoutingData.autoCharge = newLevel.level;
+        buttonColor = newLevel.color;
     };
 
-    buttonColor = color[level.indexOf($scoutingData.autoCharge)];
+    buttonColor = levels[levels.findIndex((level) => level.level === $scoutingData.autoCharge)].color;
 </script>
 
 <div class="flex flex-row justify-evenly">

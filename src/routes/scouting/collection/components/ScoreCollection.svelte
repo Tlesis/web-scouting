@@ -4,6 +4,36 @@
     import { ScoutingPages } from "$lib/types";
     import AutoButtons from "./auto/AutoButtons.svelte";
     import { scoutingData, pageLocation } from "$lib/ScoutingDataStore";
+    import type { SupabaseClient } from "@supabase/supabase-js";
+    import type { Database } from "../../../../DatabaseDefinitions";
+
+    export let supabase: SupabaseClient<Database>;
+
+    // TODO: make cleaner
+    const submitData = async () => {
+        const compiledData = {
+            autoHigh: $scoutingData.auto[0].activated.filter((node) => node === true).length,
+            autoMid: $scoutingData.auto[1].activated.filter((node) => node === true).length,
+            autoLow: $scoutingData.auto[2].activated.filter((node) => node === true).length,
+            autoCharge: $scoutingData.autoCharge,
+            autoMobility: $scoutingData.autoMobility,
+            teleHigh: $scoutingData.teleop[0].activated.filter((node) => node === true).length,
+            teleMid: $scoutingData.teleop[1].activated.filter((node) => node === true).length,
+            teleLow: $scoutingData.teleop[2].activated.filter((node) => node === true).length,
+            endCharge: $scoutingData.endgame,
+            playDirty: $scoutingData.playDirty,
+            win: $scoutingData.win,
+            notes: $scoutingData.notes
+        }
+        const { error } = await supabase.from("scouting-data").update(compiledData).eq("id", $scoutingData.id);
+
+        if (error) {
+            console.error(error.message + "\n\t" + error.details);
+        } else {
+            location.href = "/";
+        }
+    };
+
 </script>
 
 {#if $pageLocation !== ScoutingPages.endgame}
@@ -23,8 +53,7 @@
 {:else}
     <Endgame/>
     <div class="flex justify-center">
-        <!-- TODO: Submit updated data to supabase -->
         <button class="absolute bottom-5 w-5/6 text-w text-xl shadow-sm rounded bg-inactive py-3"
-                on:click={() => console.log($scoutingData)}>Submit</button>
+                on:click={submitData}>Submit</button>
     </div>
 {/if}

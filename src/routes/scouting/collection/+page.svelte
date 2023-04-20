@@ -20,4 +20,4 @@
         class={`text-w text-2xl ${$pageLocation === ScoutingPages.endgame ? "bg-active" : "bg-inactive"} w-1/3 py-5 border border-w`}>Endgame</button>
 </nav>
 
-<ScoreCollection/>
+<ScoreCollection supabase={data.supabase}/>

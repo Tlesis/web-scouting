@@ -1,13 +1,12 @@
 import { fail } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
-import { AllianceColor } from "$lib/types";
 
 export const load = (async ({ url, locals: { supabase } }) => {
     const form = url.searchParams;
 
-    const matchid = parseInt(form.get("matchid") as string);
-    const teamid = parseInt(form.get("teamid") as string);
-    const teamcolor = (form.get("teamcolor") as AllianceColor | null) ?? AllianceColor.red;
+    const matchid = Number(form.get("matchid") as string);
+    const teamid = Number(form.get("teamid") as string);
+    const teamcolor = Number(form.get("teamcolor") as string);
 
     const { data, error } = await supabase
         .from("scouting-data")

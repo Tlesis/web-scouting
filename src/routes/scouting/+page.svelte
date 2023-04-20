@@ -4,7 +4,6 @@
 
     export let data: PageData;
     const database = data.database.data;
-    console.log(data.database);
 
     let matchid: string,
         teamid: string,
