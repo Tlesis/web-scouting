@@ -3,14 +3,13 @@
     import type { PageData } from "./$types";
 
     export let data: PageData;
-    const database = data.database.data;
 
     let matchid: string,
         teamid: string,
         teamcolor: AllianceColor | undefined;
 
     $: TBAteams = data.matches.find((match) => match.matchNumber === +matchid);
-    $: databaseTeams = database?.filter((data) => data.matchid === +matchid);
+    $: databaseTeams = data.database.data?.filter((data) => data.matchid === +matchid);
 
     $: allowedRedTeams = TBAteams?.red.filter((team) => !databaseTeams?.find((d) => +team === d.teamid));
     $: allowedBlueTeams = TBAteams?.blue.filter((team) => !databaseTeams?.find((d) => +team === d.teamid));

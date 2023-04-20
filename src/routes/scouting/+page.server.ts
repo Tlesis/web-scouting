@@ -26,7 +26,7 @@ export const load = (async ({ locals: { supabase } }) => {
                 blue: match.alliances.blue.team_keys.map((team) => team.slice(3))
             }));
 
-    const database = supabase.from("scouting-data").select("matchid, teamid");
+    const database = await supabase.from("scouting-data").select("matchid, teamid");
 
     return {
         matches,

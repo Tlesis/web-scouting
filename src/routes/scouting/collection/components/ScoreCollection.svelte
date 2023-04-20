@@ -12,14 +12,14 @@
     // TODO: make cleaner
     const submitData = async () => {
         const compiledData = {
-            autoHigh: $scoutingData.auto[0].activated.filter((node) => node === true).length,
-            autoMid: $scoutingData.auto[1].activated.filter((node) => node === true).length,
-            autoLow: $scoutingData.auto[2].activated.filter((node) => node === true).length,
+            autoHigh: $scoutingData.auto[0].activated.filter((node) => node).length,
+            autoMid: $scoutingData.auto[1].activated.filter((node) => node).length,
+            autoLow: $scoutingData.auto[2].activated.filter((node) => node).length,
             autoCharge: $scoutingData.autoCharge,
             autoMobility: $scoutingData.autoMobility,
-            teleHigh: $scoutingData.teleop[0].activated.filter((node) => node === true).length,
-            teleMid: $scoutingData.teleop[1].activated.filter((node) => node === true).length,
-            teleLow: $scoutingData.teleop[2].activated.filter((node) => node === true).length,
+            teleHigh: $scoutingData.teleop[0].activated.filter((node) => node).length,
+            teleMid: $scoutingData.teleop[1].activated.filter((node) => node).length,
+            teleLow: $scoutingData.teleop[2].activated.filter((node) => node).length,
             endCharge: $scoutingData.endgame,
             playDirty: $scoutingData.playDirty,
             win: $scoutingData.win,
