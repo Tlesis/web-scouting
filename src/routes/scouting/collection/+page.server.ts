@@ -15,7 +15,6 @@ export const load = (async ({ url, locals: { supabase } }) => {
         if (error)
             throw fail(500, { message: error.message });
         if (data.filter((data) => (data.matchid === matchid && data.teamid === teamid)).length !== 0) {
-            alert("Hi");
             throw redirect(303, "/scouting");
         }
     }

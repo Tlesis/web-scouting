@@ -24,7 +24,7 @@
             playDirty: $scoutingData.playDirty,
             win: $scoutingData.win,
             notes: $scoutingData.notes
-        }
+        };
         const { error } = await supabase.from("scouting-data").update(compiledData).eq("id", $scoutingData.id);
 
         if (error) {

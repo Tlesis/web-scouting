@@ -5,8 +5,8 @@
         { color: "bg-inactive",   level: ChargeStationLevel.NotAttempted },
         { color: "bg-active",     level: ChargeStationLevel.failed },
         { color: "bg-yellow-600", level: ChargeStationLevel.docked },
-        { color: "bg-green-700",  level: ChargeStationLevel.balanced },
-    ]
+        { color: "bg-green-700",  level: ChargeStationLevel.balanced }
+    ];
 
     let buttonColor: string;
 

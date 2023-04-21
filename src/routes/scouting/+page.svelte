@@ -1,25 +1,28 @@
 <script lang="ts">
     import { AllianceColor } from "$lib/types";
-    import type { PageData } from "./$types";
+    import type { ActionData, PageData } from "./$types";
+
+    export let form: ActionData;
 
     export let data: PageData;
+    $: ({ matches } = data);
 
     let matchid: string,
         teamid: string,
         teamcolor: AllianceColor | undefined;
 
-    $: TBAteams = data.matches.find((match) => match.matchNumber === +matchid);
-    $: databaseTeams = data.database.data?.filter((data) => data.matchid === +matchid);
-
-    $: allowedRedTeams = TBAteams?.red.filter((team) => !databaseTeams?.find((d) => +team === d.teamid));
-    $: allowedBlueTeams = TBAteams?.blue.filter((team) => !databaseTeams?.find((d) => +team === d.teamid));
-
-    $: teamcolor = allowedRedTeams?.includes(teamid) ? AllianceColor.red : allowedBlueTeams?.includes(teamid) ? AllianceColor.blue : undefined;
+    $: teams = matches.find((match) => match.matchNumber === parseInt(matchid));
+    $: teamcolor = teams?.red?.includes(parseInt(teamid)) ? AllianceColor.red : teams?.blue?.includes(parseInt(teamid)) ? AllianceColor.blue : undefined;
 </script>
 
 <a href="/" class="inline-block portrait:w-1/4 landscape:w-1/6 text-w text-center text-xl shadow-sm rounded bg-active py-2 m-2">Back</a>
 
-<form autocomplete="off" class="m-auto max-w-screen-md" action="./scouting/collection" method="get">
+<!-- TODO: Impliment actual fail messages / popup -->
+{#if form}
+    <span>{form}</span>
+{/if}
+
+<form autocomplete="off" class="m-auto max-w-screen-md" action="post">
     <div class="mt-2">
         <label for="matchid" class="block text-w text-3xl font-bold text-center mb-2">Match</label>
         <input type="tel" name="matchid" bind:value={matchid} placeholder="Qualification Match ID"
@@ -34,8 +37,8 @@
     <div class="mt-2 flex portrait:flex-col landscape:justify-center portrait:h-10 landscape:h-8">
         <strong class="text-center text-w">Teams Available to Scout:</strong>
         <div class="landscape:flex-row justify-center">
-            <p class="text-center font-bold text-red-600">&nbsp;{allowedRedTeams?.join(" ") ?? ""}</p>
-            <p class="text-center font-bold text-blue-400">&nbsp;{allowedBlueTeams?.join(" ") ?? ""}</p>
+            <p class="text-center font-bold text-red-600">&nbsp;{teams?.red?.join(" ") ?? ""}</p>
+            <p class="text-center font-bold text-blue-400">&nbsp;{teams?.blue?.join(" ") ?? ""}</p>
         </div>
     </div>
 
