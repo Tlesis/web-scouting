@@ -23,13 +23,13 @@
     <div class="mt-2">
         <label for="matchid" class="block text-w text-3xl font-bold text-center mb-2">Match</label>
         <input type="tel" name="matchid" bind:value={matchid} placeholder="Qualification Match ID"
-            class="block m-auto portrait:w-5/6 landscape:w-2/3 text-xl text-center border border-slate-400 rounded-lg shadow-sm">
+            class="block m-auto portrait:w-5/6 landscape:w-2/3 text-xl text-center rounded-lg shadow-sm">
     </div>
 
     <div class="mt-2">
         <label for="teamid" class="block text-w text-3xl font-bold text-center mb-2">Team</label>
         <input type="tel" name="teamid" bind:value={teamid} placeholder="Team Number"
-            class="block m-auto portrait:w-5/6 landscape:w-2/3 text-xl text-center border border-slate-400 rounded-lg shadow-sm">
+            class="block m-auto portrait:w-5/6 landscape:w-2/3 text-xl text-center rounded-lg shadow-sm">
     </div>
     <div class="mt-2 flex portrait:flex-col landscape:justify-center portrait:h-10 landscape:h-8">
         <strong class="text-center text-w">Teams Available to Scout:</strong>
