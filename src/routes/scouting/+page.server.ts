@@ -27,8 +27,13 @@ export const load = (async ({ locals: { supabase } }) => {
         results.filter((value) => value.comp_level === "qm")
             .map((match) => ({
                 matchNumber: match.match_number,
-                red: match.alliances.red.team_keys.map((team) => parseInt(team.slice(3))).filter((team) => existing.some((row) => row.matchid !== match.match_number || row.teamid !== team)),
-                blue: match.alliances.blue.team_keys.map((team) => parseInt(team.slice(3))).filter((team) => existing.some((row) => row.matchid !== match.match_number || row.teamid !== team))
+                red: match.alliances.red.team_keys
+                    .map((team) => Number(team.slice(3)))
+                    .filter((team) => !existing.some((row) => row.matchid === match.match_number && row.teamid === team)),
+
+                blue: match.alliances.blue.team_keys
+                    .map((team) => Number(team.slice(3)))
+                    .filter((team) => !existing.some((row) => row.matchid === match.match_number && row.teamid === team))
             }));
 
     return {
@@ -45,17 +50,27 @@ export const actions = {
         const teamid = form.get("teamid") as string;
         const teamcolor = form.get("teamcolor") as string;
 
-        // TODO: Impliment actual warning/error messages
-        if (!matchid || !teamid)
-            return "fail";
+        if (!matchid && !teamid) {
+            return fail(500, { error: "need to provide match number and team number" });
+        } else if (!matchid) {
+            return fail(500, { error: "need to provide match number" });
+        } else if (!teamid) {
+            return fail(500, { error: "need to provide team number" });
+        }
+
+        if (!teamcolor) {
+            return fail(500, { error: "that team isn't available this match" });
+        }
 
         const { data: existing, error } = await supabase.from("scouting-data").select("matchid, teamid");
 
         if (error)
-            return error.message;
+            return fail(500, { error: error.message });
 
-        if (existing.some((row) => row.matchid === parseInt(matchid) && row.teamid === parseInt(teamid)))
-            return "already being scouted";
+        if (existing.some((row) => row.matchid === Number(matchid)
+            && row.teamid === Number(teamid))) {
+            return fail(500, { error: "that team is already being scouted" });
+        }
 
         throw redirect(303, "/scouting/collection?" + new URLSearchParams({ matchid, teamid, teamcolor }));
     }

@@ -11,18 +11,20 @@
         teamid: string,
         teamcolor: AllianceColor | undefined;
 
-    $: teams = matches.find((match) => match.matchNumber === parseInt(matchid));
-    $: teamcolor = teams?.red?.includes(parseInt(teamid)) ? AllianceColor.red : teams?.blue?.includes(parseInt(teamid)) ? AllianceColor.blue : undefined;
+    $: teams = matches.find((match) => match.matchNumber === Number(matchid));
+    $: teamcolor =
+        teams?.red?.includes(Number(teamid)) ? AllianceColor.red
+        : teams?.blue?.includes(Number(teamid)) ? AllianceColor.blue
+        : undefined;
 </script>
 
 <a href="/" class="inline-block portrait:w-1/4 landscape:w-1/6 text-w text-center text-xl shadow-sm rounded bg-active py-2 m-2">Back</a>
 
-<!-- TODO: Impliment actual fail messages / popup -->
-{#if form}
-    <span>{form}</span>
+{#if form?.error}
+    <span class="flex justify-center text-center text-red-700 text-2xl font-bold capitalize">{form.error}</span>
 {/if}
 
-<form autocomplete="off" class="m-auto max-w-screen-md" action="post">
+<form autocomplete="off" class="m-auto max-w-screen-md" method="post">
     <div class="mt-2">
         <label for="matchid" class="block text-w text-3xl font-bold text-center mb-2">Match</label>
         <input type="tel" name="matchid" bind:value={matchid} placeholder="Qualification Match ID"
