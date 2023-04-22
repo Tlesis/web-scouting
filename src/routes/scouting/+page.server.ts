@@ -67,8 +67,7 @@ export const actions = {
         if (error)
             return fail(500, { error: error.message });
 
-        if (existing.some((row) => row.matchid === Number(matchid)
-            && row.teamid === Number(teamid))) {
+        if (existing.some((row) => row.matchid === Number(matchid) && row.teamid === Number(teamid))) {
             return fail(500, { error: "that team is already being scouted" });
         }
 
