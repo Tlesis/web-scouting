@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { scoutingData } from "$lib/ScoutingDataStore";
     import EndgameScore from "./EndgameScore.svelte";
     import Qualitative from "./Qualitative.svelte";
 </script>

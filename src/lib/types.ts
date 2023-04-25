@@ -20,7 +20,7 @@ export interface Alliances {
 }
 
 export interface Alliance {
-    dq_team_keys:        any[];
+    dq_team_keys:        unknown[];
     score:               number;
     surrogate_team_keys: string[];
     team_keys:           string[];
