@@ -5,6 +5,7 @@
     import ScoreCollection from "./components/ScoreCollection.svelte";
 
     export let data: PageData;
+    // TODO: why is this erroring for me. it runs fine from what i can tell
     $scoutingData.id = data.id;
     $scoutingData.matchid = data.matchid;
     $scoutingData.teamid = data.teamid;

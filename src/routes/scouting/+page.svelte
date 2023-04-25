@@ -38,7 +38,7 @@
     <span class="flex justify-center m-3 text-red-700 text-center text-2xl font-bold capitalize">{form.error}</span>
 {/if}
 
-<form autocomplete="off" class="mx-10 my-8 max-w-screen-sm bg-primary rounded-lg pt-2" method="post" use:enhance>
+<form autocomplete="off" class="mx-10 my-8 max-w-screen-sm bg-primary rounded-lg py-2" method="post">
     <div class="mt-2">
         <label for="matchid" class="block text-w text-3xl font-bold text-center mb-2">Match</label>
         <input type="tel" required name="matchid" bind:value={matchid} placeholder="Qualification Match ID"
