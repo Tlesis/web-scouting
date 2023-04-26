@@ -3,7 +3,7 @@
     import Qualitative from "./Qualitative.svelte";
 </script>
 
-<div class="flex flex-row mt-2">
+<div class="flex flex-row my-2">
     <div class="w-1/2 border-r-2 border-dashed">
         <EndgameScore/>
     </div>

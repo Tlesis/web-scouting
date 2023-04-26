@@ -53,7 +53,7 @@
 {:else}
     <Endgame/>
     <div class="flex justify-center">
-        <button class="absolute bottom-5 w-5/6 text-w text-xl shadow-sm rounded bg-inactive py-3"
+        <button class="w-5/6 text-w text-xl shadow-sm rounded bg-inactive py-3"
                 on:click={submitData}>Submit</button>
     </div>
 {/if}

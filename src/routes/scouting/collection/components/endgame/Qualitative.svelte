@@ -4,7 +4,7 @@
 
 <h1 class="text-w text-2xl text-center font-bold my-4">Qualitative Data</h1>
 
-<div class="flex flex-col justify-between h-full">
+<div class="flex flex-col justify-between h-3/4">
     <div>
         <div class="flex flex-row m-4">
             <input name="playDirty"
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div class="flex justify-center h-1/3">
+    <div class="flex justify-center h-full">
         <textarea name="notes"
                 placeholder="Notes"
                 bind:value={$scoutingData.notes}
