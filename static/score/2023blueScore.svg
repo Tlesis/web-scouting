@@ -1,0 +1,66 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 229 53" width="229" height="53">
+	<title>f41509ca988e4d78cf757d2e7c43a96db494a39b_2_690x334</title>
+	<style>
+		.s0 { fill: #0068d6 }
+		.s1 { fill: #404040 }
+		.s2 { fill: #999999 }
+		.s3 { fill: #666666 }
+		.s4 { fill: #cecece }
+		.s5 { fill: #000000 }
+	</style>
+	<g id="blue-zone">
+		<path class="s0" d="m0 51h229v2h-229z"/>
+		<path class="s0" d="m0 0h35v34h-35z"/>
+		<path class="s0" d="m54 0h26v34h-26z"/>
+		<path class="s0" d="m149 0h26v34h-26z"/>
+		<path class="s0" d="m194 0h35v34h-35z"/>
+	</g>
+	<g id="coop-zone">
+		<path class="s1" d="m80 0h25v34h-25z"/>
+		<path class="s1" d="m124 0h25v34h-25z"/>
+	</g>
+	<g id="shelfs">
+		<path class="s2" d="m35 18h19v18h-19z"/>
+		<path class="s2" d="m39 36h11v1h-11z"/>
+		<path class="s2" d="m105 18h19v18h-19z"/>
+		<path class="s2" d="m109 36h11v1h-11z"/>
+		<path class="s2" d="m175 18h19v18h-19z"/>
+		<path class="s2" d="m179 36h11v1h-11z"/>
+		<path class="s3" d="m35 0h19v18h-19z"/>
+		<path class="s3" d="m105 0h19v18h-19z"/>
+		<path class="s3" d="m175 0h19v18h-19z"/>
+	</g>
+	<g id="pillars">
+		<path class="s4" d="m21 10h1v16h-1z"/>
+		<path class="s0" d="m67 10h1v16h-1z"/>
+		<path class="s4" d="m91 10h1v16h-1z"/>
+		<path class="s4" d="m137 10h1v16h-1z"/>
+		<path class="s4" d="m161 10h1v16h-1z"/>
+		<path class="s4" d="m207 10h1v16h-1z"/>
+		<path class="s5" d="m20 8h2v2h-2z"/>
+		<path class="s4" d="m67 10h1v16h-1z"/>
+		<path class="s5" d="m20 26h2v2h-2z"/>
+		<path class="s5" d="m67 8h2v2h-2z"/>
+		<path class="s5" d="m67 26h2v2h-2z"/>
+		<path class="s5" d="m90 8h2v2h-2z"/>
+		<path class="s5" d="m90 26h2v2h-2z"/>
+		<path class="s5" d="m137 8h2v2h-2z"/>
+		<path class="s5" d="m137 26h2v2h-2z"/>
+		<path class="s5" d="m160 8h2v2h-2z"/>
+		<path class="s5" d="m160 26h2v2h-2z"/>
+		<path class="s5" d="m207 8h2v2h-2z"/>
+		<path class="s5" d="m207 26h2v2h-2z"/>
+	</g>
+	<g id="posts">
+		<path class="s4" d="m0 28h4v23h-4z"/>
+		<path class="s4" d="m31 28h4v23h-4z"/>
+		<path class="s4" d="m54 28h4v23h-4z"/>
+		<path class="s4" d="m77 28h5v23h-5z"/>
+		<path class="s4" d="m101 28h4v23h-4z"/>
+		<path class="s4" d="m124 28h4v23h-4z"/>
+		<path class="s4" d="m147 28h5v23h-5z"/>
+		<path class="s4" d="m171 28h4v23h-4z"/>
+		<path class="s4" d="m194 28h4v23h-4z"/>
+		<path class="s4" d="m225 28h4v23h-4z"/>
+	</g>
+</svg>

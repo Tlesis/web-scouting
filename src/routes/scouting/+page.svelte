@@ -1,67 +1,64 @@
 <script lang="ts">
-    import Forms from "./components/Forms.svelte";
-    import Scoring from "./components/Scoring.svelte";
-    import Endgame from "./components/Endgame.svelte";
-    import QualitativeData from "./components/QualitativeData.svelte";
-
-    import { exportData, pageLocation, scoutingData } from "$stores/DataStore";
-    import type { PageData } from "./$types";
-
+    import { enhance } from "$app/forms";
+    import type { ActionData, PageData } from "./$types";
+    export let form: ActionData;
     export let data: PageData;
 
-    var notes: string;
-    const submitData = () => {
-        if (confirm("Are you sure you want to submit?")) {
-            scoutingData.update((data) => {
-                data.notes = notes;
-                return data;
-            });
-            //exportData();
-        }
-    }
+    const { matches, supabase } = data;
+    let existing = data.existing;
+
+    const handleUpdate = async () => {
+        const { data, error } = await supabase.from("scouting-data").select("matchid, teamid");
+        if (error) return;
+        existing = data;
+    };
+
+    supabase
+        .channel("any")
+        .on("postgres_changes", { event: "INSERT", schema: "public", table: "scouting-data" }, handleUpdate)
+        .on("postgres_changes", { event: "DELETE", schema: "public", table: "scouting-data" }, handleUpdate)
+        .subscribe();
+
+    let matchid: string;
+
+    $: match = ((match) => {
+        if (!match) return { red: [], blue: [] };
+        const rows = existing.filter((row) => row.matchid === match.matchNumber);
+        if (rows.length === 0) return match;
+        return {
+            red: match.red.filter((team) => !rows.some((row) => row.teamid === team)),
+            blue: match.blue.filter((team) => !rows.some((row) => row.teamid === team))
+        };
+    })(matches.find((match) => match.matchNumber === Number(matchid)));
 </script>
 
-{#if $pageLocation === "match"}
-    <button type="button" class="w-1/4 ml-2 text-w shadow-sm rounded bg-rose-800 py-2 text-xl mt-2"
-    on:click={() => { location.href='/' }}>Back</button>
-    <Forms/>
+<a href="/" class="inline-block portrait:w-1/4 landscape:w-1/6 text-w text-center text-xl shadow-sm rounded bg-active py-2 m-2">Back</a>
+
+{#if form?.error}
+    <span class="flex justify-center m-3 text-red-700 text-center text-2xl font-bold capitalize">{form.error}</span>
 {/if}
 
-{#if $pageLocation === "auto"}
-    <Scoring mode="auto"/>
-    <div class="flex justify-evenly m-2">
-        <button type="button" on:click={() => scoutingData.update((data) => { data.autoTaxi = !data.autoTaxi; return data })}
-            class={`w-2/6 text-w shadow-sm rounded ${($scoutingData.autoTaxi) ?
-                'bg-active' : 'bg-inactive'} py-3 px-8 text-2xl`}>
-            Taxi
-        </button>
-
-        <button type="button" on:click={() => scoutingData.update((data) => { data.autoHeld = !data.autoHeld; return data })}
-            class={`w-2/6 text-w shadow-sm rounded ${($scoutingData.autoHeld) ?
-                'bg-active' : 'bg-inactive'} py-3 px-8 text-2xl`}>
-            Held
-        </button>
+<form autocomplete="off" class="mx-10 my-8 max-w-screen-sm bg-primary rounded-lg py-2" method="post" use:enhance>
+    <div class="mt-2">
+        <label for="matchid" class="block text-w text-3xl font-bold text-center mb-2">Match</label>
+        <input type="tel" required name="matchid" bind:value={matchid} placeholder="Qualification Match ID"
+            class="block m-auto portrait:w-5/6 landscape:w-2/3 text-xl text-center rounded-lg shadow-sm">
     </div>
-{/if}
 
-{#if $pageLocation === "tele"}
-    <Scoring mode="tele"/>
-    <p class="text-w text-center font-semibold text-lg">Estimated Score:
-        {(4 * $scoutingData.autoHigh) + (2 * $scoutingData.autoLow) + ($scoutingData.autoTaxi ? 2 : 0) +
-         (2 * $scoutingData.teleHigh) + $scoutingData.teleLow}</p>
-{/if}
-
-{#if $pageLocation === "end"}
-    <div class="flex flex-row">
-        <div class="w-1/2 flex flex-col">
-            <Endgame/>
-            <button type="submit" class="w-3/5 text-w text-center shadow-sm rounded bg-active py-3 text-2xl my-2 mx-auto"
-                on:click={submitData}>Submit</button>
-        </div>
-        <div class="w-1/2 h-[85vh] flex flex-col justify-between border-l border-dashed">
-            <QualitativeData/>
-            <textarea name="teamid" placeholder="Notes" bind:value={notes}
-                      class="appearance-none shadow-sm border border-slate-400 focus:border-gray-600 rounded-lg text-lg mx-[5vw] h-[30%]"></textarea>
+    <div class="mt-2">
+        <label for="teamid" class="block text-w text-3xl font-bold text-center mb-2">Team</label>
+        <input type="tel" name="teamid" placeholder="Team Number"
+            class="block m-auto portrait:w-5/6 landscape:w-2/3 text-xl text-center rounded-lg shadow-sm">
+    </div>
+    <div class="mt-2 flex portrait:flex-col landscape:justify-center portrait:h-10 landscape:h-8">
+        <strong class="text-center text-w">&nbsp;Teams Available to Scout:&nbsp;</strong>
+        <div class="landscape:flex-row justify-center">
+            <p class="text-center font-bold text-red-600">{match.red.join(" ")}</p>
+            <p class="text-center font-bold text-blue-400">{match.blue.join(" ")}</p>
         </div>
     </div>
-{/if}
+
+    <div class="landscape:mt-6 portrait:mt-12">
+        <button type="submit" class="block mx-auto landscape:w-2/6 portrait:w-1/2 text-center text-w text-2xl shadow-sm rounded bg-active py-4 px-8">Start</button>
+    </div>
+</form>
