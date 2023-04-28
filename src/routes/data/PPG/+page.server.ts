@@ -1,7 +1,6 @@
 import { fail } from "@sveltejs/kit";
 import { TBA_API_KEY } from "$env/static/private";
 import type { PageServerLoad } from "./$types";
-import type { TeamStatus } from "$lib/types";
 
 interface TeamSimple {
     city: string;
@@ -35,7 +34,7 @@ export const load = (async ({ locals: { supabase } }) => {
     if (!statusRes.ok)
         throw fail(500);
 
-    const status = await statusRes.json() as TeamStatus[];
+    const status = await statusRes.json();
 
     const { data: existing, error } = await supabase.from("scouting-data").select();
 

@@ -3,6 +3,7 @@
     import { onDestroy } from "svelte";
     import type { PageData } from "./$types";
     import { ppgStore, type PPG } from "./PPGStore";
+    import PPGRow from "./PPGRow.svelte";
 
     export let data: PageData;
     const existing = data.existing;
@@ -41,6 +42,7 @@
         })();
 
         const i = $ppgStore.findIndex((ppg) => ppg.teamid === match.teamid);
+        const record = data.teams.status["frc" + match.teamid].qual.ranking.record ?? { wins: "?", losses: "?", ties: "?" };
         if (i === -1) {
             ppgStore.update((ppg) => {
                 return [...ppg, {
@@ -49,7 +51,7 @@
                         overallMeanPPG: (auto + teleop + endgame),
                         // ppgTotal: 0,
                         ppgMean: { auto, teleop, endgame },
-                        record: "<b class=\"text-green-700\">" + 0 + "</b>-<b class=\"text-red-700\">" + 0 + "</b>-<b>" + 0 + "</b>"
+                        record: "<b class=\"text-green-600\">" + record.wins + "</b>-<b class=\"text-red-600\">" + record.losses + "</b>-<b>" + record.ties + "</b>"
                     }
                 ]
             });
@@ -66,13 +68,6 @@
     });
 
     $ppgStore.sort((a, b) => b.overallMeanPPG - a.overallMeanPPG);
-
-    var readOnlyPPG: PPG[];
-    const unsubscribe = ppgStore.subscribe((ppg) => readOnlyPPG = ppg);
-
-    onDestroy(() => {
-        unsubscribe();
-    });
 </script>
 
 <div class="flex justify-center">
@@ -90,17 +85,8 @@
             </tr>
         </thead>
         <tbody>
-            {#each readOnlyPPG as ppg, index}
-                <tr>
-                    <td class="border">{ppg.teamid}</td>
-                    <td class="border break-words">{ppg.teamName}</td>
-                    <td class="border">{index + 1}</td>
-                    <td class="border">{ppg.overallMeanPPG.toFixed(1)}</td>
-                    <td class="border">{ppg.ppgMean?.auto?.toFixed(1) ?? "-"}</td>
-                    <td class="border">{ppg.ppgMean?.teleop?.toFixed(1) ?? "-"}</td>
-                    <td class="border">{ppg.ppgMean?.endgame?.toFixed(1) ?? "-"}</td>
-                    <td class="border">{@html ppg.record}</td>
-                </tr>
+            {#each $ppgStore as ppg, index}
+                <PPGRow ppg={ppg} index={index}/>
             {/each}
         </tbody>
     </table>
