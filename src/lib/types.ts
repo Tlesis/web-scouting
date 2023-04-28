@@ -88,6 +88,82 @@ export interface Video {
     type: string;
 }
 
+export interface TeamStatus {
+    alliance:          Alliance | null;
+    allianceStatusStr: string | null;
+    lastMatchKey:      string | null;
+    nextMatchKey:      string| null;
+    overallStatusStr:  string | null;
+    playoff:           Playoff | null;
+    playoffStatusStr:  string | null;
+    qual:              Qual;
+}
+
+export interface Alliance {
+    backup: null;
+    name:   string;
+    number: number;
+    pick:   number;
+}
+
+export interface Playoff {
+    currentLevelRecord: Record;
+    level:              Level;
+    playoffAverage:     null;
+    record:             Record;
+    status:             PlayoffStatus;
+}
+
+export interface Record {
+    losses: number;
+    ties:   number;
+    wins:   number;
+}
+
+export enum Level {
+    F = "f",
+    Sf = "sf",
+}
+
+export enum PlayoffStatus {
+    Eliminated = "eliminated",
+    Playing = "playing",
+    Won = "won",
+}
+
+export interface Qual {
+    numTeams:      number;
+    ranking:       Ranking;
+    sortOrderInfo: SortOrderInfo[];
+    status:        QualStatus;
+}
+
+export interface Ranking {
+    dq:            number;
+    matchesPlayed: number;
+    qualAverage:   null;
+    rank:          number;
+    record:        Record;
+    sortOrders:    number[];
+    teamKey:       string;
+}
+
+export interface SortOrderInfo {
+    name:      Name;
+    precision: number;
+}
+
+export enum Name {
+    AvgAuto = "Avg Auto",
+    AvgChargeStation = "Avg Charge Station",
+    AvgMatch = "Avg Match",
+    RankingScore = "Ranking Score",
+}
+
+export enum QualStatus {
+    Completed = "completed",
+}
+
 export enum AllianceColor {
     red = 1,
     blue
