@@ -7,6 +7,7 @@ export interface PPG {
     // ppgTotal: PPGData;
     ppgMean: PPGData;
     record: string;
+    matchesPlayed: number;
 }
 
 interface PPGData {

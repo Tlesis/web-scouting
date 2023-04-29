@@ -1,6 +1,5 @@
 <script lang="ts">
     import { ChargeStationLevel } from "$lib/ScoutingDataStore";
-    import { onDestroy } from "svelte";
     import type { PageData } from "./$types";
     import { ppgStore, type PPG } from "./PPGStore";
     import PPGRow from "./PPGRow.svelte";
@@ -51,7 +50,8 @@
                         overallMeanPPG: (auto + teleop + endgame),
                         // ppgTotal: 0,
                         ppgMean: { auto, teleop, endgame },
-                        record: "<b class=\"text-green-600\">" + record.wins + "</b>-<b class=\"text-red-600\">" + record.losses + "</b>-<b>" + record.ties + "</b>"
+                        record: "<b class=\"text-green-600\">" + record.wins + "</b>-<b class=\"text-red-600\">" + record.losses + "</b>-<b>" + record.ties + "</b>",
+                        matchesPlayed: 1
                     }
                 ]
             });
@@ -59,14 +59,25 @@
             $ppgStore[i] = {
                     teamid: match.teamid,
                     teamName: $ppgStore[i].teamName,
-                    overallMeanPPG: (auto + teleop + endgame),
+                    overallMeanPPG: $ppgStore[i].overallMeanPPG + (auto + teleop + endgame),
                     // ppgTotal: 0,
-                    ppgMean: { auto, teleop, endgame },
-                    record: $ppgStore[i].record
+                    ppgMean: {
+                        auto: $ppgStore[i].ppgMean.auto + auto,
+                        teleop: $ppgStore[i].ppgMean.teleop + teleop,
+                        endgame: $ppgStore[i].ppgMean.endgame + endgame
+                    },
+                    record: $ppgStore[i].record,
+                    matchesPlayed: $ppgStore[i].matchesPlayed + 1
                 };
         }
     });
 
+    $ppgStore.forEach((ppg, i) => {
+        $ppgStore[i].overallMeanPPG /= ppg.matchesPlayed;
+        $ppgStore[i].ppgMean.auto /= ppg.matchesPlayed;
+        $ppgStore[i].ppgMean.teleop /= ppg.matchesPlayed;
+        $ppgStore[i].ppgMean.endgame /= ppg.matchesPlayed;
+    });
     $ppgStore.sort((a, b) => b.overallMeanPPG - a.overallMeanPPG);
 </script>
 
@@ -77,6 +88,7 @@
                 <th class="w-1/12"><p class="w-11/12 bg-inactive rounded my-2 mx-auto">Team Number</p></th>
                 <th class="w-1/12"><p class="w-11/12 bg-inactive rounded my-2 mx-auto">Team Name</p></th>
                 <th class="w-1/12"><p class="w-11/12 bg-inactive rounded my-2 mx-auto">PPG Rank</p></th>
+                <th class="w-1/12"><p class="w-11/12 bg-inactive rounded my-2 mx-auto">Percentile</p></th>
                 <th class="w-1/12"><p class="w-11/12 bg-inactive rounded my-2 mx-auto">PPG</p></th>
                 <th class="w-1/12"><p class="w-11/12 bg-inactive rounded my-2 mx-auto">Auto PPG</p></th>
                 <th class="w-1/12"><p class="w-11/12 bg-inactive rounded my-2 mx-auto">Teleop PPG</p></th>
@@ -85,8 +97,8 @@
             </tr>
         </thead>
         <tbody>
-            {#each $ppgStore as ppg, index}
-                <PPGRow ppg={ppg} index={index}/>
+            {#each $ppgStore as p, index}
+                <PPGRow index={index}/>
             {/each}
         </tbody>
     </table>
