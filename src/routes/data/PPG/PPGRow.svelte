@@ -5,10 +5,7 @@
 
     const ppg = $ppgStore[index];
 
-    const percentileColor = (i: number) => {
-        const valuesBelowScore = ($ppgStore.length - 1) - i;
-        const percentile = Math.round((valuesBelowScore / $ppgStore.length) * 100);
-
+    const percentileColor = (percentile: number) => {
         var ret = "";
         if (percentile >= 95)
             ret = "bg-yellow-500 text-yellow-950 font-bold ";
@@ -23,10 +20,27 @@
 
     const round = (num: number) => Math.round(num * 10) / 10;
 
+    function calculatePercentileRanks(arr: number[]): {[key: number]: number} {
+        const sortedArr = [...arr].sort((a, b) => a - b);
+        const result: {[key: number]: number} = {};
+
+        for (let i = 0; i < arr.length; i++) {
+            const index = sortedArr.indexOf(arr[i]);
+            const percentile = (index / (arr.length - 1)) * 100;
+            const roundedPercentile = Math.round(percentile * 100) / 100;
+
+            result[arr[i]] = roundedPercentile;
+        }
+
+        return result;
+    }
+
     const ppgArray = $ppgStore;
-    const autoIndex = ppgArray.slice().sort((a, b) => b.ppgMean.auto - a.ppgMean.auto).findIndex((team) => team.teamid === ppg.teamid);
-    const teleopIndex = ppgArray.slice().sort((a, b) => b.ppgMean.teleop - a.ppgMean.teleop).findIndex((team) => team.teamid === ppg.teamid);
-    const endgameIndex = ppgArray.slice().sort((a, b) => b.ppgMean.endgame - a.ppgMean.endgame).findIndex((team) => team.teamid === ppg.teamid);
+    const overall = calculatePercentileRanks(ppgArray.map((ppg) => ppg.overallMeanPPG));
+    const auto = calculatePercentileRanks(ppgArray.map((ppg) => ppg.ppgMean.auto));
+    const teleop = calculatePercentileRanks(ppgArray.map((ppg) => ppg.ppgMean.teleop));
+    const endgame = calculatePercentileRanks(ppgArray.map((ppg) => ppg.ppgMean.endgame));
+    console.log(endgame);
 </script>
 
 <tr>
@@ -38,9 +52,9 @@
     </td>
     <td class="border">{index + 1}</td>
     <td class="border">{Math.round(((($ppgStore.length - 1) - index) / $ppgStore.length) * 100)}</td>
-    <td class="border"><span class={percentileColor(index)}>{round(ppg.overallMeanPPG)}</span></td>
-    <td class="border"><span class={percentileColor(autoIndex)}>{round(ppg.ppgMean?.auto) ?? "-"}</span></td>
-    <td class="border"><span class={percentileColor(teleopIndex)}>{round(ppg.ppgMean?.teleop) ?? "-"}</span></td>
-    <td class="border"><span class={percentileColor(endgameIndex)}>{round(ppg.ppgMean?.endgame) ?? "-"}</span></td>
+    <td class="border"><span class={percentileColor(overall[ppg.overallMeanPPG])}>{round(ppg.overallMeanPPG)}</span></td>
+    <td class="border"><span class={percentileColor(auto[ppg.ppgMean.auto])}>{round(ppg.ppgMean.auto)}</span></td>
+    <td class="border"><span class={percentileColor(teleop[ppg.ppgMean.teleop])}>{round(ppg.ppgMean.teleop)}</span></td>
+    <td class="border"><span class={percentileColor(endgame[ppg.ppgMean.endgame])}>{round(ppg.ppgMean.endgame)}</span></td>
     <td class="border font-bold">{@html ppg.record}</td>
 </tr>

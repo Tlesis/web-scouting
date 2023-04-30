@@ -22,6 +22,8 @@
                     return 12;
                 if (match.autoCharge === ChargeStationLevel.docked)
                     return 10;
+                if (match.autoCharge === ChargeStationLevel.failed)
+                    return -2.5;
                 return 0;
             })()
         );
@@ -37,6 +39,8 @@
                 return 10;
             if (match.endCharge === ChargeStationLevel.docked)
                 return 8;
+            if (match.endCharge === ChargeStationLevel.failed)
+                return -2;
             return 0;
         })();
 

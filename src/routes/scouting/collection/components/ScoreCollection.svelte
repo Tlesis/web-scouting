@@ -30,7 +30,7 @@
         if (error) {
             console.error(error.message + "\n\t" + error.details);
         } else {
-            location.href = "/";
+            location.href = "/scouting";
         }
     };
 
