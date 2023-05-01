@@ -11,14 +11,8 @@
         if (a.pointTotal === b.pointTotal) {
             return b.totalTeleop - a.totalTeleop;
         } else {
-            return b.pointTotal - a.pointTotal;
+            return (b.pointTotal / b.matchesPlayed) - (a.pointTotal / a.matchesPlayed);
         }
-    });
-
-    // find mean for point total
-    // we want to sort based off non-mean value
-    $ppgStore.forEach((ppg, i) => {
-        $ppgStore[i].pointTotal /= ppg.matchesPlayed;
     });
 </script>
 
