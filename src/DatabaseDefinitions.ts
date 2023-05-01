@@ -9,6 +9,41 @@ export type Json =
 export interface Database {
     public: {
         Tables: {
+            "ppg-data": {
+                Row: {
+                    matchesPlayed: number;
+                    meamTeleop: number;
+                    meanAuto: number;
+                    meanEndgame: number;
+                    pointTotal: number;
+                    teamid: number;
+                    totalAuto: number;
+                    totalEndgame: number;
+                    totalTeleop: number;
+                };
+                Insert: {
+                    matchesPlayed?: number;
+                    meamTeleop?: number;
+                    meanAuto?: number;
+                    meanEndgame?: number;
+                    pointTotal?: number;
+                    teamid: number;
+                    totalAuto?: number;
+                    totalEndgame?: number;
+                    totalTeleop?: number;
+                };
+                Update: {
+                    matchesPlayed?: number;
+                    meamTeleop?: number;
+                    meanAuto?: number;
+                    meanEndgame?: number;
+                    pointTotal?: number;
+                    teamid?: number;
+                    totalAuto?: number;
+                    totalEndgame?: number;
+                    totalTeleop?: number;
+                };
+            };
             "scouting-data": {
                 Row: {
                     autoCharge: string | null;

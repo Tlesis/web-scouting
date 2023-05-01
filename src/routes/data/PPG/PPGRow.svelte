@@ -1,7 +1,9 @@
 <script lang="ts">
-    import { ppgStore } from "./PPGStore";
+    import { ppgStore } from "../../../lib/PPGStore";
+    import type { TeamSimple } from "./+page.server";
 
     export let index: number;
+    export let teams: { simple: TeamSimple[], status: any }
 
     const ppg = $ppgStore[index];
 
@@ -36,11 +38,13 @@
     }
 
     const ppgArray = $ppgStore;
-    const overall = calculatePercentileRanks(ppgArray.map((ppg) => ppg.overallMeanPPG));
-    const auto = calculatePercentileRanks(ppgArray.map((ppg) => ppg.ppgMean.auto));
-    const teleop = calculatePercentileRanks(ppgArray.map((ppg) => ppg.ppgMean.teleop));
-    const endgame = calculatePercentileRanks(ppgArray.map((ppg) => ppg.ppgMean.endgame));
-    console.log(endgame);
+    const overall = calculatePercentileRanks(ppgArray.map((ppg) => ppg.pointTotal));
+    const auto = calculatePercentileRanks(ppgArray.map((ppg) => ppg.meanAuto));
+    const teleop = calculatePercentileRanks(ppgArray.map((ppg) => ppg.meamTeleop));
+    const endgame = calculatePercentileRanks(ppgArray.map((ppg) => ppg.meanEndgame));
+
+    const recordInfo = teams.status["frc" + ppg.teamid].qual.ranking.record ?? { wins: "?", losses: "?", ties: "?" };
+    const record = "<b class=\"text-green-600\">" + recordInfo.wins + "</b>-<b class=\"text-red-600\">" + recordInfo.losses + "</b>-<b>" + recordInfo.ties + "</b>";
 </script>
 
 <tr>
@@ -48,13 +52,13 @@
     <td class="border break-words">
         <!-- TODO: go to individual team analysis page at some point -->
         <a href={"https://thebluealliance.com/team/" + ppg.teamid} target="_blank"
-        class="underline text-blue-400">{ppg.teamName}</a>
+        class="underline text-blue-400">{teams.simple.find((team) => team.team_number === ppg.teamid)?.nickname}</a>
     </td>
     <td class="border">{index + 1}</td>
     <td class="border">{Math.round(((($ppgStore.length - 1) - index) / $ppgStore.length) * 100)}</td>
-    <td class="border"><span class={percentileColor(overall[ppg.overallMeanPPG])}>{round(ppg.overallMeanPPG)}</span></td>
-    <td class="border"><span class={percentileColor(auto[ppg.ppgMean.auto])}>{round(ppg.ppgMean.auto)}</span></td>
-    <td class="border"><span class={percentileColor(teleop[ppg.ppgMean.teleop])}>{round(ppg.ppgMean.teleop)}</span></td>
-    <td class="border"><span class={percentileColor(endgame[ppg.ppgMean.endgame])}>{round(ppg.ppgMean.endgame)}</span></td>
-    <td class="border font-bold">{@html ppg.record}</td>
+    <td class="border"><span class={percentileColor(overall[ppg.pointTotal])}>{round(ppg.pointTotal)}</span></td>
+    <td class="border"><span class={percentileColor(auto[ppg.meanAuto])}>{round(ppg.meanAuto)}</span></td>
+    <td class="border"><span class={percentileColor(teleop[ppg.meamTeleop])}>{round(ppg.meamTeleop)}</span></td>
+    <td class="border"><span class={percentileColor(endgame[ppg.meanEndgame])}>{round(ppg.meanEndgame)}</span></td>
+    <td class="border font-bold">{@html record}</td>
 </tr>

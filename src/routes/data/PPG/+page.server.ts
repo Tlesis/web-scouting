@@ -2,7 +2,7 @@ import { fail } from "@sveltejs/kit";
 import { TBA_API_KEY } from "$env/static/private";
 import type { PageServerLoad } from "./$types";
 
-interface TeamSimple {
+export interface TeamSimple {
     city: string;
     country: string;
     key: string;
@@ -36,10 +36,10 @@ export const load = (async ({ locals: { supabase } }) => {
 
     const status = await statusRes.json();
 
-    const { data: existing, error } = await supabase.from("scouting-data").select();
+    const { data: ppg, error } = await supabase.from("ppg-data").select();
 
     if (error)
         throw fail(500);
 
-    return { existing, teams: { simple, status } };
+    return { ppg, teams: { simple, status } };
 }) satisfies PageServerLoad;
