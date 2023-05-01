@@ -15,8 +15,8 @@
     };
 </script>
 
-{#each rows as row}
-    <tr>
+{#each rows as row, i}
+    <tr class={`${(i === 3 || i === 6) ? "border-t-2 border-gray-800" : ""} `}>
         <td>
             <Checkbox bgcolor={getColor(row, order[0])}
                       order={order[0]}

@@ -3,14 +3,17 @@
     import Endgame from "./endgame/Endgame.svelte";
     import { ScoutingPages } from "$lib/types";
     import AutoButtons from "./auto/AutoButtons.svelte";
-    import { scoutingData, pageLocation } from "$lib/ScoutingDataStore";
+    import { scoutingData, pageLocation, ChargeStationLevel } from "$lib/ScoutingDataStore";
     import type { SupabaseClient } from "@supabase/supabase-js";
     import type { Database } from "../../../../DatabaseDefinitions";
+    import { ppgStore } from "$lib/PPGStore";
 
     export let supabase: SupabaseClient<Database>;
 
     // TODO: make cleaner
     const submitData = async () => {
+        $pageLocation = ScoutingPages.loading;
+        // set scoring data
         const compiledData = {
             autoHigh: $scoutingData.auto[0].activated.filter((node) => node).length,
             autoMid: $scoutingData.auto[1].activated.filter((node) => node).length,
@@ -25,12 +28,65 @@
             win: $scoutingData.win,
             notes: $scoutingData.notes
         };
-        const { error } = await supabase.from("scouting-data").update(compiledData).eq("id", $scoutingData.id);
+        const { error: dataError } = await supabase.from("scouting-data").update(compiledData).eq("id", $scoutingData.id);
 
-        if (error) {
-            console.error(error.message + "\n\t" + error.details);
+        // set ppg data
+        var auto = 0,
+        teleop = 0,
+        endgame = 0;
+
+        auto += (
+            (Number(compiledData.autoHigh) * 6) +
+            (Number(compiledData.autoMid) * 4) +
+            (Number(compiledData.autoLow) * 3) +
+            (Number(compiledData.autoMobility) * 3) +
+            (() => {
+                if (compiledData.autoCharge === ChargeStationLevel.balanced)
+                    return 12;
+                if (compiledData.autoCharge === ChargeStationLevel.docked)
+                    return 10;
+                if (compiledData.autoCharge === ChargeStationLevel.failed)
+                    return -2.5;
+                return 0;
+            })()
+        );
+
+        teleop += (
+            (Number(compiledData.teleHigh) * 5) +
+            (Number(compiledData.teleMid) * 3) +
+            (Number(compiledData.teleLow) * 2)
+        );
+
+        endgame += (() => {
+            if (compiledData.endCharge === ChargeStationLevel.balanced)
+                return 10;
+            if (compiledData.endCharge === ChargeStationLevel.docked)
+                return 8;
+            if (compiledData.endCharge === ChargeStationLevel.failed)
+                return -2;
+            return 0;
+        })();
+
+        const i = $ppgStore.findIndex((team) => team.teamid === $scoutingData.teamid);
+        const ppgData = {
+            matchesPlayed: $ppgStore[i].matchesPlayed + 1,
+            meamTeleop: ($ppgStore[i].totalTeleop + teleop) / ($ppgStore[i].matchesPlayed + 1),
+            meanAuto: ($ppgStore[i].totalAuto + auto) / ($ppgStore[i].matchesPlayed + 1),
+            meanEndgame: ($ppgStore[i].totalEndgame + endgame) / ($ppgStore[i].matchesPlayed + 1),
+            pointTotal: $ppgStore[i].pointTotal + (auto + teleop + endgame),
+            teamid: $ppgStore[i].teamid,
+            totalAuto: $ppgStore[i].totalAuto + auto,
+            totalEndgame: $ppgStore[i].totalEndgame + endgame,
+            totalTeleop: $ppgStore[i].totalTeleop + teleop
+        }
+        const { error: ppgError } = await supabase.from("ppg-data").update(ppgData).eq("teamid", ppgData.teamid);
+
+        if (dataError) {
+            console.error("Scouting Data Error\n\t" + dataError.message);
+        } else if (ppgError) {
+            console.error("PPG Data Error\n\t" + ppgError.message);
         } else {
-            location.href = "/";
+            location.href = "/scouting";
         }
     };
 
@@ -53,7 +109,7 @@
 {:else}
     <Endgame/>
     <div class="flex justify-center">
-        <button class="w-5/6 text-w text-xl shadow-sm rounded bg-inactive py-3"
+        <button class="w-5/6 text-w text-xl shadow-sm rounded bg-active py-3"
                 on:click={submitData}>Submit</button>
     </div>
 {/if}
