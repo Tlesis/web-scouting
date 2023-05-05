@@ -11,9 +11,9 @@
 
     export let data: PageData;
 
-    ppgStore.set(data.ppg);
+    ppgStore.set(data.ppg ?? []);
     if ($ppgStore.findIndex((team) => team.teamid === data.teamid) === -1) {
-        (async () => await data.supabase.from("ppg-data").insert({ teamid: data.teamid }))();
+        (async () => await data.supabase.from("ppg-data").insert({ teamid: data.teamid ?? 0 }))();
         ppgStore.update((ppg) => [
             ...ppg,
             {
@@ -22,7 +22,7 @@
                 meanAuto: 0,
                 meanEndgame: 0,
                 pointTotal: 0,
-                teamid: data.teamid,
+                teamid: data.teamid ?? 0,
                 totalAuto: 0,
                 totalEndgame: 0,
                 totalTeleop: 0
@@ -30,10 +30,10 @@
         ])
     }
 
-    $scoutingData.id = data.id;
-    $scoutingData.matchid = data.matchid;
-    $scoutingData.teamid = data.teamid;
-    $scoutingData.teamcolor = data.teamcolor;
+    $scoutingData.id = data.id ?? 0;
+    $scoutingData.matchid = data.matchid ?? 0;
+    $scoutingData.teamid = data.teamid ?? 0;
+    $scoutingData.teamcolor = data.teamcolor ?? 0;
 </script>
 
 {#if $pageLocation !== ScoutingPages.loading}
