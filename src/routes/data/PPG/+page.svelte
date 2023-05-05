@@ -1,3 +1,7 @@
+<svelte:head>
+    <title>CATATRONICS | PPG</title>
+</svelte:head>
+
 <script lang="ts">
     import type { PageData } from "./$types";
     import { ppgStore, type PPG } from "../../../lib/PPGStore";

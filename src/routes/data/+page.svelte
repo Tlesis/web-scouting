@@ -1,3 +1,7 @@
+<svelte:head>
+    <title>CATATRONICS | Data</title>
+</svelte:head>
+
 <script lang="ts">
     import { ChargeStationLevel } from "$lib/ScoutingDataStore";
     import type { PageData } from "./$types";

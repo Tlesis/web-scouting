@@ -1,3 +1,7 @@
+<svelte:head>
+    <title>CATATRONICS | Matches</title>
+</svelte:head>
+
 <script lang="ts">
     import { EVENT_KEY, type Statbotics } from "$lib/types";
     import type { PageData } from "./$types";

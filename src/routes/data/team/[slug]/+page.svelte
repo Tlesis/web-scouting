@@ -36,6 +36,10 @@
     const round = (num: number) => Math.round(num * 10) / 10;
 </script>
 
+<svelte:head>
+    <title>CATATRONICS | Team {teamid}</title>
+</svelte:head>
+
 {#if teamName && ppg}
 
     <h1 class="text-w text-3xl text-center mt-8">Team <span class="font-mono italic">{data.slug}</span></h1>

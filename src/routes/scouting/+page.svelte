@@ -1,3 +1,7 @@
+<svelte:head>
+    <title>CATATRONICS | Scouting</title>
+</svelte:head>
+
 <script lang="ts">
     import { enhance } from "$app/forms";
     import type { ActionData, PageData } from "./$types";

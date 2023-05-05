@@ -1,3 +1,7 @@
+<svelte:head>
+    <title>CATATRONICS | Teams</title>
+</svelte:head>
+
 <script lang="ts">
     import type { PageData } from "./$types";
 

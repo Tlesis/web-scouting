@@ -1,3 +1,7 @@
+<svelte:head>
+    <title>CATATRONICS | Collection</title>
+</svelte:head>
+
 <script lang="ts">
     import type { PageData } from "./$types";
     import { ScoutingPages } from "$lib/types";

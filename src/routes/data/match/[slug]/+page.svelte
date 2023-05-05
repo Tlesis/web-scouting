@@ -6,6 +6,9 @@
     $: match = Number(data.slug);
 </script>
 
+<svelte:head>
+    <title>CATATRONICS | Match {match}</title>
+</svelte:head>
 
 <a class="mr-16" href={`/data/match/${match - 1}`}>
     <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" class="text-3xl text-link" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
