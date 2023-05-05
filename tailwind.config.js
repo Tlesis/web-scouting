@@ -10,7 +10,10 @@ export default {
                 "active": "#9f1239",
                 "inactive": "#2b303a", // subject to change
                 "w": "#f3f4f6",
-                "ground": "#8b97a7"
+                "ground": "#8b97a7",
+
+                "nav": "#21242c",
+                "link": "#3b82f6"
             }
         }
     },

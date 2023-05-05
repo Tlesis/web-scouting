@@ -1,20 +1,11 @@
 import { fail } from "@sveltejs/kit";
 import { TBA_API_KEY } from "$env/static/private";
 import type { PageServerLoad } from "./$types";
-
-export interface TeamSimple {
-    city: string;
-    country: string;
-    key: string;
-    name: string;
-    nickname: string;
-    state_prov: string;
-    team_number: number;
-}
+import { EVENT_KEY, type TeamSimple } from "$lib/types";
 
 export const load = (async ({ locals: { supabase } }) => {
 
-    const simpleRes = await fetch("https://www.thebluealliance.com/api/v3/event/2023mose/teams/simple", {
+    const simpleRes = await fetch(`https://www.thebluealliance.com/api/v3/event/${EVENT_KEY}/teams/simple`, {
         headers: {
             "X-TBA-Auth-Key": TBA_API_KEY
         }
@@ -25,7 +16,7 @@ export const load = (async ({ locals: { supabase } }) => {
 
     const simple = await simpleRes.json() as TeamSimple[];
 
-    const statusRes = await fetch("https://www.thebluealliance.com/api/v3/event/2023mose/teams/statuses", {
+    const statusRes = await fetch(`https://www.thebluealliance.com/api/v3/event/${EVENT_KEY}/teams/statuses`, {
         headers: {
             "X-TBA-Auth-Key": TBA_API_KEY
         }

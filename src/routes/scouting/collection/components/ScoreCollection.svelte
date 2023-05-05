@@ -10,7 +10,6 @@
 
     export let supabase: SupabaseClient<Database>;
 
-    // TODO: make cleaner
     const submitData = async () => {
         $pageLocation = ScoutingPages.loading;
         // set scoring data

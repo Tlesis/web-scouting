@@ -16,22 +16,24 @@
     });
 </script>
 
+<h1 class="text-w text-center text-5xl mt-8 font-thin">Points Per Game</h1>
+
 <div class="flex justify-center">
-    <table class="text-w text-center mt-2 w-5/6">
+    <table class="text-w text-center mt-8 w-5/6">
         <thead>
             <tr>
-                <th class="w-1/12"><p class="w-11/12 bg-inactive rounded my-2 mx-auto">Team Number</p></th>
-                <th class="w-1/12"><p class="w-11/12 bg-inactive rounded my-2 mx-auto">Team Name</p></th>
-                <th class="w-1/12"><p class="w-11/12 bg-inactive rounded my-2 mx-auto">PPG Rank</p></th>
-                <th class="w-1/12"><p class="w-11/12 bg-inactive rounded my-2 mx-auto">Percentile</p></th>
-                <th class="w-1/12"><p class="w-11/12 bg-inactive rounded my-2 mx-auto">PPG</p></th>
-                <th class="w-1/12"><p class="w-11/12 bg-inactive rounded my-2 mx-auto">Auto PPG</p></th>
-                <th class="w-1/12"><p class="w-11/12 bg-inactive rounded my-2 mx-auto">Teleop PPG</p></th>
-                <th class="w-1/12"><p class="w-11/12 bg-inactive rounded my-2 mx-auto">Endgame PPG</p></th>
-                <th class="w-1/12"><p class="w-11/12 bg-inactive rounded my-2 mx-auto">Record</p></th>
+                <th class="w-1/12 border-b border-r font-thin">Team Number</th>
+                <th class="w-1/12 border-b border-x font-thin">Team Name</th>
+                <th class="w-1/12 border-b border-x font-thin">PPG Rank</th>
+                <th class="w-1/12 border-b border-x font-thin">Percentile</th>
+                <th class="w-1/12 border-b border-x font-thin">PPG</th>
+                <th class="w-1/12 border-b border-x font-thin">Auto PPG</th>
+                <th class="w-1/12 border-b border-x font-thin">Teleop PPG</th>
+                <th class="w-1/12 border-b border-x font-thin">Endgame PPG</th>
+                <th class="w-1/12 border-b border-l font-thin">Record</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="font-thin">
             {#each $ppgStore as p, index}
                 <PPGRow index={index} teams={data.teams}/>
             {/each}

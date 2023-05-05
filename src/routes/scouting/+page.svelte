@@ -54,7 +54,7 @@
         <strong class="text-center text-w">&nbsp;Teams Available to Scout:&nbsp;</strong>
         <div class="landscape:flex-row justify-center">
             <p class="text-center font-bold text-red-600">{match.red.join(" ")}</p>
-            <p class="text-center font-bold text-blue-400">{match.blue.join(" ")}</p>
+            <p class="text-center font-bold text-link">{match.blue.join(" ")}</p>
         </div>
     </div>
 
