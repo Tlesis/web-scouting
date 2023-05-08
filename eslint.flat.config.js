@@ -33,7 +33,7 @@ export default [
         rules: {
             ...ts.configs.recommended.rules,
             ...ts.configs["eslint-recommended"].rules,
-            "indent": ["error", 4],
+            "indent": ["error", 4, { "SwitchCase": 4 }],
             "arrow-spacing": ["error", { before: true, after: true }],
             "arrow-parens": ["error", "always"],
             "quotes": ["error", "double"],

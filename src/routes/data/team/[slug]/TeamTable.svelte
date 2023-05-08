@@ -6,6 +6,9 @@
     export let stats: Statbotics[];
     export let teamid: number;
     export let existing: Database["public"]["Tables"]["scouting-data"]["Row"][];
+
+    console.log({ existing, stats });
+
     existing.sort((a, b) => a.matchid - b.matchid)
 
     const teamColor = (s: Statbotics) => {

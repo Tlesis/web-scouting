@@ -56,15 +56,17 @@ export const scoutingData = writable<ScoutingData>(defaultScoutingData);
 
 /* Kill me */
 export const compileData = (scoutingData: ScoutingData) => {
+    const { auto, teleop } = scoutingData;
+
     const compiledData: Database["public"]["Tables"]["scouting-data"]["Row"] = {
-        autoHigh: scoutingData.auto[0].activated.filter((node) => node).length,
-        autoMid: scoutingData.auto[1].activated.filter((node) => node).length,
-        autoLow: scoutingData.auto[2].activated.filter((node) => node).length,
+        autoHigh: auto[0].activated.filter((node) => node).length,
+        autoMid: auto[1].activated.filter((node) => node).length,
+        autoLow: auto[2].activated.filter((node) => node).length,
         autoCharge: scoutingData.autoCharge,
         autoMobility: scoutingData.autoMobility,
-        teleHigh: scoutingData.teleop[0].activated.filter((node) => node).length,
-        teleMid: scoutingData.teleop[1].activated.filter((node) => node).length,
-        teleLow: scoutingData.teleop[2].activated.filter((node) => node).length,
+        teleHigh: teleop[0].activated.filter((node) => node).length,
+        teleMid: teleop[1].activated.filter((node) => node).length,
+        teleLow: teleop[2].activated.filter((node) => node).length,
         endCharge: scoutingData.endgame,
         playDirty: scoutingData.playDirty,
         win: scoutingData.win,

@@ -5,67 +5,40 @@ import { EVENT_KEY, type Statbotics, type TBAEvent, type TeamSimple } from "$lib
 
 export const load = (async ({ params, locals: { supabase } }) => {
 
-    const simpleRes = await fetch(`https://www.thebluealliance.com/api/v3/event/${EVENT_KEY}/teams/simple`, {
-        headers: {
-            "X-TBA-Auth-Key": TBA_API_KEY
-        }
-    });
+    const [simple, status, event, stats, ppg, existing] = await Promise.all([
+        fetch(`https://www.thebluealliance.com/api/v3/event/${EVENT_KEY}/teams/simple`, {
+            headers: {
+                "X-TBA-Auth-Key": TBA_API_KEY
+            }
+        }).then((response) => response.json() as Promise<TeamSimple[]>),
 
-    if (!simpleRes.ok)
-        throw fail(500);
+        fetch(`https://www.thebluealliance.com/api/v3/event/${EVENT_KEY}/teams/statuses`, {
+            headers: {
+                "X-TBA-Auth-Key": TBA_API_KEY
+            }
+        }).then((response) => response.json()),
 
-    const simple = await simpleRes.json() as TeamSimple[];
+        fetch(`https://www.thebluealliance.com/api/v3/events/${new Date().getFullYear()}`, {
+            headers: {
+                "X-TBA-Auth-Key": TBA_API_KEY
+            }
+        }).then((response) => response.json() as Promise<TBAEvent[]>)
+            .then((events) => events.find((event) => event.event_code === EVENT_KEY.slice(4))),
 
-    /* **** */
+        fetch(`https://api.statbotics.io/v2/matches/event/${EVENT_KEY}`)
+            .then((response) => response.json() as Promise<Statbotics[]>)
+            .then((stats) => stats.filter((stat) => stat.comp_level === "qm")),
 
-    const statusRes = await fetch(`https://www.thebluealliance.com/api/v3/event/${EVENT_KEY}/teams/statuses`, {
-        headers: {
-            "X-TBA-Auth-Key": TBA_API_KEY
-        }
-    });
+        supabase.from("ppg-data").select().then(({ data, error }) => {
+            if (error) throw fail(500, { error: error.message });
+            return data;
+        }),
 
-    if (!statusRes.ok)
-        throw fail(500);
-
-    const status = await statusRes.json();
-
-    const eventsRes = await fetch(`https://www.thebluealliance.com/api/v3/events/${new Date().getFullYear()}`, {
-        headers: {
-            "X-TBA-Auth-Key": TBA_API_KEY
-        }
-    });
-
-    if (!eventsRes.ok)
-        throw fail(500);
-
-    const events = await eventsRes.json() as TBAEvent[];
-    const event = events.find((event) => event.event_code === EVENT_KEY.slice(4));
-
-    /* **** */
-
-    const statsRes = await fetch(`https://api.statbotics.io/v2/matches/event/${EVENT_KEY}`);
-
-    if (!statsRes.ok)
-        throw fail(500);
-
-    const statsInt = await statsRes.json() as Statbotics[];
-    const stats = statsInt.filter((stat) => stat.comp_level === "qm");
-
-    /* **** */
-
-    const { data: ppg, error: ppgError } = await supabase.from("ppg-data").select();
-
-    if (ppgError)
-        throw fail(500, { error: ppgError.message });
-
-    /* **** */
-
-    const { data: existing, error: existingError } = await supabase.from("scouting-data").select();
-
-    if (existingError)
-        throw fail(500, { error: existingError.message });
-
-    /* **** */
+        supabase.from("scouting-data").select().then(({ data, error }) => {
+            if (error) throw fail(500, { error: error.message });
+            return data;
+        })
+    ]);
 
     return {
         team: {

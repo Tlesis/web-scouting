@@ -13,7 +13,7 @@
     // sort by total points then by teleop points if total is the same
     $ppgStore.sort((a, b) => {
         if (a.pointTotal === b.pointTotal) {
-            return b.totalTeleop - a.totalTeleop;
+            return (b.totalTeleop / b.matchesPlayed) - (a.totalTeleop / a.matchesPlayed);
         } else {
             return (b.pointTotal / b.matchesPlayed) - (a.pointTotal / a.matchesPlayed);
         }

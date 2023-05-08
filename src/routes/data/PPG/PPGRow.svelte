@@ -7,6 +7,8 @@
 
     const ppg = $ppgStore[index];
 
+    console.log({ ppg });
+
     const percentileColor = (percentile: number) => {
         var ret = "";
         if (percentile >= 95)
