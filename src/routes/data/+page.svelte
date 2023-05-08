@@ -4,6 +4,7 @@
 
 <script lang="ts">
     import { ChargeStationLevel } from "$lib/ScoutingDataStore";
+    import { EVENT_KEY } from "$lib/types";
     import type { PageData } from "./$types";
 
     export let data: PageData;
@@ -55,8 +56,8 @@
                 <tr class={`${(team.teamcolor === 1) ?
                         "bg-red-300 text-red-900 border border-red-900" :
                         "bg-blue-400 text-slate-800 border border-slate-800"}`}>
-                    <td><a href={`/data/match/` + team.matchid} class="underline">{team.matchid}</a></td>
-                    <td><a href={`/data/team/` + team.teamid} class="underline">{team.teamid}</a></td>
+                    <td><a href={`https://statbotics.io/match/${EVENT_KEY}_qm${team.matchid}`} target="_blank" class="underline">{team.matchid}</a></td>
+                    <td><a href={`/data/team/${team.teamid}`} class="underline">{team.teamid}</a></td>
                     <td>
                         <span class={`px-2 rounded-md
                             ${(team.win) ?

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Statbotics } from "$lib/types";
+    import { EVENT_KEY, type Statbotics } from "$lib/types";
     import type { Database } from "../../../../DatabaseDefinitions";
     import { checks } from "./CheckedStore";
 
@@ -46,13 +46,13 @@
     </thead>
     <tbody>
         {#each stats as stat, i}
-            <tr class={`${($checks[i]) ? "" : "line-through text-sm text-black text-opacity-75"}`}>
+            <tr class={`${($checks[i]) ? "" : "line-through text-black"}`}>
                 <!--  -->
                 <td class="border-r border-b text-center">
                     <input type="checkbox" bind:checked={$checks[i]}/>
                 </td>
                 <!-- Match -->
-                <td class="text-center border-b underline text-link"><a href={`/data/match/${stat.match_number}`}>Quals {stat.match_number}</a></td>
+                <td class="text-center border-b underline text-link"><a href={`https://statbotics.io/match/${EVENT_KEY}_qm${stat.match_number}`} target="_blank">Quals {stat.match_number}</a></td>
                 <!-- Red Alliance -->
                 <td class={`bg-red-300 text-red-900
                     ${(teamid === stat.red_1 || teamid === stat.red_2 || teamid === stat.red_3) ?
@@ -99,15 +99,15 @@
                     <span class="py-1 w-full text-w text-center bg-primary">
                         {(stat.epa_winner === teamColor(stat)) ? "Win" : "Lose"}
                     </span>
-                    <span class={`px-1 w-full text-center ${winningColor(stat)}`}>
+                    <span class={`px-1 w-full text-center pt-1 ${winningColor(stat)}`}>
                         {(teamColor(stat) === "blue") ?
                             100 - Math.round(stat.epa_win_prob * 100) :
                             Math.round(stat.epa_win_prob * 100)}%
                     </span>
                 </td>
-                <td class="group">
+                <td class="group text-w">
                     <div class="relative -mt-4">
-                        <p class="absolute w-[10vw] hidden group-hover:block bg-primary p-2 border">{existing[i].notes}</p>
+                        <p class="absolute w-[10vw] hidden group-hover:block bg-primary p-2 border">{existing[i]?.notes ?? "N/A"}</p>
                         <p class="absolute w-full group-hover:hidden text-center">...</p>
                     </div>
                 </td>

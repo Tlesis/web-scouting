@@ -67,7 +67,7 @@
             <tr>
                 <!-- Video Link -->
                 <td class="p-0 border-r border-b text-link">
-                    <a href={`https://youtube.com/watch?v=${stat.video}`} class="flex justify-center">
+                    <a href={`https://youtube.com/watch?v=${stat.video}`} target="_blank" class="flex justify-center">
                         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16"
                             class="text-link cursor-pointer" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
@@ -76,9 +76,8 @@
                     </a>
                 </td>
                 <!-- Match Number -->
-                <!-- TODO: link to own analysis page -->
                 <td class="text-center border-b underline text-link">
-                    <a href={`/data/match/${stat.match_number}`}>Quals {stat.match_number}</a>
+                    <a href={`https://statbotics.io/match/${EVENT_KEY}_qm${stat.match_number}`} target="_blank">Quals {stat.match_number}</a>
                 </td>
                 <!-- Red Alliance -->
                 <td class="bg-red-300 text-red-900 underline">
