@@ -41,15 +41,17 @@
 </script>
 
 
-<a href={`https://www.thebluealliance.com/event/` + EVENT_KEY} target="_blank" class="flex justify-center my-8">
-    <h1 class="text-w text-4xl font-thin">{EVENT_KEY.slice(0, 4)} {data.event?.name ?? "?"}</h1>
-    <img src="/tba.webp" alt="" class="m-2"/>
-</a>
+<div class="w-full flex justify-center my-8">
+    <a href={`https://www.thebluealliance.com/event/` + EVENT_KEY} target="_blank" class="flex w-fit">
+        <h1 class="text-w text-4xl font-thin">{EVENT_KEY.slice(0, 4)} {data.event?.name ?? "?"}</h1>
+        <img src="/tba.webp" alt="" class="m-2"/>
+    </a>
+</div>
 
 <hr class="mx-16 my-8">
 
 <div class="mx-24 mb-8">
-    <table class="text-w border-4 border-primary w-full">
+    <table class="text-w text-lg border-4 border-primary w-full">
         <thead class="bg-nav rounded">
             <!-- 7.7% is about 1/13 of the available space
                  the others are multiples of 7.7% -->
@@ -76,10 +78,10 @@
                 <!-- Match Number -->
                 <!-- TODO: link to own analysis page -->
                 <td class="text-center border-b underline text-link">
-                    <a href={`https://statbotics.io/match/${EVENT_KEY}_qm${stat.match_number}`} target="_blank">Quals {stat.match_number}</a>
+                    <a href={`/data/match/${stat.match_number}`}>Quals {stat.match_number}</a>
                 </td>
                 <!-- Red Alliance -->
-                <td class="bg-red-300 text-red-900 font-thin">
+                <td class="bg-red-300 text-red-900 underline">
                     <span class={`flex justify-evenly mx-3
                         ${((stat.red_score ?? 0) > (stat.blue_score ?? 0)) ?
                         "font-bold" :
@@ -90,7 +92,7 @@
                     </span>
                 </td>
                 <!-- Blue Alliance -->
-                <td class="bg-blue-400 text-slate-800 font-thin">
+                <td class="bg-blue-400 text-slate-800 underline">
                     <span class={`flex justify-evenly mx-3
                         ${((stat.red_score ?? 0) < (stat.blue_score ?? 0)) ?
                         "font-bold" :
@@ -118,7 +120,7 @@
                     </span>
                 </td>
                 <!-- Win Pred -->
-                <td class="flex justify-evenly p-0">
+                <td class="flex justify-evenly p-0 border-l-8 border-nav">
                     <span class="py-1 w-full text-center bg-primary capitalize">
                         {stat.epa_winner}
                     </span>

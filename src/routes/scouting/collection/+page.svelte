@@ -51,4 +51,5 @@
     <div class="flex flex-col h-screen w-5/6 text-w text-center justify-center items-center">
         <strong class="text-3xl">Loading</strong>
     </div>
+    <button on:click={() => $pageLocation = ScoutingPages.endgame} class="text-w rounded bg-active p-1 w-fit mt-2">Try Again...</button>
 {/if}

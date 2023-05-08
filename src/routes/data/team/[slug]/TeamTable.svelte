@@ -1,8 +1,12 @@
 <script lang="ts">
     import type { Statbotics } from "$lib/types";
+    import type { Database } from "../../../../DatabaseDefinitions";
+    import { checks } from "./CheckedStore";
 
     export let stats: Statbotics[];
     export let teamid: number;
+    export let existing: Database["public"]["Tables"]["scouting-data"]["Row"][];
+    existing.sort((a, b) => a.matchid - b.matchid)
 
     const teamColor = (s: Statbotics) => {
         var sTeams = [ s.red_1, s.red_2, s.red_3 ];
@@ -23,20 +27,33 @@
 
         return "bg-primary text-w";
     };
+
+    (() => {
+        for (var i = 0; i < stats.length; i++)
+            $checks[i] = true;
+    })();
 </script>
 
 <table class="text-w w-full border-4 border-primary">
     <thead class="bg-nav rounded">
+            <th class="w-[5%]"></th>
             <th class="w-1/6">Match</th>
             <th class="w-1/4">Red Alliance</th>
             <th class="w-1/4">Blue Alliance</th>
             <th class="w-1/6">Scores</th>
             <th class="w-1/6">Win Pred</th>
+            <th>Notes</th>
     </thead>
     <tbody>
-        {#each stats as stat}
-            <tr>
-                <td class="text-center border-b underline text-link"><a href={`/data/match/${stat.match_number}`}>Qualification {stat.match_number}</a></td>
+        {#each stats as stat, i}
+            <tr class={`${($checks[i]) ? "" : "line-through text-sm text-black text-opacity-75"}`}>
+                <!--  -->
+                <td class="border-r border-b text-center">
+                    <input type="checkbox" bind:checked={$checks[i]}/>
+                </td>
+                <!-- Match -->
+                <td class="text-center border-b underline text-link"><a href={`/data/match/${stat.match_number}`}>Quals {stat.match_number}</a></td>
+                <!-- Red Alliance -->
                 <td class={`bg-red-300 text-red-900
                     ${(teamid === stat.red_1 || teamid === stat.red_2 || teamid === stat.red_3) ?
                     "font-bold" :
@@ -48,6 +65,7 @@
                         <a href={`/data/team/${stat.red_3}`} class={`w-full text-center ${(teamid === stat.red_3) ? "underline" : ""}`}>{stat.red_3}</a>
                     </span>
                 </td>
+                <!-- Blue Alliance -->
                 <td class={`bg-blue-400 text-slate-800
                     ${(teamid === stat.blue_1 || teamid === stat.blue_2 || teamid === stat.blue_3) ?
                     "font-bold" :
@@ -59,6 +77,7 @@
                         <a href={`/data/team/${stat.blue_3}`} class={`w-full text-center ${(teamid === stat.blue_3) ? "underline" : ""}`}>{stat.blue_3}</a>
                     </span>
                 </td>
+                <!-- Scores -->
                 <td class="text-center p-0">
                     <span class="flex justify-between">
                         <span class={`w-full py-1 bg-red-300 text-red-900 ${(teamColor(stat) === "red") ? "underline" : ""}
@@ -75,8 +94,9 @@
                         </span>
                     </span>
                 </td>
+                <!-- Win Pred -->
                 <td class="flex justify-evenly p-0">
-                    <span class="py-1 w-full text-center bg-primary">
+                    <span class="py-1 w-full text-w text-center bg-primary">
                         {(stat.epa_winner === teamColor(stat)) ? "Win" : "Lose"}
                     </span>
                     <span class={`px-1 w-full text-center ${winningColor(stat)}`}>
@@ -85,7 +105,13 @@
                             Math.round(stat.epa_win_prob * 100)}%
                     </span>
                 </td>
+                <td class="group">
+                    <div class="relative -mt-4">
+                        <p class="absolute w-[10vw] hidden group-hover:block bg-primary p-2 border">{existing[i].notes}</p>
+                        <p class="absolute w-full group-hover:hidden text-center">...</p>
+                    </div>
+                </td>
             </tr>
-        {/each}
+            {/each}
     </tbody>
 </table>

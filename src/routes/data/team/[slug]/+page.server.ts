@@ -60,6 +60,13 @@ export const load = (async ({ params, locals: { supabase } }) => {
 
     /* **** */
 
+    const { data: existing, error: existingError } = await supabase.from("scouting-data").select();
+
+    if (existingError)
+        throw fail(500, { error: existingError.message });
+
+    /* **** */
+
     return {
         team: {
             simple,
@@ -67,6 +74,7 @@ export const load = (async ({ params, locals: { supabase } }) => {
             stats,
             ppg
         },
+        existing,
         event,
         slug: params.slug
     };

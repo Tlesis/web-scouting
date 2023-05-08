@@ -1,3 +1,7 @@
+<script lang="ts">
+    let searchData: number;
+</script>
+
 <nav class="w-screen bg-nav shadow-lg flex border-b rounded-b top-0">
     <a href="/" class="group text-w wide-text text-2xl px-8 py-2 my-2">
         CATATRONICS
@@ -12,15 +16,15 @@
             PPG
             <span class="block max-w-0 group-hover:max-w-full transition-all duration-200 h-px bg-w"></span>
         </a>
-        <a href="/data/teams" class="group my-5 transition duration-300">
-            Teams
-            <span class="block max-w-0 group-hover:max-w-full transition-all duration-200 h-px bg-w"></span>
-        </a>
         <a href="/data/matches" class="group my-5 transition duration-300">
             Matches
             <span class="block max-w-0 group-hover:max-w-full transition-all duration-200 h-px bg-w"></span>
         </a>
     </div>
+    <!-- TODO: have an autocomplete based off of `existing` -->
+    <form autocomplete="off" class="ml-auto mr-8 m-0 p-0" on:submit|preventDefault={() => location.href=`/data/team/${searchData}`}>
+        <input type="number" bind:value={searchData} placeholder="Team Search.." class="my-4 rounded px-2 py-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+    </form>
 </nav>
 
 <slot/>

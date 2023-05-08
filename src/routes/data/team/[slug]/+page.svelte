@@ -1,9 +1,11 @@
 <script lang="ts">
-    import { EVENT_KEY, type Statbotics } from "$lib/types";
-    import { fail } from "@sveltejs/kit";
+    import { EVENT_KEY } from "$lib/types";
     import type { PageData } from "./$types";
     import TeamTable from "./TeamTable.svelte";
     import { ppgStore } from "$lib/PPGStore";
+    import { checks } from "./CheckedStore";
+    import { fail } from "@sveltejs/kit";
+    import { score } from "$lib/ScoutingDataStore";
 
     export let data: PageData;
 
@@ -18,8 +20,8 @@
 
     const teamid = Number(data.slug);
     const teamName = data.team.simple.find((team) => team.team_number.toString() === data.slug)?.nickname;
-    /* if (!teamName)
-        throw fail(500); */
+    if (!teamName)
+        throw fail(500);
 
     const recordInfo = data.team.status["frc" + data.slug].qual.ranking.record ?? { wins: "?", losses: "?", ties: "?" };
     const rank = data.team.status["frc" + data.slug].qual.ranking.rank ?? 0;
@@ -33,7 +35,36 @@
     );
     stats.sort((a, b) => a.match_number - b.match_number);
 
+    const existing = data.existing.filter((team) => team.teamid === teamid);
+
     const round = (num: number) => Math.round(num * 10) / 10;
+
+    const ignoredMatchesScores = (x: number) => {
+        let scores = { total: 0, auto: 0, teleop: 0, endgame: 0 };
+        for (var i = 0; i < stats.length; i++) {
+            if ($checks[i]) continue;
+
+            const data = existing.find((match) => match.matchid === stats[i].match_number);
+            if (data === undefined) continue;
+
+            const compiledScores = score(data).scoredData;
+
+            scores.total += (compiledScores.auto + compiledScores.teleop + compiledScores.endgame);
+            scores.auto += compiledScores.auto;
+            scores.teleop += compiledScores.teleop;
+            scores.endgame += compiledScores.endgame;
+        }
+
+        return scores;
+    };
+
+    /* FIXME: Still a bit broken */
+    $: numberOfMatches = stats.filter((stat, i) => $checks[i]).length;
+    $: total = round(((ppg?.pointTotal ?? 0) - ignoredMatchesScores(1).total) / numberOfMatches).toString() + ((numberOfMatches !== stats.length) ? "*" : "");
+    $: auto = round(((ppg?.totalAuto ?? 0) - ignoredMatchesScores(2).auto) / numberOfMatches).toString() + ((numberOfMatches !== stats.length) ? "*" : "");
+    $: teleop = round(((ppg?.totalTeleop ?? 0) - ignoredMatchesScores(3).teleop) / numberOfMatches).toString() + ((numberOfMatches !== stats.length) ? "*" : "");
+    $: endgame = round(((ppg?.totalEndgame ?? 0) - ignoredMatchesScores(4).endgame) / numberOfMatches).toString() + ((numberOfMatches !== stats.length) ? "*" : "");
+    $: console.log({ numberOfMatches });
 </script>
 
 <svelte:head>
@@ -55,10 +86,10 @@
     <p class="text-w text-lg my-2 mx-36">Team {data.slug} ({teamName}) has a record of <b>{recordInfo.wins}-{recordInfo.losses}-{recordInfo.ties}</b>.</p>
     <div class="flex my-4">
         <p class="text-w text-lg ml-36">PPG Breakdown:</p>
-        <span class="mx-2 rounded-md px-2 bg-red-700 text-w text-md">Total: {round(ppg.pointTotal / ppg.matchesPlayed)}</span>
-        <span class="mx-2 rounded-md px-2 bg-blue-800 text-w text-md">Auto: {round(ppg.meanAuto)}</span>
-        <span class="mx-2 rounded-md px-2 bg-orange-600 text-w text-md">Teleop: {round(ppg.meamTeleop)}</span>
-        <span class="mx-2 rounded-md px-2 bg-green-700 text-w text-md">Endgame: {round(ppg.meanEndgame)}</span>
+        <span class="mx-2 rounded-md px-2 bg-red-700 text-w text-md">Total: {total}</span>
+        <span class="mx-2 rounded-md px-2 bg-blue-800 text-w text-md">Auto: {auto}</span>
+        <span class="mx-2 rounded-md px-2 bg-orange-600 text-w text-md">Teleop: {teleop}</span>
+        <span class="mx-2 rounded-md px-2 bg-green-700 text-w text-md">Endgame: {endgame}</span>
     </div>
     <div class="text-center">
         <div class="w-fit mx-auto text-w bg-blue-600 py-1 px-4 rounded-md">
@@ -95,9 +126,8 @@
 
         <div class="w-full">
             <h3 class="text-w text-center mb-4 text-lg">Green = Team Won Match</h3>
-            <TeamTable stats={stats} teamid={teamid}/>
+            <TeamTable stats={stats} existing={existing} teamid={teamid}/>
         </div>
-
     </div>
 
     <footer class="w-screen bg-nav shadow-lg flex border-t rounded-t mt-16">
