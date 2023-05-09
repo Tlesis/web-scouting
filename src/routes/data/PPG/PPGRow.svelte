@@ -57,7 +57,7 @@
     </td>
     <td class="border-t border-x">{index + 1}</td>
     <td class="border-t border-x">{Math.round(((($ppgStore.length - 1) - index) / $ppgStore.length) * 100)}</td>
-    <td class="border-t border-x"><span class={percentileColor(overall[ppg.pointTotal])}>{round(ppg.pointTotal / ppg.matchesPlayed)}</span></td>
+    <td class="border-t border-x"><span class={percentileColor(overall[ppg.pointTotal / ppg.matchesPlayed])}>{round(ppg.pointTotal / ppg.matchesPlayed)}</span></td>
     <td class="border-t border-x"><span class={percentileColor(auto[ppg.meanAuto])}>{round(ppg.meanAuto)}</span></td>
     <td class="border-t border-x"><span class={percentileColor(teleop[ppg.meamTeleop])}>{round(ppg.meamTeleop)}</span></td>
     <td class="border-t border-x"><span class={percentileColor(endgame[ppg.meanEndgame])}>{round(ppg.meanEndgame)}</span></td>

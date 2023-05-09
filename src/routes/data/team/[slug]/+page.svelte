@@ -92,21 +92,23 @@
     </div>
     <div class="text-center">
         <div class="w-fit mx-auto text-w bg-blue-600 py-1 px-4 rounded-md">
-            <h1 class="font-semibold text-2xl">
-                {ppgRank}<sup class="text-sm font-normal">{
-                    (() => {
-                        if (ppgRank === 1)
-                            return "st";
-                        if (ppgRank === 2)
-                            return "nd";
-                        if (ppgRank === 3)
-                            return "rd";
-                        return "th";
-                    })()}
-                </sup>
-            </h1>
-            <h2>Best PPG</h2>
-            <h3 class="text-sm">out of {data.team.simple.length}</h3>
+            <a href="/data/PPG">
+                <h1 class="font-semibold text-2xl">
+                    {ppgRank}<sup class="text-sm font-normal">{
+                        (() => {
+                            if (ppgRank === 1)
+                                return "st";
+                            if (ppgRank === 2)
+                                return "nd";
+                            if (ppgRank === 3)
+                                return "rd";
+                            return "th";
+                        })()}
+                    </sup>
+                </h1>
+                <h2>Best PPG</h2>
+                <h3 class="text-sm">out of {data.team.simple.length}</h3>
+            </a>
         </div>
     </div>
 
