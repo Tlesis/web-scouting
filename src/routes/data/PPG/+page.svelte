@@ -26,15 +26,15 @@
     <table class="text-w text-center mt-8 w-5/6">
         <thead>
             <tr>
-                <th class="w-1/12 border-b border-r font-thin">Team Number</th>
-                <th class="w-1/12 border-b border-x font-thin">Team Name</th>
-                <th class="w-1/12 border-b border-x font-thin">PPG Rank</th>
-                <th class="w-1/12 border-b border-x font-thin max-md:hidden">Percentile</th>
-                <th class="w-1/12 border-b md:border-x max-md:border-l font-thin">PPG</th>
-                <th class="w-1/12 border-b border-x font-thin max-md:hidden">Auto PPG</th>
-                <th class="w-1/12 border-b border-x font-thin max-md:hidden">Teleop PPG</th>
-                <th class="w-1/12 border-b border-x font-thin max-md:hidden">Endgame PPG</th>
-                <th class="w-1/12 border-b border-l font-thin max-md:hidden">Record</th>
+                <th class="border-b border-r font-thin">Team Number</th>
+                <th class="border-b border-x font-thin">Team Name</th>
+                <th class="border-b border-x font-thin">PPG Rank</th>
+                <th class="border-b border-x font-thin max-md:hidden">Percentile</th>
+                <th class="border-b md:border-x max-md:border-l font-thin">PPG</th>
+                <th class="border-b border-x font-thin max-md:hidden">Auto PPG</th>
+                <th class="border-b border-x font-thin max-md:hidden">Teleop PPG</th>
+                <th class="border-b border-x font-thin max-md:hidden">Endgame PPG</th>
+                <th class="border-b border-l font-thin max-md:hidden">Record</th>
             </tr>
         </thead>
         <tbody class="font-thin">
