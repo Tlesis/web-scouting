@@ -67,7 +67,7 @@
 </svelte:head>
 
 {#if teamName && ppg}
-
+<div class="max-md:hidden">
     <h1 class="text-w text-3xl text-center mt-8">Team <span class="font-mono italic">{teamid}</span></h1>
     <div class="flex justify-center">
         <a href={`https://www.thebluealliance.com/team/` + teamid} target="_blank" class="flex">
@@ -103,7 +103,7 @@
                     </sup>
                 </h1>
                 <h2>Best PPG</h2>
-                <h3 class="text-sm">out of {data.team.simple.length}</h3>
+                <h3 class="text-sm">out of {data.ppg.length}</h3>
             </a>
         </div>
     </div>
@@ -130,7 +130,7 @@
     <footer class="w-screen bg-nav shadow-lg flex border-t rounded-t mt-16">
         <p class="text-w m-8">Design <span class="italic">slightly</span> inspired by <a href={`https://statbotics.io/team/${teamid}`} target="_blank" class="text-link underline">Statbotics</a></p>
     </footer>
-
+</div>
 {:else}
     <div class="text-w text-center m-8">
         <h1 class="text-8xl font-bold mt-4">Error</h1>
