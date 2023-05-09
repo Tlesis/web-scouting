@@ -7,8 +7,6 @@
 
     const ppg = $ppgStore[index];
 
-    console.log({ ppg });
-
     const percentileColor = (percentile: number) => {
         var ret = "";
         if (percentile >= 95)
@@ -52,7 +50,7 @@
 <tr>
     <td class="border-t border-r">{ppg.teamid}</td>
     <td class="border-t border-x break-words">
-        <a href={"/data/team/" + ppg.teamid}
+        <a href={`/data/team/${ppg.teamid}`} data-sveltekit-preload-data="hover"
         class="underline text-link font-normal">{teams.simple.find((team) => team.team_number === ppg.teamid)?.nickname}</a>
     </td>
     <td class="border-t border-x">{index + 1}</td>

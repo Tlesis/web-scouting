@@ -85,9 +85,9 @@
                         ${((stat.red_score ?? 0) > (stat.blue_score ?? 0)) ?
                         "font-bold" :
                         "font-thin"}`}>
-                        <a href={`/data/team/${stat.red_1}`} class="w-1/3 text-center">{stat.red_1}</a>
-                        <a href={`/data/team/${stat.red_2}`} class="w-1/3 text-center">{stat.red_2}</a>
-                        <a href={`/data/team/${stat.red_3}`} class="w-1/3 text-center">{stat.red_3}</a>
+                        <a href={`/data/team/${stat.red_1}`} data-sveltekit-preload-data="hover" class="w-1/3 text-center">{stat.red_1}</a>
+                        <a href={`/data/team/${stat.red_2}`} data-sveltekit-preload-data="hover" class="w-1/3 text-center">{stat.red_2}</a>
+                        <a href={`/data/team/${stat.red_3}`} data-sveltekit-preload-data="hover" class="w-1/3 text-center">{stat.red_3}</a>
                     </span>
                 </td>
                 <!-- Blue Alliance -->
@@ -96,9 +96,9 @@
                         ${((stat.red_score ?? 0) < (stat.blue_score ?? 0)) ?
                         "font-bold" :
                         "font-thin"}`}>
-                        <a href={`/data/team/${stat.blue_1}`} class="w-1/3 text-center">{stat.blue_1}</a>
-                        <a href={`/data/team/${stat.blue_2}`} class="w-1/3 text-center">{stat.blue_2}</a>
-                        <a href={`/data/team/${stat.blue_3}`} class="w-1/3 text-center">{stat.blue_3}</a>
+                        <a href={`/data/team/${stat.blue_1}`} data-sveltekit-preload-data="hover" class="w-1/3 text-center">{stat.blue_1}</a>
+                        <a href={`/data/team/${stat.blue_2}`} data-sveltekit-preload-data="hover" class="w-1/3 text-center">{stat.blue_2}</a>
+                        <a href={`/data/team/${stat.blue_3}`} data-sveltekit-preload-data="hover" class="w-1/3 text-center">{stat.blue_3}</a>
                     </span>
                 </td>
                 <!-- Scores -->

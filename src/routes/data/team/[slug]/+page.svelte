@@ -4,7 +4,6 @@
     import TeamTable from "./TeamTable.svelte";
     import { ppgStore } from "$lib/PPGStore";
     import { checks } from "./CheckedStore";
-    import { fail } from "@sveltejs/kit";
     import { score } from "$lib/ScoutingDataStore";
 
     export let data: PageData;
@@ -20,8 +19,6 @@
 
     const teamid = Number(data.slug);
     const teamName = data.team.simple.find((team) => team.team_number === teamid)?.nickname;
-    if (!teamName)
-        throw fail(500);
 
     const recordInfo = data.team.status["frc" + teamid].qual.ranking.record ?? { wins: "?", losses: "?", ties: "?" };
     const rank = data.team.status["frc" + teamid].qual.ranking.rank ?? 0;
@@ -58,7 +55,6 @@
         return scores;
     };
 
-    /* FIXME: Still a bit broken */
     $: numberOfMatches = stats.filter((stat, i) => $checks[i]).length;
     $: total = round(((ppg?.pointTotal ?? 0) - ignoredMatchesScores().total) / numberOfMatches).toString() + ((numberOfMatches !== stats.length) ? "*" : "");
     $: auto = round(((ppg?.totalAuto ?? 0) - ignoredMatchesScores().auto) / numberOfMatches).toString() + ((numberOfMatches !== stats.length) ? "*" : "");
@@ -92,7 +88,7 @@
     </div>
     <div class="text-center">
         <div class="w-fit mx-auto text-w bg-blue-600 py-1 px-4 rounded-md">
-            <a href="/data/PPG">
+            <a href="/data/PPG" data-sveltekit-preload-data="hover">
                 <h1 class="font-semibold text-2xl">
                     {ppgRank}<sup class="text-sm font-normal">{
                         (() => {

@@ -7,8 +7,6 @@
     export let teamid: number;
     export let existing: Database["public"]["Tables"]["scouting-data"]["Row"][];
 
-    console.log({ existing, stats });
-
     existing.sort((a, b) => a.matchid - b.matchid)
 
     const teamColor = (s: Statbotics) => {
@@ -62,10 +60,9 @@
                     "font-bold" :
                     "font-thin"}`}>
                     <span class="flex justify-evenly mx-3">
-                        <!-- FIXME: clicking link doesnt update other data -->
-                        <a href={`/data/team/${stat.red_1}`} class={`w-full text-center ${(teamid === stat.red_1) ? "underline" : ""}`}>{stat.red_1}</a>
-                        <a href={`/data/team/${stat.red_2}`} class={`w-full text-center ${(teamid === stat.red_2) ? "underline" : ""}`}>{stat.red_2}</a>
-                        <a href={`/data/team/${stat.red_3}`} class={`w-full text-center ${(teamid === stat.red_3) ? "underline" : ""}`}>{stat.red_3}</a>
+                        <a data-sveltekit-reload data-sveltekit-preload-data="hover" href={`/data/team/${stat.red_1}`} class={`w-full text-center ${(teamid === stat.red_1) ? "underline" : ""}`}>{stat.red_1}</a>
+                        <a data-sveltekit-reload data-sveltekit-preload-data="hover" href={`/data/team/${stat.red_2}`} class={`w-full text-center ${(teamid === stat.red_2) ? "underline" : ""}`}>{stat.red_2}</a>
+                        <a data-sveltekit-reload data-sveltekit-preload-data="hover" href={`/data/team/${stat.red_3}`} class={`w-full text-center ${(teamid === stat.red_3) ? "underline" : ""}`}>{stat.red_3}</a>
                     </span>
                 </td>
                 <!-- Blue Alliance -->
@@ -74,10 +71,9 @@
                     "font-bold" :
                     "font-thin"}`}>
                     <span class="flex justify-evenly mx-3">
-                        <!-- FIXME: clicking link doesnt update other data -->
-                        <a href={`/data/team/${stat.blue_1}`} class={`w-full text-center ${(teamid === stat.blue_1) ? "underline" : ""}`}>{stat.blue_1}</a>
-                        <a href={`/data/team/${stat.blue_2}`} class={`w-full text-center ${(teamid === stat.blue_2) ? "underline" : ""}`}>{stat.blue_2}</a>
-                        <a href={`/data/team/${stat.blue_3}`} class={`w-full text-center ${(teamid === stat.blue_3) ? "underline" : ""}`}>{stat.blue_3}</a>
+                        <a data-sveltekit-reload data-sveltekit-preload-data="hover" href={`/data/team/${stat.blue_1}`} class={`w-full text-center ${(teamid === stat.blue_1) ? "underline" : ""}`}>{stat.blue_1}</a>
+                        <a data-sveltekit-reload data-sveltekit-preload-data="hover" href={`/data/team/${stat.blue_2}`} class={`w-full text-center ${(teamid === stat.blue_2) ? "underline" : ""}`}>{stat.blue_2}</a>
+                        <a data-sveltekit-reload data-sveltekit-preload-data="hover" href={`/data/team/${stat.blue_3}`} class={`w-full text-center ${(teamid === stat.blue_3) ? "underline" : ""}`}>{stat.blue_3}</a>
                     </span>
                 </td>
                 <!-- Scores -->

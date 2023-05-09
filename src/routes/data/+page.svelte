@@ -57,7 +57,7 @@
                         "bg-red-300 text-red-900 border border-red-900" :
                         "bg-blue-400 text-slate-800 border border-slate-800"}`}>
                     <td><a href={`https://statbotics.io/match/${EVENT_KEY}_qm${team.matchid}`} target="_blank" class="underline">{team.matchid}</a></td>
-                    <td><a href={`/data/team/${team.teamid}`} class="underline">{team.teamid}</a></td>
+                    <td><a href={`/data/team/${team.teamid}`} class="underline" data-sveltekit-preload-data="hover">{team.teamid}</a></td>
                     <td>
                         <span class={`px-2 rounded-md
                             ${(team.win) ?

@@ -1,28 +1,43 @@
 <script lang="ts">
-    let searchData: number;
+    import type { LayoutData } from "./$types";
+
+    let searchData: number | null;
+
+    export let data: LayoutData;
+
+    const searchableTeams = data.ppg.map((p) => p.teamid);
+
+    const search = () => {
+        if (!searchableTeams.some((teamid) => teamid === searchData)) {
+            searchData = null;
+            return;
+        }
+
+        location.href=`/data/team/${searchData}`;
+    };
 </script>
 
 <nav class="w-full bg-nav shadow-lg flex border-b rounded-b top-0">
-    <a href="/" class="group text-w wide-text text-2xl px-8 py-2 my-2">
+    <a href="/" class="group text-w wide-text md:text-2xl px-8 py-2 my-2">
         CATATRONICS
-        <span class="block max-w-0 group-hover:max-w-full transition-all duration-300 h-0.5 bg-w"></span>
+        <span class="block max-w-0 group-hover:max-w-full transition-all duration-300 h-0.5 bg-w max-md:hidden"></span>
     </a>
     <div class="w-1/5 flex justify-around text-md text-w font-thin">
-        <a href="/data" class="group my-5 transition duration-300">
+        <a href="/data" class="group my-5 transition duration-300" data-sveltekit-preload-data="hover">
             Data
-            <span class="block max-w-0 group-hover:max-w-full transition-all duration-200 h-px bg-w"></span>
+            <span class="block max-w-0 group-hover:max-w-full transition-all duration-200 h-px bg-w max-md:hidden"></span>
         </a>
-        <a href="/data/PPG" class="group my-5 transition duration-300">
+        <a href="/data/PPG" class="group my-5 transition duration-300" data-sveltekit-preload-data="hover">
             PPG
-            <span class="block max-w-0 group-hover:max-w-full transition-all duration-200 h-px bg-w"></span>
+            <span class="block max-w-0 group-hover:max-w-full transition-all duration-200 h-px bg-w max-md:hidden"></span>
         </a>
-        <a href="/data/matches" class="max-md:hidden group my-5 transition duration-300">
+        <a href="/data/matches" class="max-md:hidden group my-5 transition duration-300" data-sveltekit-preload-data="hover">
             Matches
             <span class="block max-w-0 group-hover:max-w-full transition-all duration-200 h-px bg-w"></span>
         </a>
     </div>
     <!-- TODO: have an autocomplete based off of `existing` -->
-    <form autocomplete="off" class="max-md:hidden ml-auto mr-8 m-0 p-0" on:submit|preventDefault={() => location.href=`/data/team/${searchData}`}>
+    <form autocomplete="off" class="max-md:hidden ml-auto mr-8 m-0 p-0" on:submit|preventDefault={search}>
         <input type="number" bind:value={searchData} placeholder="Team Search..." class="my-4 rounded px-2 py-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
     </form>
 </nav>
