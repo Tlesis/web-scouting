@@ -4,7 +4,7 @@
 
 <script lang="ts">
     import { ChargeStationLevel } from "$lib/ScoutingDataStore";
-    import { EVENT_KEY } from "$lib/types";
+    import { AllianceColor, EVENT_KEY } from "$lib/types";
     import type { PageData } from "./$types";
 
     export let data: PageData;
@@ -53,11 +53,17 @@
         </thead>
         <tbody class="border-2">
             {#each data.existing as team}
-                <tr class={`${(team.teamcolor === 1) ?
+            <!-- class={`${(team.teamcolor === 1) ?
                         "bg-red-300 text-red-900 border border-red-900" :
-                        "bg-blue-400 text-slate-800 border border-slate-800"}`}>
+                        "bg-blue-400 text-slate-800 border border-slate-800"}`} -->
+                <tr class="text-w border border-slate-500">
                     <td><a href={`https://statbotics.io/match/${EVENT_KEY}_qm${team.matchid}`} target="_blank" class="underline">{team.matchid}</a></td>
-                    <td><a href={`/data/team/${team.teamid}`} class="underline" data-sveltekit-preload-data="hover">{team.teamid}</a></td>
+                    <td class="inline-flex items-center">
+                        <svg class="w-3 h-3 mr-1 mt-px">
+                            <circle cx="5" cy="5" r="5" class={`fill-current ${(team.teamcolor === AllianceColor.red) ? "text-red-500" : "text-blue-600"}`}></circle>
+                        </svg>
+                        <a href={`/data/team/${team.teamid}`} class="underline" data-sveltekit-preload-data="hover">{team.teamid}</a>
+                    </td>
                     <td>
                         <span class={`px-2 rounded-md
                             ${(team.win) ?
@@ -67,27 +73,29 @@
                         </span>
                     </td>
 
-                    <td class={`${(team.teamcolor === 1) ?
-                        "border-l border-red-900" :
-                        "border-l border-slate-800"}`}>
+                    <td class={`border-l border-slate-500
+                        ${(!team.autoHigh) ? "font-thin text-slate-500" : ""}`}>
                         {team.autoHigh}
                     </td>
-                    <td>{team.autoMid}</td>
-                    <td>{team.autoLow}</td>
-                    <td>{(team.autoCharge === ChargeStationLevel.NotAttempted) ? "" : team.autoCharge}</td>
-                    <td class={`${(team.teamcolor === 1) ?
-                        "border-r border-red-900" :
-                        "border-r border-slate-800"}`}>
-                        {(team.autoMobility) ? "Yes" : ""}
+                    <td class={`${(!team.autoMid) ? "font-thin text-slate-500" : ""}`}>{team.autoMid}</td>
+                    <td class={`${(!team.autoLow) ? "font-thin text-slate-500" : ""}`}>{team.autoLow}</td>
+                    <td class={`${(team.autoCharge === ChargeStationLevel.failed || team.autoCharge === ChargeStationLevel.NotAttempted) ?
+                            "font-thin text-slate-500" : ""}`}>
+                        {(team.autoCharge === ChargeStationLevel.NotAttempted) ? "N/A" : team.autoCharge}
                     </td>
-                    <td>{team.teleHigh}</td>
-                    <td>{team.teleMid}</td>
-                    <td class={`${(team.teamcolor === 1) ?
-                        "border-r border-red-900" :
-                        "border-r border-slate-800"}`}>
+                    <td class={`border-r border-slate-500 ${(!team.autoMobility) ? "font-thin text-slate-500" : ""}`}>
+                        {(team.autoMobility) ? "Yes" : "No"}
+                    </td>
+                    <td class={`${(!team.teleHigh) ? "font-thin text-slate-500" : ""}`}>{team.teleHigh}</td>
+                    <td class={`${(!team.teleMid) ? "font-thin text-slate-500" : ""}`}>{team.teleMid}</td>
+                    <td class={`border-r border-slate-500
+                        ${(!team.teleLow) ? "font-thin text-slate-500" : ""}`}>
                         {team.teleLow}
                     </td>
-                    <td>{(team.endCharge === ChargeStationLevel.NotAttempted) ? "" : team.endCharge}</td>
+                    <td class={`${(team.endCharge === ChargeStationLevel.failed || team.endCharge === ChargeStationLevel.NotAttempted) ?
+                            "font-thin text-slate-500" : ""}`}>
+                        {(team.endCharge === ChargeStationLevel.NotAttempted) ? "N/A" : team.endCharge}
+                    </td>
                 </tr>
             {/each}
         </tbody>
