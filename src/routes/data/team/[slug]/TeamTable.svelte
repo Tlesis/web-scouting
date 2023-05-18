@@ -50,7 +50,7 @@
             <tr class={`${($checks[i]) ? "" : "line-through text-black"}`}>
                 <!--  -->
                 <td class="border-r border-b text-center">
-                    <input type="checkbox" bind:checked={$checks[i]}/>
+                    <input class={`${(!existing.some((e) => e.teamid === teamid && stat.match_number === e.matchid) ? "hidden" : "")}`} type="checkbox" bind:checked={$checks[i]}/>
                 </td>
                 <!-- Match -->
                 <td class="text-center border-b underline text-link"><a href={`https://statbotics.io/match/${EVENT_KEY}_qm${stat.match_number}`} target="_blank">Quals {stat.match_number}</a></td>
@@ -105,9 +105,9 @@
                     </span>
                 </td>
                 <td class="group text-w">
-                    <div class="relative -mt-4">
-                        <p class="absolute w-[10vw] hidden group-hover:block bg-primary p-2 border">{existing[i]?.notes ?? "N/A"}</p>
-                        <p class="absolute w-full group-hover:hidden text-center">...</p>
+                    <div class={`relative -mt-4 ${((existing[i]?.notes ?? "") === "") ? "hidden": ""}`}>
+                        <p class="absolute w-[10vw] hidden group-hover:block bg-primary p-2 border">{existing[i]?.notes}</p>
+                        <p class="absolute w-full group-hover:hidden text-center">. . .</p>
                     </div>
                 </td>
             </tr>

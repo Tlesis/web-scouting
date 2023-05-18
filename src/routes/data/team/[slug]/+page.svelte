@@ -33,12 +33,13 @@
     stats.sort((a, b) => a.match_number - b.match_number);
 
     const existing = data.existing.filter((team) => team.teamid === teamid);
+    const numberOfMatchesPlayed = existing.filter((match) => match.teamid === teamid).length;
 
     const round = (num: number) => Math.round(num * 10) / 10;
 
     const ignoredMatchesScores = () => {
         let scores = { total: 0, auto: 0, teleop: 0, endgame: 0 };
-        for (var i = 0; i < stats.length; i++) {
+        for (var i = 0; i < numberOfMatchesPlayed; i++) {
             if ($checks[i]) continue;
 
             const data = existing.find((match) => match.matchid === stats[i].match_number);
@@ -55,11 +56,16 @@
         return scores;
     };
 
-    $: numberOfMatches = stats.filter((stat, i) => $checks[i]).length;
-    $: total = round(((ppg?.pointTotal ?? 0) - ignoredMatchesScores().total) / numberOfMatches).toString() + ((numberOfMatches !== stats.length) ? "*" : "");
-    $: auto = round(((ppg?.totalAuto ?? 0) - ignoredMatchesScores().auto) / numberOfMatches).toString() + ((numberOfMatches !== stats.length) ? "*" : "");
-    $: teleop = round(((ppg?.totalTeleop ?? 0) - ignoredMatchesScores().teleop) / numberOfMatches).toString() + ((numberOfMatches !== stats.length) ? "*" : "");
-    $: endgame = round(((ppg?.totalEndgame ?? 0) - ignoredMatchesScores().endgame) / numberOfMatches).toString() + ((numberOfMatches !== stats.length) ? "*" : "");
+    $: numberOfAllowedMatches = (() => {
+        var num = numberOfMatchesPlayed - stats.filter((stat, i) => !($checks[i])).length;
+        num = (num < 0) ? 1 : num;
+        return num;
+    })();
+    $: total = round(((ppg?.pointTotal ?? 0) - ignoredMatchesScores().total) / numberOfAllowedMatches).toString() + ((numberOfAllowedMatches !== numberOfMatchesPlayed) ? "*" : "");
+    $: auto = round(((ppg?.totalAuto ?? 0) - ignoredMatchesScores().auto) / numberOfAllowedMatches).toString() + ((numberOfAllowedMatches !== numberOfMatchesPlayed) ? "*" : "");
+    $: teleop = round(((ppg?.totalTeleop ?? 0) - ignoredMatchesScores().teleop) / numberOfAllowedMatches).toString() + ((numberOfAllowedMatches !== numberOfMatchesPlayed) ? "*" : "");
+    $: endgame = round(((ppg?.totalEndgame ?? 0) - ignoredMatchesScores().endgame) / numberOfAllowedMatches).toString() + ((numberOfAllowedMatches !== numberOfMatchesPlayed) ? "*" : "");
+    $: console.log({ numberOfAllowedMatches, ignoredMatchesScores: ignoredMatchesScores(), ppg });
 </script>
 
 <svelte:head>
