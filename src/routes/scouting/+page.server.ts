@@ -2,10 +2,10 @@ import type { PageServerLoad, Actions } from "./$types";
 import fetch from "node-fetch";
 import { TBA_API_KEY } from "$env/static/private";
 import { fail, redirect } from "@sveltejs/kit";
-import { AllianceColor, type TBAMatch } from "$lib/types";
+import { AllianceColor, EVENT_KEY, type TBAMatch } from "$lib/types";
 
 export const load = (async ({ locals: { supabase } }) => {
-    const res = await fetch("https://www.thebluealliance.com/api/v3/event/2023mose/matches", {
+    const res = await fetch(`https://www.thebluealliance.com/api/v3/event/${EVENT_KEY}/matches`, {
         headers: {
             "X-TBA-Auth-Key": TBA_API_KEY
         }
@@ -61,7 +61,7 @@ export const actions = {
         }
 
         /* upload data */
-        const res = await fetch("https://www.thebluealliance.com/api/v3/event/2023mose/matches", {
+        const res = await fetch(`https://www.thebluealliance.com/api/v3/event/${EVENT_KEY}/matches`, {
             headers: {
                 "X-TBA-Auth-Key": TBA_API_KEY
             }

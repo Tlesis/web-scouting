@@ -21,7 +21,7 @@ module.exports = {
         node: true
     },
     rules: {
-        "indent": ["error", 4],
+        "indent": ["error", 4, { "SwitchCase": 4 }],
         "arrow-spacing": ["error", { before: true, after: true }],
         "arrow-parens": ["error", "always"],
         "quotes": ["error", "double"],

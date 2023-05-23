@@ -1,45 +1,29 @@
 import { fail } from "@sveltejs/kit";
 import { TBA_API_KEY } from "$env/static/private";
 import type { PageServerLoad } from "./$types";
-
-export interface TeamSimple {
-    city: string;
-    country: string;
-    key: string;
-    name: string;
-    nickname: string;
-    state_prov: string;
-    team_number: number;
-}
+import { EVENT_KEY, type TeamSimple } from "$lib/types";
 
 export const load = (async ({ locals: { supabase } }) => {
 
-    const simpleRes = await fetch("https://www.thebluealliance.com/api/v3/event/2023mose/teams/simple", {
-        headers: {
-            "X-TBA-Auth-Key": TBA_API_KEY
-        }
-    });
+    const [simple, status, ppg] = await Promise.all([
+        fetch(`https://www.thebluealliance.com/api/v3/event/${EVENT_KEY}/teams/simple`, {
+            headers: {
+                "X-TBA-Auth-Key": TBA_API_KEY
+            }
+        }).then((response) => response.json() as Promise<TeamSimple[]>),
 
-    if (!simpleRes.ok)
-        throw fail(500);
+        fetch(`https://www.thebluealliance.com/api/v3/event/${EVENT_KEY}/teams/statuses`, {
+            headers: {
+                "X-TBA-Auth-Key": TBA_API_KEY
+            }
+        }).then((response) => response.json()),
 
-    const simple = await simpleRes.json() as TeamSimple[];
-
-    const statusRes = await fetch("https://www.thebluealliance.com/api/v3/event/2023mose/teams/statuses", {
-        headers: {
-            "X-TBA-Auth-Key": TBA_API_KEY
-        }
-    });
-
-    if (!statusRes.ok)
-        throw fail(500);
-
-    const status = await statusRes.json();
-
-    const { data: ppg, error } = await supabase.from("ppg-data").select();
-
-    if (error)
-        throw fail(500);
+        supabase.from("ppg-data").select()
+            .then(({ data, error }) => {
+                if (error) throw fail(500, { error: error.message });
+                return data;
+            })
+    ]);
 
     return { ppg, teams: { simple, status } };
 }) satisfies PageServerLoad;
