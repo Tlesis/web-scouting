@@ -10,11 +10,13 @@
 
     export let supabase: SupabaseClient<Database>;
 
-    const submitData = async () => {
+        const submitData = async () => {
         $pageLocation = ScoutingPages.loading;
         // set scoring data
         const data = compileData($scoutingData);
-        const { error: dataError } = await supabase.from("scouting-data").update(data.compiledData).eq("id", $scoutingData.id);
+        do {
+            var { error: dataError } = await supabase.from("scouting-data").update(data.compiledData).eq("id", $scoutingData.id);
+        } while (dataError);
 
         const scores = data.scoredData;
         const i = $ppgStore.findIndex((team) => team.teamid === $scoutingData.teamid);
@@ -29,15 +31,12 @@
             totalEndgame: $ppgStore[i].totalEndgame + scores.endgame,
             totalTeleop: $ppgStore[i].totalTeleop + scores.teleop
         }
-        const { error: ppgError } = await supabase.from("ppg-data").update(ppgData).eq("teamid", ppgData.teamid);
+    
+        do {
+            var { error: ppgError } = await supabase.from("ppg-data").update(ppgData).eq("teamid", ppgData.teamid);
+        } while (ppgError);
 
-        if (dataError) {
-            console.error("Scouting Data Error\n\t" + dataError.message);
-        } else if (ppgError) {
-            console.error("PPG Data Error\n\t" + ppgError.message);
-        } else {
-            location.href = "/scouting";
-        }
+        location.href = "/scouting";
     };
 
 </script>
