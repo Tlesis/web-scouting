@@ -8,7 +8,12 @@
 
     export let data: PageData;
 
+    // cache the teamid from the slug so it doesnt get requested a whole bunch
+    const teamid = Number(data.slug);
+
+    // set up ppg store
     ppgStore.set(data.team.ppg);
+    // sort by mean PPG then by teleopTotal
     $ppgStore.sort((a, b) => {
         if (a.pointTotal === b.pointTotal) {
             return b.totalTeleop - a.totalTeleop;
@@ -16,27 +21,34 @@
             return (b.pointTotal / b.matchesPlayed) - (a.pointTotal / a.matchesPlayed);
         }
     });
+    // find the instance of the team in the slug
+    const ppg = data.team.ppg.find((team) => team.teamid === teamid);
+    // find the index of the team because with the sorting above this will give the teams PPG rank
+    const ppgRank = $ppgStore.findIndex((ppgstore) => ppg === ppgstore) + 1;
 
-    const teamid = Number(data.slug);
+    // figure out and cache the name of the team to display
     const teamName = data.team.simple.find((team) => team.team_number === teamid)?.nickname;
 
     const recordInfo = data.team.status["frc" + teamid].qual.ranking.record ?? { wins: "?", losses: "?", ties: "?" };
-    const rank = data.team.status["frc" + teamid].qual.ranking.rank ?? 0;
+    const recordString = recordInfo.wins.toString() + "-" + recordInfo.losses.toString() + "-" + recordInfo.ties.toString();
 
-    const ppg = data.team.ppg.find((team) => team.teamid === teamid);
-    const ppgRank = $ppgStore.findIndex((ppgstore) => ppg === ppgstore) + 1;
-
+    // reduce stats to be just of the team in the slug
     const stats = data.team.stats.filter((stat) =>
         (stat.red_1 === teamid || stat.red_2 === teamid || stat.red_3 === teamid) ||
         (stat.blue_1 === teamid || stat.blue_2 === teamid || stat.blue_3 === teamid)
     );
+    // sort by match id so that the display looks decent
     stats.sort((a, b) => a.match_number - b.match_number);
 
+    // reduce data down to be just of the team in the slug
     const existing = data.existing.filter((team) => team.teamid === teamid);
+    // number of matches played (more accurately scouted) by the team in question
     const numberOfMatchesPlayed = existing.filter((match) => match.teamid === teamid).length;
 
+    // round to get a single decimal point
     const round = (num: number) => Math.round(num * 10) / 10;
 
+    // find all the scores of the matches to ignore
     const ignoredMatchesScores = () => {
         let scores = { total: 0, auto: 0, teleop: 0, endgame: 0 };
         for (var i = 0; i < numberOfMatchesPlayed; i++) {
@@ -56,16 +68,24 @@
         return scores;
     };
 
+    // number of matches still left checked
     $: numberOfAllowedMatches = (() => {
         var num = numberOfMatchesPlayed - stats.filter((stat, i) => !($checks[i])).length;
-        num = (num < 0) ? 1 : num;
-        return num;
+        return ((num < 0) ? 1 : num);
     })();
-    $: total = round(((ppg?.pointTotal ?? 0) - ignoredMatchesScores().total) / numberOfAllowedMatches).toString() + ((numberOfAllowedMatches !== numberOfMatchesPlayed) ? "*" : "");
+    $: total = round(
+        // total score minus the total score of ignored matches
+        ((ppg?.pointTotal ?? 0) - ignoredMatchesScores().total)
+        // devided by the number of allowed (both played and checked matches) to find the average
+        / numberOfAllowedMatches)
+        // converted to a string to append the `*`
+        .toString() +
+        // apped `*` if any matches are unchecked
+        ((numberOfAllowedMatches !== numberOfMatchesPlayed) ? "*" : "");
+    /* same process for the rest of these */
     $: auto = round(((ppg?.totalAuto ?? 0) - ignoredMatchesScores().auto) / numberOfAllowedMatches).toString() + ((numberOfAllowedMatches !== numberOfMatchesPlayed) ? "*" : "");
     $: teleop = round(((ppg?.totalTeleop ?? 0) - ignoredMatchesScores().teleop) / numberOfAllowedMatches).toString() + ((numberOfAllowedMatches !== numberOfMatchesPlayed) ? "*" : "");
     $: endgame = round(((ppg?.totalEndgame ?? 0) - ignoredMatchesScores().endgame) / numberOfAllowedMatches).toString() + ((numberOfAllowedMatches !== numberOfMatchesPlayed) ? "*" : "");
-    $: console.log({ numberOfAllowedMatches, ignoredMatchesScores: ignoredMatchesScores(), ppg });
 </script>
 
 <svelte:head>
@@ -84,7 +104,7 @@
 
     <hr class="mx-24 my-8">
 
-    <p class="text-w text-lg my-2 mx-36">Team {teamid} ({teamName}) has a record of <b>{recordInfo.wins}-{recordInfo.losses}-{recordInfo.ties}</b>.</p>
+    <p class="text-w text-lg my-2 mx-36">Team {teamid} ({teamName}) has a record of <b>{recordString}</b>.</p>
     <div class="flex my-4">
         <p class="text-w text-lg ml-36">PPG Breakdown:</p>
         <span class="mx-2 rounded-md px-2 bg-red-700 text-w text-md">Total: {total}</span>
@@ -123,8 +143,8 @@
                 {data.event?.name ?? "?"}
             </a>
             <h2 class="ml-2 mb-3">Week: {data.event?.week ?? "?"}</h2>
-            <h1>Rank: <b>{rank}</b></h1>
-            <h1>Record: <b>{recordInfo.wins}-{recordInfo.losses}-{recordInfo.ties}</b></h1>
+            <h1>Rank: <b>{data.team.status["frc" + teamid].qual.ranking.rank ?? -1}</b></h1>
+            <h1>Record: <b>{recordString}</b></h1>
         </div>
 
         <div class="w-full">

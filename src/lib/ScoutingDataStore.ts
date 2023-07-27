@@ -94,7 +94,7 @@ export const score = (compiledData: Database["public"]["Tables"]["scouting-data"
             if (compiledData.autoCharge === ChargeStationLevel.balanced)
                 return 12;
             if (compiledData.autoCharge === ChargeStationLevel.docked)
-                return 10;
+                return 8;
             if (compiledData.autoCharge === ChargeStationLevel.failed)
                 return -2.5;
             return 0;
@@ -111,7 +111,7 @@ export const score = (compiledData: Database["public"]["Tables"]["scouting-data"
         if (compiledData.endCharge === ChargeStationLevel.balanced)
             return 10;
         if (compiledData.endCharge === ChargeStationLevel.docked)
-            return 8;
+            return 6;
         if (compiledData.endCharge === ChargeStationLevel.failed)
             return -2;
         return 0;

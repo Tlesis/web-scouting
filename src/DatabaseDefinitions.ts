@@ -12,7 +12,7 @@ export interface Database {
             "ppg-data": {
                 Row: {
                     matchesPlayed: number;
-                    meamTeleop: number;
+                    meanTeleop: number;
                     meanAuto: number;
                     meanEndgame: number;
                     pointTotal: number;
@@ -23,7 +23,7 @@ export interface Database {
                 };
                 Insert: {
                     matchesPlayed?: number;
-                    meamTeleop?: number;
+                    meanTeleop?: number;
                     meanAuto?: number;
                     meanEndgame?: number;
                     pointTotal?: number;
@@ -34,7 +34,7 @@ export interface Database {
                 };
                 Update: {
                     matchesPlayed?: number;
-                    meamTeleop?: number;
+                    meanTeleop?: number;
                     meanAuto?: number;
                     meanEndgame?: number;
                     pointTotal?: number;

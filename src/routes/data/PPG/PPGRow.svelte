@@ -40,7 +40,7 @@
     const ppgArray = $ppgStore;
     const overall = calculatePercentileRanks(ppgArray.map((ppg) => ppg.pointTotal / ppg.matchesPlayed));
     const auto = calculatePercentileRanks(ppgArray.map((ppg) => ppg.meanAuto));
-    const teleop = calculatePercentileRanks(ppgArray.map((ppg) => ppg.meamTeleop));
+    const teleop = calculatePercentileRanks(ppgArray.map((ppg) => ppg.meanTeleop));
     const endgame = calculatePercentileRanks(ppgArray.map((ppg) => ppg.meanEndgame));
 
     const recordInfo = teams.status["frc" + ppg.teamid].qual.ranking.record ?? { wins: "?", losses: "?", ties: "?" };
@@ -57,7 +57,7 @@
     <td class="border-t border-x max-md:hidden">{Math.round(((($ppgStore.length - 1) - index) / $ppgStore.length) * 100)}</td>
     <td class="border-t md:border-x max-md:border-l"><span class={percentileColor(overall[ppg.pointTotal / ppg.matchesPlayed])}>{round(ppg.pointTotal / ppg.matchesPlayed)}</span></td>
     <td class="border-t border-x max-md:hidden"><span class={percentileColor(auto[ppg.meanAuto])}>{round(ppg.meanAuto)}</span></td>
-    <td class="border-t border-x max-md:hidden"><span class={percentileColor(teleop[ppg.meamTeleop])}>{round(ppg.meamTeleop)}</span></td>
+    <td class="border-t border-x max-md:hidden"><span class={percentileColor(teleop[ppg.meanTeleop])}>{round(ppg.meanTeleop)}</span></td>
     <td class="border-t border-x max-md:hidden"><span class={percentileColor(endgame[ppg.meanEndgame])}>{round(ppg.meanEndgame)}</span></td>
     <td class="border-t border-l max-md:hidden">{@html record}</td>
 </tr>

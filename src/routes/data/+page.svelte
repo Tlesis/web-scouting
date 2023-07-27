@@ -13,6 +13,8 @@
         "Auto High", "Auto Mid", "Auto Low", "Charge Station", "Mobility",
         "Teleop High", "Teleop Mid", "Teleop Low", "Endgame"];
 
+    // download button callback
+    // generates the CSV of compiled data inplace
     const download = () => {
         const headers = Object.keys(data.existing[0]).join(',');
         const rows = data.existing.map(obj => Object.values(obj).join(','));
@@ -26,11 +28,18 @@
         document.body.removeChild(link);
     };
 
+    // sort teams by match number then team color then team number from ascending order
     data.existing.sort((a, b) => {
+
+        // sort by team match id if not the same
         if (a.matchid !== b.matchid) {
             return a.matchid - b.matchid;
+
+        // sort by team color if not the same
         } else if (a.teamcolor !== b.teamcolor) {
             return a.teamcolor - b.teamcolor;
+
+        // sort by team id
         } else {
             return a.teamid - b.teamid;
         }
@@ -47,15 +56,12 @@
 <div class="flex justify-center mb-8 max-sm:hidden">
     <table class="text-center mx-16 w-full">
         <thead class="text-w">
-            {#each headers as head}
-                <th class="w-1/12"><span class="w-11/12 rounded my-2 mx-auto">{head}</span></th>
+            {#each headers as header}
+                <th class="w-1/12"><span class="w-11/12 rounded my-2 mx-auto">{header}</span></th>
             {/each}
         </thead>
         <tbody class="border-2">
             {#each data.existing as team}
-            <!-- class={`${(team.teamcolor === 1) ?
-                        "bg-red-300 text-red-900 border border-red-900" :
-                        "bg-blue-400 text-slate-800 border border-slate-800"}`} -->
                 <tr class="text-w border border-slate-500">
                     <td><a href={`https://statbotics.io/match/${EVENT_KEY}_qm${team.matchid}`} target="_blank" class="underline">{team.matchid}</a></td>
                     <td class="inline-flex items-center">

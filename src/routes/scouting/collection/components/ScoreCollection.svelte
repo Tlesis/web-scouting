@@ -20,7 +20,7 @@
         const i = $ppgStore.findIndex((team) => team.teamid === $scoutingData.teamid);
         const ppgData = {
             matchesPlayed: $ppgStore[i].matchesPlayed + 1,
-            meamTeleop: ($ppgStore[i].totalTeleop + scores.teleop) / ($ppgStore[i].matchesPlayed + 1),
+            meanTeleop: ($ppgStore[i].totalTeleop + scores.teleop) / ($ppgStore[i].matchesPlayed + 1),
             meanAuto: ($ppgStore[i].totalAuto + scores.auto) / ($ppgStore[i].matchesPlayed + 1),
             meanEndgame: ($ppgStore[i].totalEndgame + scores.endgame) / ($ppgStore[i].matchesPlayed + 1),
             pointTotal: $ppgStore[i].pointTotal + (scores.auto + scores.teleop + scores.endgame),

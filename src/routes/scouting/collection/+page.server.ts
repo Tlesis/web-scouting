@@ -7,7 +7,7 @@ export const load = (async ({ url: { searchParams: params }, locals: { supabase 
     const id = Number(params.get("id"));
 
     const [existing, ppg] = await Promise.all([
-        supabase.from("scouting-data").select("matchid, teamid, teamcolor").eq("id", id).single()
+        supabase.from("scouting-data").select().eq("id", id).single()
             .then(({ data, error }) => {
                 if (error) throw fail(500, { error: error.message });
                 return data;
@@ -20,10 +20,9 @@ export const load = (async ({ url: { searchParams: params }, locals: { supabase 
             })
     ]);
 
-    const matchid = existing?.matchid;
-    const teamid = existing?.teamid;
-    const teamcolor = existing?.teamcolor;
+    if (!ppg.some((team) => team.teamid === existing.teamid))
+        await supabase.from("ppg-data").insert({ teamid: existing.teamid });
 
-    return { matchid, teamid, teamcolor, id, ppg };
+    return { existing, id, ppg };
 
 }) satisfies PageServerLoad;
