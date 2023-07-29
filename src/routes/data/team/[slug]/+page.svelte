@@ -136,7 +136,7 @@
                     </sup>
                 </h1>
                 <h2>Best PPG</h2>
-                <h3 class="text-sm">out of {data.ppg.length}</h3>
+                <h3 class="text-sm">out of {data.team.ppg.length}</h3>
             </a>
         </div>
     </div>
