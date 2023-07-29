@@ -1,35 +1,26 @@
+<svelte:head>
+    <title>CATATRONICS | Collection</title>
+</svelte:head>
+
 <script lang="ts">
     import type { PageData } from "./$types";
     import { ScoutingPages } from "$lib/types";
     import { pageLocation, scoutingData } from "$lib/ScoutingDataStore";
     import ScoreCollection from "./components/ScoreCollection.svelte";
-    import { ppgStore } from "$lib/PPGStore";
+    import { ppgStore, setPPGData } from "$lib/PPGStore";
 
     export let data: PageData;
 
-    ppgStore.set(data.ppg);
-    if ($ppgStore.findIndex((team) => team.teamid === data.teamid) === -1) {
-        (async () => await data.supabase.from("ppg-data").insert({ teamid: data.teamid }))();
-        ppgStore.update((ppg) => [
-            ...ppg,
-            {
-                matchesPlayed: 0,
-                meamTeleop: 0,
-                meanAuto: 0,
-                meanEndgame: 0,
-                pointTotal: 0,
-                teamid: data.teamid,
-                totalAuto: 0,
-                totalEndgame: 0,
-                totalTeleop: 0
-            }
-        ])
-    }
+    // set up ppg store to hold data between components
+    ppgStore.set(data.ppg ?? []);
+    // deploy PPG data
+    setPPGData($ppgStore, data.existing.teamid);
 
+    // set up base scouting data data
     $scoutingData.id = data.id;
-    $scoutingData.matchid = data.matchid;
-    $scoutingData.teamid = data.teamid;
-    $scoutingData.teamcolor = data.teamcolor;
+    $scoutingData.matchid = data.existing.matchid;
+    $scoutingData.teamid = data.existing.teamid;
+    $scoutingData.teamcolor = data.existing.teamcolor;
 </script>
 
 {#if $pageLocation !== ScoutingPages.loading}
@@ -43,8 +34,9 @@
     </nav>
 
     <ScoreCollection supabase={data.supabase}/>
+
 {:else}
     <div class="flex flex-col h-screen w-5/6 text-w text-center justify-center items-center">
-        <strong class="text-3xl">Loading</strong>
+        <strong class="text-3xl text-center">Uploading&hellip;</strong>
     </div>
 {/if}

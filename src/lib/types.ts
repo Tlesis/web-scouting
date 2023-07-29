@@ -1,3 +1,126 @@
+export const EVENT_KEY = "2023mokc";
+
+export interface TeamSimple {
+    city: string;
+    country: string;
+    key: string;
+    name: string;
+    nickname: string;
+    state_prov: string;
+    team_number: number;
+}
+
+export interface TBAEvent {
+    key:                 string;
+    name:                string;
+    event_code:          string;
+    event_type:          number;
+    district:            District;
+    city:                string;
+    state_prov:          string;
+    country:             string;
+    start_date:          Date;
+    end_date:            Date;
+    year:                number;
+    short_name:          string;
+    event_type_string:   string;
+    week:                number;
+    address:             string;
+    postal_code:         string;
+    gmaps_place_id:      string;
+    gmaps_url:           string;
+    lat:                 number;
+    lng:                 number;
+    location_name:       string;
+    timezone:            string;
+    website:             string;
+    first_event_id:      string;
+    first_event_code:    string;
+    webcasts:            Webcast[];
+    division_keys:       string[];
+    parent_event_key:    string;
+    playoff_type:        number;
+    playoff_type_string: string;
+}
+
+export interface District {
+    abbreviation: string;
+    display_name: string;
+    key:          string;
+    year:         number;
+}
+
+export interface Webcast {
+    type:    string;
+    channel: string;
+    date:    string;
+    file:    string;
+}
+
+export interface Statbotics {
+    key:                  string;
+    year:                 number;
+    event:                string;
+    comp_level:           string;
+    set_number:           number;
+    match_number:         number;
+    offseason:            boolean;
+    status:               string;
+    video:                null | string;
+    red_1:                number;
+    red_2:                number;
+    red_3:                number;
+    red_dq:               string;
+    red_surrogate:        string;
+    red_epa_sum:          number;
+    red_auto_epa_sum:     number;
+    red_teleop_epa_sum:   number;
+    red_endgame_epa_sum:  number;
+    red_rp_1_epa_sum:     number;
+    red_rp_2_epa_sum:     number;
+    blue_1:               number;
+    blue_2:               number;
+    blue_3:               number;
+    blue_dq:              string;
+    blue_surrogate:       string;
+    blue_epa_sum:         number;
+    blue_auto_epa_sum:    number;
+    blue_teleop_epa_sum:  number;
+    blue_endgame_epa_sum: number;
+    blue_rp_1_epa_sum:    number;
+    blue_rp_2_epa_sum:    number;
+    winner:               null | string;
+    epa_winner:           string;
+    epa_win_prob:         number;
+    red_rp_1_prob:        number;
+    red_rp_2_prob:        number;
+    blue_rp_1_prob:       number;
+    blue_rp_2_prob:       number;
+    playoff:              boolean;
+    time:                 null | number;
+    predicted_time:       null | number;
+    red_score:            null | number;
+    blue_score:           null | number;
+    red_auto:             null | number;
+    red_auto_movement:    null | number;
+    red_teleop:           null | number;
+    red_endgame:          null | number;
+    red_no_fouls:         null | number;
+    red_fouls:            null | number;
+    red_rp_1:             null | number;
+    red_rp_2:             null | number;
+    red_tiebreaker:       null | number;
+    blue_auto:            null | number;
+    blue_auto_movement:   null | number;
+    blue_teleop:          null | number;
+    blue_endgame:         null | number;
+    blue_no_fouls:        null | number;
+    blue_fouls:           null | number;
+    blue_rp_1:            null | number;
+    blue_rp_2:            null | number;
+    blue_tiebreaker:      null | number;
+}
+
 export interface TBAMatch {
     actual_time:      number | null;
     alliances:        Alliances;

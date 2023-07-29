@@ -3,91 +3,40 @@
     import Endgame from "./endgame/Endgame.svelte";
     import { ScoutingPages } from "$lib/types";
     import AutoButtons from "./auto/AutoButtons.svelte";
-    import { scoutingData, pageLocation, ChargeStationLevel } from "$lib/ScoutingDataStore";
+    import { scoutingData, pageLocation, compileData } from "$lib/ScoutingDataStore";
     import type { SupabaseClient } from "@supabase/supabase-js";
     import type { Database } from "../../../../DatabaseDefinitions";
     import { ppgStore } from "$lib/PPGStore";
 
     export let supabase: SupabaseClient<Database>;
 
-    // TODO: make cleaner
-    const submitData = async () => {
+        const submitData = async () => {
         $pageLocation = ScoutingPages.loading;
         // set scoring data
-        const compiledData = {
-            autoHigh: $scoutingData.auto[0].activated.filter((node) => node).length,
-            autoMid: $scoutingData.auto[1].activated.filter((node) => node).length,
-            autoLow: $scoutingData.auto[2].activated.filter((node) => node).length,
-            autoCharge: $scoutingData.autoCharge,
-            autoMobility: $scoutingData.autoMobility,
-            teleHigh: $scoutingData.teleop[0].activated.filter((node) => node).length,
-            teleMid: $scoutingData.teleop[1].activated.filter((node) => node).length,
-            teleLow: $scoutingData.teleop[2].activated.filter((node) => node).length,
-            endCharge: $scoutingData.endgame,
-            playDirty: $scoutingData.playDirty,
-            win: $scoutingData.win,
-            notes: $scoutingData.notes
-        };
-        const { error: dataError } = await supabase.from("scouting-data").update(compiledData).eq("id", $scoutingData.id);
+        const data = compileData($scoutingData);
+        do {
+            var { error: dataError } = await supabase.from("scouting-data").update(data.compiledData).eq("id", $scoutingData.id);
+        } while (dataError);
 
-        // set ppg data
-        var auto = 0,
-        teleop = 0,
-        endgame = 0;
-
-        auto += (
-            (Number(compiledData.autoHigh) * 6) +
-            (Number(compiledData.autoMid) * 4) +
-            (Number(compiledData.autoLow) * 3) +
-            (Number(compiledData.autoMobility) * 3) +
-            (() => {
-                if (compiledData.autoCharge === ChargeStationLevel.balanced)
-                    return 12;
-                if (compiledData.autoCharge === ChargeStationLevel.docked)
-                    return 10;
-                if (compiledData.autoCharge === ChargeStationLevel.failed)
-                    return -2.5;
-                return 0;
-            })()
-        );
-
-        teleop += (
-            (Number(compiledData.teleHigh) * 5) +
-            (Number(compiledData.teleMid) * 3) +
-            (Number(compiledData.teleLow) * 2)
-        );
-
-        endgame += (() => {
-            if (compiledData.endCharge === ChargeStationLevel.balanced)
-                return 10;
-            if (compiledData.endCharge === ChargeStationLevel.docked)
-                return 8;
-            if (compiledData.endCharge === ChargeStationLevel.failed)
-                return -2;
-            return 0;
-        })();
-
+        const scores = data.scoredData;
         const i = $ppgStore.findIndex((team) => team.teamid === $scoutingData.teamid);
         const ppgData = {
             matchesPlayed: $ppgStore[i].matchesPlayed + 1,
-            meamTeleop: ($ppgStore[i].totalTeleop + teleop) / ($ppgStore[i].matchesPlayed + 1),
-            meanAuto: ($ppgStore[i].totalAuto + auto) / ($ppgStore[i].matchesPlayed + 1),
-            meanEndgame: ($ppgStore[i].totalEndgame + endgame) / ($ppgStore[i].matchesPlayed + 1),
-            pointTotal: $ppgStore[i].pointTotal + (auto + teleop + endgame),
+            meanTeleop: ($ppgStore[i].totalTeleop + scores.teleop) / ($ppgStore[i].matchesPlayed + 1),
+            meanAuto: ($ppgStore[i].totalAuto + scores.auto) / ($ppgStore[i].matchesPlayed + 1),
+            meanEndgame: ($ppgStore[i].totalEndgame + scores.endgame) / ($ppgStore[i].matchesPlayed + 1),
+            pointTotal: $ppgStore[i].pointTotal + (scores.auto + scores.teleop + scores.endgame),
             teamid: $ppgStore[i].teamid,
-            totalAuto: $ppgStore[i].totalAuto + auto,
-            totalEndgame: $ppgStore[i].totalEndgame + endgame,
-            totalTeleop: $ppgStore[i].totalTeleop + teleop
+            totalAuto: $ppgStore[i].totalAuto + scores.auto,
+            totalEndgame: $ppgStore[i].totalEndgame + scores.endgame,
+            totalTeleop: $ppgStore[i].totalTeleop + scores.teleop
         }
-        const { error: ppgError } = await supabase.from("ppg-data").update(ppgData).eq("teamid", ppgData.teamid);
 
-        if (dataError) {
-            console.error("Scouting Data Error\n\t" + dataError.message);
-        } else if (ppgError) {
-            console.error("PPG Data Error\n\t" + ppgError.message);
-        } else {
-            location.href = "/scouting";
-        }
+        do {
+            var { error: ppgError } = await supabase.from("ppg-data").update(ppgData).eq("teamid", ppgData.teamid);
+        } while (ppgError);
+
+        location.href = "/scouting";
     };
 
 </script>
