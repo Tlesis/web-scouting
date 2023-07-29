@@ -31,7 +31,7 @@
             totalEndgame: $ppgStore[i].totalEndgame + scores.endgame,
             totalTeleop: $ppgStore[i].totalTeleop + scores.teleop
         }
-    
+
         do {
             var { error: ppgError } = await supabase.from("ppg-data").update(ppgData).eq("teamid", ppgData.teamid);
         } while (ppgError);

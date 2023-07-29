@@ -37,6 +37,6 @@
 
 {:else}
     <div class="flex flex-col h-screen w-5/6 text-w text-center justify-center items-center">
-        <strong class="text-3xl">Uploading</strong>
+        <strong class="text-3xl text-center">Uploading&hellip;</strong>
     </div>
 {/if}

@@ -43,49 +43,56 @@
     // reduce data down to be just of the team in the slug
     const existing = data.existing.filter((team) => team.teamid === teamid);
     // number of matches played (more accurately scouted) by the team in question
-    const numberOfMatchesPlayed = existing.filter((match) => match.teamid === teamid).length;
-
-    // round to get a single decimal point
-    const round = (num: number) => Math.round(num * 10) / 10;
+    const matchesPlayed = existing.filter((match) => match.teamid === teamid).length;
 
     // find all the scores of the matches to ignore
-    const ignoredMatchesScores = () => {
-        let scores = { total: 0, auto: 0, teleop: 0, endgame: 0 };
-        for (var i = 0; i < numberOfMatchesPlayed; i++) {
-            if ($checks[i]) continue;
+    const breakdownScores = (() => {
+        const cache: { [key: string]: any} = {};
 
-            const data = existing.find((match) => match.matchid === stats[i].match_number);
-            if (data === undefined) continue;
+        return (checks: boolean[]) => {
+            const cacheKey = JSON.stringify(checks);
+            if (cacheKey in cache)
+                return cache[cacheKey];
 
-            const compiledScores = score(data).scoredData;
+            let total = 0,
+                auto = 0,
+                teleop = 0,
+                endgame = 0;
+            for (let i = 0; i < matchesPlayed; i++) {
+                if (checks[i]) continue;
 
-            scores.total += (compiledScores.auto + compiledScores.teleop + compiledScores.endgame);
-            scores.auto += compiledScores.auto;
-            scores.teleop += compiledScores.teleop;
-            scores.endgame += compiledScores.endgame;
+                const data = existing.find((match) => match.matchid === stats[i].match_number);
+
+                if (data) {
+                    const compiledScores = score(data).scoredData;
+                    total += (compiledScores.auto + compiledScores.teleop + compiledScores.endgame);
+                    auto += compiledScores.auto;
+                    teleop += compiledScores.teleop;
+                    endgame += compiledScores.endgame;
+                }
+            }
+
+            const round = (num: number) => Math.round(num * 10) / 10;
+
+            const result = {
+                total: round(((ppg?.pointTotal || 0) - total) / numberOfAllowedMatches),
+                auto: round(((ppg?.totalAuto || 0) - auto) / numberOfAllowedMatches),
+                teleop: round(((ppg?.totalTeleop || 0) - teleop) / numberOfAllowedMatches),
+                endgame: round(((ppg?.totalEndgame || 0) - endgame) / numberOfAllowedMatches)
+            };
+
+            cache[cacheKey] = result;
+            return result;
         }
-
-        return scores;
-    };
+    })();
 
     // number of matches still left checked
     $: numberOfAllowedMatches = (() => {
-        var num = numberOfMatchesPlayed - stats.filter((stat, i) => !($checks[i])).length;
-        return ((num < 0) ? 1 : num);
+        const numUncheckedMatches = $checks.filter((check) => !check).length;
+        return Math.max(matchesPlayed - numUncheckedMatches, 1);
     })();
-    $: total = round(
-        // total score minus the total score of ignored matches
-        ((ppg?.pointTotal ?? 0) - ignoredMatchesScores().total)
-        // devided by the number of allowed (both played and checked matches) to find the average
-        / numberOfAllowedMatches)
-        // converted to a string to append the `*`
-        .toString() +
-        // apped `*` if any matches are unchecked
-        ((numberOfAllowedMatches !== numberOfMatchesPlayed) ? "*" : "");
-    /* same process for the rest of these */
-    $: auto = round(((ppg?.totalAuto ?? 0) - ignoredMatchesScores().auto) / numberOfAllowedMatches).toString() + ((numberOfAllowedMatches !== numberOfMatchesPlayed) ? "*" : "");
-    $: teleop = round(((ppg?.totalTeleop ?? 0) - ignoredMatchesScores().teleop) / numberOfAllowedMatches).toString() + ((numberOfAllowedMatches !== numberOfMatchesPlayed) ? "*" : "");
-    $: endgame = round(((ppg?.totalEndgame ?? 0) - ignoredMatchesScores().endgame) / numberOfAllowedMatches).toString() + ((numberOfAllowedMatches !== numberOfMatchesPlayed) ? "*" : "");
+    $: breakdownScore = breakdownScores($checks);
+    $: suffix = ((numberOfAllowedMatches !== matchesPlayed) ? "*" : "");
 </script>
 
 <svelte:head>
@@ -107,10 +114,10 @@
     <p class="text-w text-lg my-2 mx-36">Team {teamid} ({teamName}) has a record of <b>{recordString}</b>.</p>
     <div class="flex my-4">
         <p class="text-w text-lg ml-36">PPG Breakdown:</p>
-        <span class="mx-2 rounded-md px-2 bg-red-700 text-w text-md">Total: {total}</span>
-        <span class="mx-2 rounded-md px-2 bg-blue-800 text-w text-md">Auto: {auto}</span>
-        <span class="mx-2 rounded-md px-2 bg-orange-600 text-w text-md">Teleop: {teleop}</span>
-        <span class="mx-2 rounded-md px-2 bg-green-700 text-w text-md">Endgame: {endgame}</span>
+        <span class="mx-2 rounded-md px-2 bg-red-700 text-w text-md">Total: {breakdownScore.total + suffix}</span>
+        <span class="mx-2 rounded-md px-2 bg-blue-800 text-w text-md">Auto: {breakdownScore.auto + suffix}</span>
+        <span class="mx-2 rounded-md px-2 bg-orange-600 text-w text-md">Teleop: {breakdownScore.teleop + suffix}</span>
+        <span class="mx-2 rounded-md px-2 bg-green-700 text-w text-md">Endgame: {breakdownScore.endgame + suffix}</span>
     </div>
     <div class="text-center">
         <div class="w-fit mx-auto text-w bg-blue-600 py-1 px-4 rounded-md">
