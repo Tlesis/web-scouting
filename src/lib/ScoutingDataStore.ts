@@ -13,13 +13,20 @@ export interface ScoutingData {
     teleop: Scoring[];
     endgame: ChargeStationLevel;
     playDirty: boolean;
-    win: boolean;
+    win: WinState;
     notes: string;
 }
 
 interface Scoring {
     place: string;
     activated: boolean[];
+}
+
+export enum WinState {
+    Win = 2,
+    Loss = 1,
+    Tie = 0,
+    unset = -1
 }
 
 export enum ChargeStationLevel {
@@ -29,7 +36,7 @@ export enum ChargeStationLevel {
     balanced = "Engaged"
 }
 
-const defaultScoutingData = {
+const defaultScoutingData: ScoutingData = {
     id: 0,
     matchid: 0,
     teamid: 0,
@@ -48,7 +55,7 @@ const defaultScoutingData = {
     ],
     endgame: ChargeStationLevel.NotAttempted,
     playDirty: false,
-    win: false,
+    win: WinState.unset,
     notes: ""
 };
 
@@ -69,7 +76,7 @@ export const compileData = (scoutingData: ScoutingData) => {
         teleLow: teleop[2].activated.filter((node) => node).length,
         endCharge: scoutingData.endgame,
         playDirty: scoutingData.playDirty,
-        win: scoutingData.win,
+        win: (scoutingData.win === WinState.Win) ? true : false,
         notes: scoutingData.notes,
         id: scoutingData.id,
         matchid: scoutingData.matchid,
