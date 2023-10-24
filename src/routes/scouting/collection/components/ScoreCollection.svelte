@@ -3,14 +3,18 @@
     import Endgame from "./endgame/Endgame.svelte";
     import { ScoutingPages } from "$lib/types";
     import AutoButtons from "./auto/AutoButtons.svelte";
-    import { scoutingData, pageLocation, compileData } from "$lib/ScoutingDataStore";
+    import { scoutingData, pageLocation, compileData, WinState } from "$lib/ScoutingDataStore";
     import type { SupabaseClient } from "@supabase/supabase-js";
     import type { Database } from "../../../../DatabaseDefinitions";
     import { ppgStore } from "$lib/PPGStore";
 
     export let supabase: SupabaseClient<Database>;
 
-        const submitData = async () => {
+    const submitData = async () => {
+        if ($scoutingData.win === WinState.unset) {
+            alert("Please set Won, Lost or Tied!");
+            return;
+        }
         $pageLocation = ScoutingPages.loading;
         // set scoring data
         const data = compileData($scoutingData);
@@ -57,8 +61,8 @@
 
 {:else}
     <Endgame/>
-    <div class="flex justify-center">
-        <button class="w-5/6 text-w text-xl shadow-sm rounded bg-active py-3"
+    <div class="flex justify-center mt-8">
+        <button class={`w-5/6 text-xl shadow-sm rounded ${($scoutingData.win !== WinState.unset) ? "text-w bg-active" : "text-secondary bg-inactive"} py-3`}
                 on:click={submitData}>Submit</button>
     </div>
 {/if}
