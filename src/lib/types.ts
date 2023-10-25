@@ -216,7 +216,7 @@ export enum AllianceColor {
     blue
 }
 
-export enum ScoutingPages {
+export enum ScoutingPage {
     auto = 1,
     teleop,
     endgame,

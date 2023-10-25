@@ -1,21 +1,21 @@
 <script lang="ts">
-    import Page from "./Page.svelte";
     import Endgame from "./endgame/Endgame.svelte";
-    import { ScoutingPages } from "$lib/types";
-    import AutoButtons from "./auto/AutoButtons.svelte";
-    import { scoutingData, pageLocation, compileData, WinState } from "$lib/ScoutingDataStore";
+    import { ScoutingPage } from "$lib/types";
+    import { scoutingData, scoutingPage, compileData, WinState } from "$lib/ScoutingDataStore";
     import type { SupabaseClient } from "@supabase/supabase-js";
     import type { Database } from "../../../../DatabaseDefinitions";
     import { ppgStore } from "$lib/PPGStore";
+    import Auto from "./auto/Auto.svelte";
+    import Teleop from "./teleop/Teleop.svelte";
 
     export let supabase: SupabaseClient<Database>;
 
-    const submitData = async () => {
+    const submit = async () => {
         if ($scoutingData.win === WinState.unset) {
             alert("Please set Won, Lost or Tied!");
             return;
         }
-        $pageLocation = ScoutingPages.loading;
+        $scoutingPage = ScoutingPage.loading;
         // set scoring data
         const data = compileData($scoutingData);
         do {
@@ -43,26 +43,19 @@
         location.href = "/scouting";
     };
 
-</script>
+</script> 
 
-{#if $pageLocation !== ScoutingPages.endgame}
-
-    <Page/>
-
-    {#if $pageLocation === ScoutingPages.teleop}
-        <div class="text-w text-lg w-full my-2">
-            <b class="flex justify-center">Match: {$scoutingData.matchid}</b>
-            <b class="flex justify-center">Team: {$scoutingData.teamid}</b>
-            <b class="flex justify-center">Alliance: {($scoutingData.teamcolor === 1) ? "Red" : "Blue"}</b>
-        </div>
-    {:else}
-        <AutoButtons/>
-    {/if}
-
-{:else}
+{#if $scoutingPage === ScoutingPage.auto}
+    <Auto/>
+{:else if $scoutingPage === ScoutingPage.teleop}
+    <Teleop/>
+{:else if $scoutingPage === ScoutingPage.endgame}
     <Endgame/>
-    <div class="flex justify-center mt-8">
-        <button class={`w-5/6 text-xl shadow-sm rounded ${($scoutingData.win !== WinState.unset) ? "text-w bg-active" : "text-secondary bg-inactive"} py-3`}
-                on:click={submitData}>Submit</button>
+    <div class="flex justify-center my-4">
+        <button
+            class="text-w text-2xl py-3 bg-active active:bg-inactive rounded w-5/6"
+            on:click={submit}>
+            Submit
+        </button>
     </div>
 {/if}

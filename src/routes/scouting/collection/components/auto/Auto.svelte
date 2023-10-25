@@ -1,5 +1,6 @@
 <script lang="ts">
     import { ChargeStationLevel, scoutingData } from "$lib/ScoutingDataStore";
+    import Powergrid from "./AutoPowergrid.svelte";
 
     const levels = [
         { color: "bg-inactive",   level: ChargeStationLevel.NotAttempted },
@@ -20,6 +21,8 @@
 
     buttonColor = levels[levels.findIndex((level) => level.level === $scoutingData.autoCharge)].color;
 </script>
+
+<Powergrid/>
 
 <div class="flex flex-row justify-evenly">
     <div class="flex flex-col items-center m-1">

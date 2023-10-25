@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import { AllianceColor, ScoutingPages } from "./types";
+import { AllianceColor, ScoutingPage } from "./types";
 import type { Database } from "../DatabaseDefinitions";
 
 export interface ScoutingData {
@@ -135,4 +135,4 @@ export const score = (compiledData: Database["public"]["Tables"]["scouting-data"
 };
 
 /** Page Location **/
-export const pageLocation = writable<ScoutingPages>(ScoutingPages.auto);
+export const scoutingPage = writable<ScoutingPage>(ScoutingPage.auto);
