@@ -1,5 +1,6 @@
 <script lang="ts">
     import { ChargeStationLevel, scoutingData } from "$lib/ScoutingDataStore";
+    import Powergrid from "./AutoPowergrid.svelte";
 
     const levels = [
         { color: "bg-inactive",   level: ChargeStationLevel.NotAttempted },
@@ -21,6 +22,8 @@
     buttonColor = levels[levels.findIndex((level) => level.level === $scoutingData.autoCharge)].color;
 </script>
 
+<Powergrid/>
+
 <div class="flex flex-row justify-evenly">
     <div class="flex flex-col items-center m-1">
         <label for="balanceButton" class="text-w text-xl font-bold">Charge Station</label>
@@ -32,6 +35,6 @@
     <div class="flex flex-col items-center m-1">
         <label for="mobility" class="text-w text-xl font-bold">Mobility</label>
         <input type="checkbox" bind:checked={$scoutingData.autoMobility}
-            class={`appearance-none shadow-sm rounded ${$scoutingData.autoMobility ? "bg-active" : "bg-inactive"} mt-1 p-5`}/>
+            class="appearance-none shadow-sm rounded checked:bg-active bg-inactive mt-1 p-5"/>
     </div>
 </div>

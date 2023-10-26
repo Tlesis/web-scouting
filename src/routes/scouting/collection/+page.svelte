@@ -4,8 +4,8 @@
 
 <script lang="ts">
     import type { PageData } from "./$types";
-    import { ScoutingPages } from "$lib/types";
-    import { pageLocation, scoutingData } from "$lib/ScoutingDataStore";
+    import { ScoutingPage } from "$lib/types";
+    import { scoutingPage, scoutingData } from "$lib/ScoutingDataStore";
     import ScoreCollection from "./components/ScoreCollection.svelte";
     import { ppgStore, setPPGData } from "$lib/PPGStore";
 
@@ -23,14 +23,14 @@
     $scoutingData.teamcolor = data.existing.teamcolor;
 </script>
 
-{#if $pageLocation !== ScoutingPages.loading}
+{#if $scoutingPage !== ScoutingPage.loading}
     <nav class="flex flex-row w-full justify-evenly">
-        <button on:click={() => $pageLocation = ScoutingPages.auto}
-            class={`text-w text-2xl ${$pageLocation === ScoutingPages.auto    ? "bg-active" : "bg-inactive"} w-1/3 py-3 border border-w`}>Auto</button>
-        <button on:click={() => $pageLocation = ScoutingPages.teleop}
-            class={`text-w text-2xl ${$pageLocation === ScoutingPages.teleop  ? "bg-active" : "bg-inactive"} w-1/3 py-3 border border-w`}>Tele-Op</button>
-        <button on:click={() => $pageLocation = ScoutingPages.endgame}
-            class={`text-w text-2xl ${$pageLocation === ScoutingPages.endgame ? "bg-active" : "bg-inactive"} w-1/3 py-3 border border-w`}>Endgame</button>
+        <button on:click={() => $scoutingPage = ScoutingPage.auto}
+            class={`text-w text-2xl ${$scoutingPage === ScoutingPage.auto    ? "bg-active" : "bg-inactive"} w-1/3 py-3 border border-w`}>Auto</button>
+        <button on:click={() => $scoutingPage = ScoutingPage.teleop}
+            class={`text-w text-2xl ${$scoutingPage === ScoutingPage.teleop  ? "bg-active" : "bg-inactive"} w-1/3 py-3 border border-w`}>Tele-Op</button>
+        <button on:click={() => $scoutingPage = ScoutingPage.endgame}
+            class={`text-w text-2xl ${$scoutingPage === ScoutingPage.endgame ? "bg-active" : "bg-inactive"} w-1/3 py-3 border border-w`}>Endgame</button>
     </nav>
 
     <ScoreCollection supabase={data.supabase}/>

@@ -1,4 +1,4 @@
-export const EVENT_KEY = "2023mokc";
+export const EVENT_KEY = "2023cttd";
 
 export interface TeamSimple {
     city: string;
@@ -216,7 +216,7 @@ export enum AllianceColor {
     blue
 }
 
-export enum ScoutingPages {
+export enum ScoutingPage {
     auto = 1,
     teleop,
     endgame,
