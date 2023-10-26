@@ -1,12 +1,12 @@
 <script lang="ts">
-    import Endgame from "./endgame/Endgame.svelte";
     import { ScoutingPage } from "$lib/types";
     import { scoutingData, scoutingPage, compileData, WinState } from "$lib/ScoutingDataStore";
+    import { ppgStore } from "$lib/PPGStore";
     import type { SupabaseClient } from "@supabase/supabase-js";
     import type { Database } from "../../../../DatabaseDefinitions";
-    import { ppgStore } from "$lib/PPGStore";
     import Auto from "./auto/Auto.svelte";
     import Teleop from "./teleop/Teleop.svelte";
+    import Endgame from "./endgame/Endgame.svelte";
 
     export let supabase: SupabaseClient<Database>;
 
