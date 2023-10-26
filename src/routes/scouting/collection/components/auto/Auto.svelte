@@ -35,6 +35,6 @@
     <div class="flex flex-col items-center m-1">
         <label for="mobility" class="text-w text-xl font-bold">Mobility</label>
         <input type="checkbox" bind:checked={$scoutingData.autoMobility}
-            class={`appearance-none shadow-sm rounded ${$scoutingData.autoMobility ? "bg-active" : "bg-inactive"} mt-1 p-5`}/>
+            class="appearance-none shadow-sm rounded checked:bg-active bg-inactive mt-1 p-5"/>
     </div>
 </div>
