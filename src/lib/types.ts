@@ -1,4 +1,4 @@
-export const EVENT_KEY = "2023cttd";
+export const EVENT_KEY = "2023mokc";
 
 export interface TeamSimple {
     city: string;
