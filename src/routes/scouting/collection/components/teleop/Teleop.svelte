@@ -4,7 +4,7 @@
     import Auto from "../auto/Auto.svelte";
 
     const teamcolor = $scoutingData.teamcolor;
-    const order = (teamcolor === AllianceColor.blue) ? [0, 1, 2] : [2, 1, 0];
+    const order = (teamcolor === AllianceColor.red) ? [0, 1, 2] : [2, 1, 0];
 
     const rows = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
@@ -22,7 +22,7 @@
     <table class="text-w text-center mt-2 w-full">
         <thead>
             <tr>
-                {#if teamcolor === AllianceColor.blue}
+                {#if teamcolor === AllianceColor.red}
                     <th class="w-1/3"><p class="w-11/12 bg-inactive rounded mx-auto">Top</p></th>
                     <th class="w-1/3"><p class="w-11/12 bg-inactive rounded mx-auto">Middle</p></th>
                     <th class="w-1/3"><p class="w-11/12 bg-inactive rounded mx-auto">Bottom</p></th>
