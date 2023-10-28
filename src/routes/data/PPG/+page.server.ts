@@ -1,22 +1,18 @@
 import { fail } from "@sveltejs/kit";
-import { TBA_API_KEY } from "$env/static/private";
 import type { PageServerLoad } from "./$types";
-import { EVENT_KEY, type TeamSimple } from "$lib/types";
+import { fetchOptions, type FRCTeams } from "$lib/types";
 
 export const load = (async ({ locals: { supabase } }) => {
 
-    const [simple, status, ppg] = await Promise.all([
-        fetch(`https://www.thebluealliance.com/api/v3/event/${EVENT_KEY}/teams/simple`, {
-            headers: {
-                "X-TBA-Auth-Key": TBA_API_KEY
-            }
-        }).then((response) => response.json() as Promise<TeamSimple[]>),
+    const [ teams, ppg ] = await Promise.all([
 
-        fetch(`https://www.thebluealliance.com/api/v3/event/${EVENT_KEY}/teams/statuses`, {
-            headers: {
-                "X-TBA-Auth-Key": TBA_API_KEY
-            }
-        }).then((response) => response.json()),
+        // don't hardcode the event code this was done because i am writing this in bus
+        fetch("https://frc-api.firstinspires.org/v3.0/2023/teams?&eventCode=molee", fetchOptions)
+            .then((res) => res.json() as Promise<FRCTeams>)
+            .then((res) => res.teams.map((team) => ({
+                teamNumber: team.teamNumber,
+                teamName: team.nameShort
+            }))),
 
         supabase.from("ppg-data").select()
             .then(({ data, error }) => {
@@ -25,5 +21,6 @@ export const load = (async ({ locals: { supabase } }) => {
             })
     ]);
 
-    return { ppg, teams: { simple, status } };
+    return { teams, ppg };
+
 }) satisfies PageServerLoad;

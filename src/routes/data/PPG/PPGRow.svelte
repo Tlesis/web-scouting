@@ -1,12 +1,13 @@
 <script lang="ts">
-    import type { TeamSimple } from "$lib/types";
     import { ppgStore } from "$lib/PPGStore";
 
     export let index: number;
-    export let teams: { simple: TeamSimple[], status: any }
+    export let teams: {
+        teamNumber: number;
+        teamName: string;
+    }[];
 
     const ppg = $ppgStore[index];
-
     const percentileColor = (percentile: number) => {
         var ret = "";
         if (percentile >= 95)
@@ -22,7 +23,7 @@
 
     const round = (num: number) => Math.round(num * 10) / 10;
 
-    function calculatePercentileRanks(arr: number[]): {[key: number]: number} {
+    const calculatePercentileRanks = (arr: number[]): {[key: number]: number} => {
         const sortedArr = [...arr].sort((a, b) => a - b);
         const result: {[key: number]: number} = {};
 
@@ -42,22 +43,19 @@
     const auto = calculatePercentileRanks(ppgArray.map((ppg) => ppg.meanAuto));
     const teleop = calculatePercentileRanks(ppgArray.map((ppg) => ppg.meanTeleop));
     const endgame = calculatePercentileRanks(ppgArray.map((ppg) => ppg.meanEndgame));
-
-    const recordInfo = teams.status["frc" + ppg.teamid].qual.ranking.record ?? { wins: "?", losses: "?", ties: "?" };
-    const record = "<span class=\"text-green-600 font-normal\">" + recordInfo.wins + "</span>-<span class=\"text-red-600 font-normal\">" + recordInfo.losses + "</span>-<span class=\"font-normal\">" + recordInfo.ties + "</span>";
 </script>
 
 <tr>
-    <td class="border-t border-r">{ppg.teamid}</td>
+    <td class="border-t">{ppg.teamid}</td>
     <td class="border-t border-x break-words">
-        <a href={`/data/team/${ppg.teamid}`} data-sveltekit-preload-data="hover"
-        class="underline text-link font-normal">{teams.simple.find((team) => team.team_number === ppg.teamid)?.nickname}</a>
+        <a href={`https://thebluealliance.com/team/${ppg.teamid}`} target="_blank" class="underline text-link font-normal">
+            {teams.find((team) => team.teamNumber === ppg.teamid)?.teamName ?? ppg.teamid.toString()}
+        </a>
     </td>
     <td class="border-t border-x">{index + 1}</td>
     <td class="border-t border-x max-md:hidden">{Math.round(((($ppgStore.length - 1) - index) / $ppgStore.length) * 100)}</td>
     <td class="border-t md:border-x max-md:border-l"><span class={percentileColor(overall[ppg.pointTotal / ppg.matchesPlayed])}>{round(ppg.pointTotal / ppg.matchesPlayed)}</span></td>
     <td class="border-t border-x max-md:hidden"><span class={percentileColor(auto[ppg.meanAuto])}>{round(ppg.meanAuto)}</span></td>
     <td class="border-t border-x max-md:hidden"><span class={percentileColor(teleop[ppg.meanTeleop])}>{round(ppg.meanTeleop)}</span></td>
-    <td class="border-t border-x max-md:hidden"><span class={percentileColor(endgame[ppg.meanEndgame])}>{round(ppg.meanEndgame)}</span></td>
-    <td class="border-t border-l max-md:hidden">{@html record}</td>
+    <td class="border-t max-md:hidden"><span class={percentileColor(endgame[ppg.meanEndgame])}>{round(ppg.meanEndgame)}</span></td>
 </tr>
