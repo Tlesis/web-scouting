@@ -1,6 +1,5 @@
 <script lang="ts">
-    import { scoutingData, scoutingPage } from "$lib/ScoutingDataStore";
-    import { AllianceColor } from "$lib/types";
+    import { AllianceColor, scoutingData, scoutingPage } from "$lib/ScoutingDataStore";
 
     const teamcolor = $scoutingData.teamcolor;
     const order = (teamcolor === AllianceColor.red) ? [0, 1, 2] : [2, 1, 0];

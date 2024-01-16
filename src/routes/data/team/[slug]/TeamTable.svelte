@@ -1,15 +1,14 @@
 <script lang="ts">
-    import { EVENT_KEY, type Statbotics } from "$lib/types";
     import type { Database } from "../../../../DatabaseDefinitions";
     import { checks } from "./CheckedStore";
 
-    export let stats: Statbotics[];
+    export let stats: StatMatch[];
     export let teamid: number;
     export let existing: Database["public"]["Tables"]["scouting-data"]["Row"][];
 
     existing.sort((a, b) => a.matchid - b.matchid)
 
-    const teamColor = (s: Statbotics) => {
+    const teamColor = (s: StatMatch) => {
         var sTeams = [ s.red_1, s.red_2, s.red_3 ];
         if (sTeams.some((team) => team === teamid)) {
             return "red";
@@ -18,7 +17,7 @@
         }
     };
 
-    const winningColor = (stat: Statbotics) => {
+    const winningColor = (stat: StatMatch) => {
         const teamcolor = teamColor(stat);
         if (stat.winner === teamcolor) {
             return "bg-green-500 text-green-950";
@@ -53,7 +52,7 @@
                     <input class={`${(!existing.some((e) => e.teamid === teamid && stat.match_number === e.matchid) ? "hidden" : "")}`} type="checkbox" bind:checked={$checks[i]}/>
                 </td>
                 <!-- Match -->
-                <td class="text-center border-b underline text-link"><a href={`https://statbotics.io/match/${EVENT_KEY}_qm${stat.match_number}`} target="_blank">Quals {stat.match_number}</a></td>
+                <td class="text-center border-b underline text-link"><a href={`https://statbotics.io/match/${stat.event}_qm${stat.match_number}`} target="_blank">Quals {stat.match_number}</a></td>
                 <!-- Red Alliance -->
                 <td class={`bg-red-300 text-red-900
                     ${(teamid === stat.red_1 || teamid === stat.red_2 || teamid === stat.red_3) ?

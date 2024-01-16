@@ -1,6 +1,10 @@
 import { writable } from "svelte/store";
-import { AllianceColor, ScoutingPage } from "./types";
 import type { Database } from "../DatabaseDefinitions";
+
+export enum AllianceColor {
+    red = 1,
+    blue = 2
+}
 
 export interface ScoutingData {
     id: number;
@@ -135,4 +139,10 @@ export const score = (compiledData: Database["public"]["Tables"]["scouting-data"
 };
 
 /** Page Location **/
+export enum ScoutingPage {
+    auto    = 1,
+    teleop  = 2,
+    endgame = 3,
+    loading = 4
+}
 export const scoutingPage = writable<ScoutingPage>(ScoutingPage.auto);

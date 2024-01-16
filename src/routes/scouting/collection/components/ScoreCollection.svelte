@@ -1,6 +1,5 @@
 <script lang="ts">
-    import { ScoutingPage } from "$lib/types";
-    import { scoutingData, scoutingPage, compileData, WinState } from "$lib/ScoutingDataStore";
+    import { scoutingData, scoutingPage, compileData, WinState, ScoutingPage } from "$lib/ScoutingDataStore";
     import { ppgStore } from "$lib/PPGStore";
     import type { SupabaseClient } from "@supabase/supabase-js";
     import type { Database } from "../../../../DatabaseDefinitions";

@@ -1,20 +1,10 @@
 import type { PageServerLoad, Actions } from "./$types";
-import fetch from "node-fetch";
-import { TBA_API_KEY } from "$env/static/private";
 import { fail, redirect } from "@sveltejs/kit";
-import { AllianceColor, EVENT_KEY, type TBAMatch } from "$lib/types";
+import { AllianceColor } from "$lib/ScoutingDataStore";
 
-export const load = (async ({ locals: { supabase } }) => {
-    const res = await fetch(`https://www.thebluealliance.com/api/v3/event/${EVENT_KEY}/matches`, {
-        headers: {
-            "X-TBA-Auth-Key": TBA_API_KEY
-        }
-    });
+export const load = (async ({ locals: { supabase, scoutingFetch } }) => {
 
-    if (!res.ok)
-        throw fail(500);
-
-    const results = await res.json() as TBAMatch[];
+    const results = await scoutingFetch.TBA.eventMatches();
 
     const matches =
         results.filter((match) => match.comp_level === "qm")
@@ -37,7 +27,7 @@ export const load = (async ({ locals: { supabase } }) => {
 
 
 export const actions = {
-    default: async ({ request, locals: { supabase } }) => {
+    default: async ({ request, locals: { supabase, scoutingFetch } }) => {
         const form = await request.formData();
 
         const matchid = form.get("matchid") as string;
@@ -61,16 +51,7 @@ export const actions = {
         }
 
         /* upload data */
-        const res = await fetch(`https://www.thebluealliance.com/api/v3/event/${EVENT_KEY}/matches`, {
-            headers: {
-                "X-TBA-Auth-Key": TBA_API_KEY
-            }
-        });
-
-        if (!res.ok)
-            throw fail(500);
-
-        const results = await res.json() as TBAMatch[];
+        const results = await scoutingFetch.TBA.eventMatches();
 
         const match = results.filter((match) => match.comp_level === "qm").find((match) => match.match_number === Number(matchid));
 

@@ -1,7 +1,5 @@
 <script lang="ts">
-    import { scoutingData, scoutingPage } from "$lib/ScoutingDataStore";
-    import { AllianceColor } from "$lib/types";
-    import Auto from "../auto/Auto.svelte";
+    import { AllianceColor, scoutingData, scoutingPage } from "$lib/ScoutingDataStore";
 
     const teamcolor = $scoutingData.teamcolor;
     const order = (teamcolor === AllianceColor.red) ? [0, 1, 2] : [2, 1, 0];
@@ -42,7 +40,7 @@
                                 bind:checked={$scoutingData.teleop[j].activated[row]}
                                 name="{$scoutingPage}-{order}-{row}"
                                 class={`appearance-none rounded shadow-sm p-4 ${getColor(row, j)} bg-inactive my-1`}/>
-                        </td>    
+                        </td>
                     {/each}
                 </tr>
             {/each}

@@ -3,8 +3,7 @@
 </svelte:head>
 
 <script lang="ts">
-    import { ChargeStationLevel } from "$lib/ScoutingDataStore";
-    import { AllianceColor, EVENT_KEY } from "$lib/types";
+    import { AllianceColor, ChargeStationLevel } from "$lib/ScoutingDataStore";
     import type { PageData } from "./$types";
 
     export let data: PageData;
@@ -63,7 +62,7 @@
         <tbody class="border-2">
             {#each data.existing as team}
                 <tr class="text-w border border-slate-500">
-                    <td><a href={`https://statbotics.io/match/${EVENT_KEY}_qm${team.matchid}`} target="_blank" class="underline">{team.matchid}</a></td>
+                    <td><a href={`https://statbotics.io/match/${data.eventkey}_qm${team.matchid}`} target="_blank" class="underline">{team.matchid}</a></td>
                     <td class="inline-flex items-center">
                         <svg class="w-3 h-3 mr-1 mt-px">
                             <circle cx="5" cy="5" r="5" class={`fill-current ${(team.teamcolor === AllianceColor.red) ? "text-red-500" : "text-blue-600"}`}></circle>

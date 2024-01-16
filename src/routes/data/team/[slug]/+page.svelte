@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { EVENT_KEY } from "$lib/types";
     import type { PageData } from "./$types";
     import TeamTable from "./TeamTable.svelte";
     import { ppgStore } from "$lib/PPGStore";
@@ -27,10 +26,10 @@
     const ppgRank = $ppgStore.findIndex((ppgstore) => ppg === ppgstore) + 1;
 
     // figure out and cache the name of the team to display
-    const teamName = data.team.simple.find((team) => team.team_number === teamid)?.nickname;
+    const teamName = data.team.simple;
 
-    const recordInfo = data.team.status["frc" + teamid].qual.ranking.record ?? { wins: "?", losses: "?", ties: "?" };
-    const recordString = recordInfo.wins.toString() + "-" + recordInfo.losses.toString() + "-" + recordInfo.ties.toString();
+    const record = data.team.ranking.Rankings[0];
+    const recordString = `${record.wins}-${record.losses}-${record.ties}`
 
     // reduce stats to be just of the team in the slug
     const stats = data.team.stats.filter((stat) =>
@@ -61,7 +60,7 @@
             for (let i = 0; i < matchesPlayed; i++) {
                 if (checks[i]) continue;
 
-                const data = existing.find((match) => match.matchid === stats[i].match_number);
+                const data = existing.find((match) => match.matchid === i + 1);
 
                 if (data) {
                     const compiledScores = score(data).scoredData;
@@ -145,12 +144,12 @@
 
     <div class="mx-28 flex">
         <div class="text-w w-1/3">
-            <a href={`https://www.thebluealliance.com/event/${EVENT_KEY}`} target="_blank"
+            <a href={`https://www.thebluealliance.com/event/${data.eventkey}`} target="_blank"
                 class="underline text-link text-xl">
-                {data.event?.name ?? "?"}
+                {data.event.name}
             </a>
-            <h2 class="ml-2 mb-3">Week: {data.event?.week ?? "?"}</h2>
-            <h1>Rank: <b>{data.team.status["frc" + teamid].qual.ranking.rank ?? -1}</b></h1>
+            <h2 class="ml-2 mb-3">Week: {data.event.week}</h2>
+            <h1>Rank: <b>{record.rank}</b></h1>
             <h1>Record: <b>{recordString}</b></h1>
         </div>
 

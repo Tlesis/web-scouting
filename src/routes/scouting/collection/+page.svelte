@@ -4,8 +4,7 @@
 
 <script lang="ts">
     import type { PageData } from "./$types";
-    import { ScoutingPage } from "$lib/types";
-    import { scoutingPage, scoutingData } from "$lib/ScoutingDataStore";
+    import { scoutingPage, scoutingData, ScoutingPage } from "$lib/ScoutingDataStore";
     import ScoreCollection from "./components/ScoreCollection.svelte";
     import { ppgStore, setPPGData } from "$lib/PPGStore";
 

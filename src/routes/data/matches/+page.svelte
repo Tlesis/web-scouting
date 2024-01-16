@@ -3,14 +3,13 @@
 </svelte:head>
 
 <script lang="ts">
-    import { EVENT_KEY, type Statbotics } from "$lib/types";
     import type { PageData } from "./$types";
 
     export let data: PageData;
 
     data.stats.sort((a, b) => a.match_number - b.match_number);
 
-    const winningColor = (stat: Statbotics) => {
+    const winningColor = (stat: StatMatch) => {
         if (stat.winner === stat.epa_winner) {
             return "bg-green-500 text-green-950";
         } else if (
@@ -23,7 +22,7 @@
         return "bg-primary text-w";
     };
 
-    const rankingPoints = (stat: Statbotics, alliance: string) => {
+    const rankingPoints = (stat: StatMatch, alliance: string) => {
         var ret = "";
         var totalrp = 0;
 
@@ -42,8 +41,8 @@
 
 
 <div class="w-full flex justify-center my-8">
-    <a href={`https://www.thebluealliance.com/event/` + EVENT_KEY} target="_blank" class="flex w-fit">
-        <h1 class="text-w text-4xl font-thin">{EVENT_KEY.slice(0, 4)} {data.event?.name ?? "?"}</h1>
+    <a href={`https://www.thebluealliance.com/event/${data.eventKey}`} target="_blank" class="flex w-fit">
+        <h1 class="text-w text-4xl font-thin">{data.year} {data.event.name ?? data.eventKey}</h1>
         <img src="/tba.webp" alt="" class="m-2"/>
     </a>
 </div>
@@ -77,7 +76,7 @@
                 </td>
                 <!-- Match Number -->
                 <td class="text-center border-b underline text-link">
-                    <a href={`https://statbotics.io/match/${EVENT_KEY}_qm${stat.match_number}`} target="_blank">Quals {stat.match_number}</a>
+                    <a href={`https://statbotics.io/match/${data.eventKey}_qm${stat.match_number}`} target="_blank">Quals {stat.match_number}</a>
                 </td>
                 <!-- Red Alliance -->
                 <td class="bg-red-300 text-red-900 underline">
@@ -136,7 +135,7 @@
 </div>
 
 <footer class="w-screen bg-nav shadow-lg flex border-t rounded-t mt-16">
-    <p class="text-w m-8">Design <span class="italic">slightly</span> inspired by <a href={`https://statbotics.io/event/${EVENT_KEY}#qual-matches`} target="_blank" class="text-link underline">Statbotics</a></p>
+    <p class="text-w m-8">Design <span class="italic">slightly</span> inspired by <a href={`https://statbotics.io/event/${data.eventKey}#qual-matches`} target="_blank" class="text-link underline">Statbotics</a></p>
 </footer>
 
 <style lang="postcss">
