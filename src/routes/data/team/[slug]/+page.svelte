@@ -8,18 +8,11 @@
     export let data: PageData;
 
     // cache the teamid from the slug so it doesnt get requested a whole bunch
-    const teamid = Number(data.slug);
+    const teamid = data.slug;
 
     // set up ppg store
     ppgStore.set(data.team.ppg);
-    // sort by mean PPG then by teleopTotal
-    $ppgStore.sort((a, b) => {
-        if (a.pointTotal === b.pointTotal) {
-            return b.totalTeleop - a.totalTeleop;
-        } else {
-            return (b.pointTotal / b.matchesPlayed) - (a.pointTotal / a.matchesPlayed);
-        }
-    });
+
     // find the instance of the team in the slug
     const ppg = data.team.ppg.find((team) => team.teamid === teamid);
     // find the index of the team because with the sorting above this will give the teams PPG rank
@@ -31,18 +24,9 @@
     const record = data.team.ranking.Rankings[0];
     const recordString = `${record.wins}-${record.losses}-${record.ties}`
 
-    // reduce stats to be just of the team in the slug
-    const stats = data.team.stats.filter((stat) =>
-        (stat.red_1 === teamid || stat.red_2 === teamid || stat.red_3 === teamid) ||
-        (stat.blue_1 === teamid || stat.blue_2 === teamid || stat.blue_3 === teamid)
-    );
-    // sort by match id so that the display looks decent
-    stats.sort((a, b) => a.match_number - b.match_number);
-
-    // reduce data down to be just of the team in the slug
-    const existing = data.existing.filter((team) => team.teamid === teamid);
+    const existing = data.existing;
     // number of matches played (more accurately scouted) by the team in question
-    const matchesPlayed = existing.filter((match) => match.teamid === teamid).length;
+    const matchesPlayed = existing.length;
 
     // find all the scores of the matches to ignore
     const breakdownScores = (() => {
@@ -124,13 +108,16 @@
                 <h1 class="font-semibold text-2xl">
                     {ppgRank}<sup class="text-sm font-normal">{
                         (() => {
-                            if (ppgRank === 1)
-                                return "st";
-                            if (ppgRank === 2)
-                                return "nd";
-                            if (ppgRank === 3)
-                                return "rd";
-                            return "th";
+                            switch (ppgRank) {
+                                case 1:
+                                    return "st";
+                                case 2:
+                                    return "nd";
+                                case 3:
+                                    return "rd";
+                                default:
+                                    return "th";
+                            }
                         })()}
                     </sup>
                 </h1>
@@ -155,7 +142,7 @@
 
         <div class="w-full">
             <h3 class="text-w text-center mb-4 text-lg">Green = Team Won Match</h3>
-            <TeamTable stats={stats} existing={existing} teamid={teamid}/>
+            <TeamTable stats={data.team.stats} existing={existing} teamid={teamid}/>
         </div>
     </div>
 
